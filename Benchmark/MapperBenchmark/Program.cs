@@ -1,4 +1,6 @@
-﻿namespace MapperBenchmark
+﻿using System;
+
+namespace MapperBenchmark
 {
     using AutoMapper;
 
@@ -50,6 +52,8 @@
         {
             return mapper.Map<SimpleSource, SimpleDestination>(simpleSource);
         }
+
+        // TODO ToString, Parse, Complex, Array, SubObjectEquals?
     }
 
     public class SimpleSource
@@ -60,5 +64,35 @@
     public class SimpleDestination
     {
         public int Value { get; set; }
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public sealed class MapperEntry<TSource, TDestination>
+    {
+        private readonly Action<TSource, TDestination>[] mapActions;
+
+        public MapperEntry(Action<TSource, TDestination>[] mapActions)
+        {
+            this.mapActions = mapActions;
+        }
+
+        public void Map(TSource source, TDestination destination)
+        {
+            for (var i = 0; i < mapActions.Length; i++)
+            {
+                mapActions[i](source, destination);
+            }
+        }
+    }
+
+    public sealed class MapperFactory
+    {
+        public MapperEntry<TSource, TDestination> CreateMapper<TSource, TDestination>()
+        {
+            // TODO analyze, smart, cache, ... builders!
+            // 1st minimum?
+            return null;
+        }
     }
 }
