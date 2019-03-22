@@ -42,7 +42,7 @@ namespace MapperBenchmark
 
         private IMapper mapper;
 
-        private MapperEntry mapperEntry;
+        private MapperEntry<SimpleSource, SimpleDestination> mapperEntry;
 
         [GlobalSetup]
         public void Setup()
@@ -102,19 +102,19 @@ namespace MapperBenchmark
         }
     }
 
-    public sealed class MapperEntry
+    public sealed class MapperEntry<TSource, TDestination>
     {
-        private readonly Func<object> factory;
+        private readonly Func<TDestination> factory;
 
-        private readonly Action<object, object>[] mapActions;
+        private readonly Action<TSource, TDestination>[] mapActions;
 
-        public MapperEntry(Func<object> factory, Action<object, object>[] mapActions)
+        public MapperEntry(Func<TDestination> factory, Action<TSource, TDestination>[] mapActions)
         {
             this.factory = factory;
             this.mapActions = mapActions;
         }
 
-        public void Map(object source, object destination)
+        public void Map(TSource source, TDestination destination)
         {
             for (var i = 0; i < mapActions.Length; i++)
             {
@@ -122,7 +122,7 @@ namespace MapperBenchmark
             }
         }
 
-        public object Map(object source)
+        public object Map(TSource source)
         {
             var destination = factory();
             for (var i = 0; i < mapActions.Length; i++)
@@ -136,11 +136,7 @@ namespace MapperBenchmark
 
     public static class MapperFactory
     {
-        // TODO Typed
-        // (need typed converter)
-        // action class (non convert)<TS, TD, TP> (convert)<TS, TD, TSP, TDP>
-
-        public static MapperEntry CreateMapper<TSource, TDestination>()
+        public static MapperEntry<TSource, TDestination> CreateMapper<TSource, TDestination>()
         {
             var sourceType = typeof(TSource);
             var destinationType = typeof(TDestination);
@@ -149,9 +145,9 @@ namespace MapperBenchmark
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .ToDictionary(x => x.Name, x => x);
 
-            var destinationFactory = DelegateFactory.Default.CreateFactory0(destinationType.GetConstructor(Type.EmptyTypes));
+            var destinationFactory = DelegateFactory.Default.CreateFactory<TDestination>();
 
-            var actions = new List<Action<object, object>>();
+            var actions = new List<Action<TSource, TDestination>>();
             foreach (var sourcePi in sourceType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 if (!destinationProperties.TryGetValue(sourcePi.Name, out var destinationPi))
@@ -164,6 +160,8 @@ namespace MapperBenchmark
 
                 if (sourcePi.PropertyType.IsAssignableFrom(destinationPi.PropertyType))
                 {
+                    // TODO Typed
+                    // action class (non convert)<TS, TD, TP>
                     actions.Add((s, d) =>
                     {
                         destinationSetter(d, sourceGetter(s));
@@ -171,6 +169,9 @@ namespace MapperBenchmark
                 }
                 else
                 {
+                    // TODO Typed
+                    // (need typed converter)
+                    // action class (convert)<TS, TD, TSP, TDP>
                     var converter = ObjectConverter.Default.CreateConverter(sourcePi.PropertyType, destinationPi.PropertyType);
                     actions.Add((s, d) =>
                     {
@@ -179,7 +180,7 @@ namespace MapperBenchmark
                 }
             }
 
-            return new MapperEntry(destinationFactory, actions.ToArray());
+            return new MapperEntry<TSource, TDestination>(destinationFactory, actions.ToArray());
         }
     }
 }
