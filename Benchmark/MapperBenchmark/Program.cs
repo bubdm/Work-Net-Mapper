@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Smart.Collections.Generic;
 using Smart.Converter;
 using Smart.Reflection;
@@ -66,7 +67,19 @@ namespace MapperBenchmark
         [Benchmark]
         public ComplexDestination CustomNonTypedComplex()
         {
-            return (ComplexDestination)mapperEntry.Map(simpleSource);
+            return mapperEntry.Map(simpleSource);
+        }
+
+        [Benchmark]
+        public ComplexDestination CustomNonTypedComplexNop()
+        {
+            return mapperEntry.MapNop(simpleSource);
+        }
+
+        [Benchmark]
+        public ComplexDestination CustomNonTypedComplexDummy()
+        {
+            return mapperEntry.MapDummy(simpleSource);
         }
 
         // TODO ToString, Parse, Complex, Array, SubObjectEquals?
@@ -104,21 +117,15 @@ namespace MapperBenchmark
 
     // --------------------------------------------------------------------------------
 
-    public sealed class TypedMapperEntry<TSource, TDestination>
+    public interface IMapperAction<in TSource, in TDestination>
     {
-        private readonly Action<TSource, TDestination>[] mapActions;
+        void Execute(TSource source, TDestination destination);
+    }
 
-        public TypedMapperEntry(Action<TSource, TDestination>[] mapActions)
+    public sealed class DummyMapper<TSource, TDestination> : IMapperAction<TSource, TDestination>
+    {
+        public void Execute(TSource source, TDestination destination)
         {
-            this.mapActions = mapActions;
-        }
-
-        public void Map(TSource source, TDestination destination)
-        {
-            for (var i = 0; i < mapActions.Length; i++)
-            {
-                mapActions[i](source, destination);
-            }
         }
     }
 
@@ -128,10 +135,21 @@ namespace MapperBenchmark
 
         private readonly Action<TSource, TDestination>[] mapActions;
 
+        private readonly Action<TSource, TDestination>[] dummyActions0;
+
+        private readonly IMapperAction<TSource, TDestination>[] dummyActions;
+
         public MapperEntry(Func<TDestination> factory, Action<TSource, TDestination>[] mapActions)
         {
             this.factory = factory;
             this.mapActions = mapActions;
+            var nop = (Action<TSource, TDestination>)((s, d) => { });
+            dummyActions0 = Enumerable.Range(0, mapActions.Length)
+                .Select(x => nop)
+                .ToArray();
+            dummyActions = Enumerable.Range(0, mapActions.Length)
+                .Select(x => new DummyMapper<TSource, TDestination>())
+                .ToArray();
         }
 
         public void Map(TSource source, TDestination destination)
@@ -142,12 +160,34 @@ namespace MapperBenchmark
             }
         }
 
-        public object Map(TSource source)
+        public TDestination Map(TSource source)
         {
             var destination = factory();
             for (var i = 0; i < mapActions.Length; i++)
             {
                 mapActions[i](source, destination);
+            }
+
+            return destination;
+        }
+
+        public TDestination MapNop(TSource source)
+        {
+            var destination = factory();
+            for (var i = 0; i < dummyActions.Length; i++)
+            {
+                dummyActions0[i](source, destination);
+            }
+
+            return destination;
+        }
+
+        public TDestination MapDummy(TSource source)
+        {
+            var destination = factory();
+            for (var i = 0; i < dummyActions.Length; i++)
+            {
+                dummyActions[i].Execute(source, destination);
             }
 
             return destination;
@@ -161,9 +201,11 @@ namespace MapperBenchmark
             var sourceType = typeof(TSource);
             var destinationType = typeof(TDestination);
 
-            var destinationProperties = destinationType
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .ToDictionary(x => x.Name, x => x);
+            var destinationProperties = ComparerEnumerable.ToDictionary(destinationType
+                    .GetProperties(BindingFlags.Instance | BindingFlags.Public), x => x.Name, x => x);
+
+            // TODO which is better if or action
+            // TODO typed if and typed action(func chain and inline?)
 
             // TODO typed
             var destinationFactory = DelegateFactory.Default.CreateFactory<TDestination>();
