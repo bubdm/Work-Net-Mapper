@@ -207,6 +207,8 @@ namespace MapperBenchmark
             // TODO which is better if or action
             // TODO typed if and typed action(func chain and inline?)
 
+            // TODO benchmark int to int copy raw and boxed copy
+
             // TODO typed
             var destinationFactory = DelegateFactory.Default.CreateFactory<TDestination>();
 
