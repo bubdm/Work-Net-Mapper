@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Smart.Collections.Generic;
 using Smart.Converter;
 using Smart.Reflection;
@@ -41,6 +42,12 @@ namespace MapperBenchmark
     {
         private readonly ComplexSource simpleSource = new ComplexSource();
 
+        private readonly ComplexDestination simpleDestination = new ComplexDestination();
+
+        private readonly ActionRawMapper actionRawMapper = new ActionRawMapper();
+
+        private readonly ActionBoxedRawMapper actionBoxedRawMapper = new ActionBoxedRawMapper();
+
         private IMapper mapper;
 
         private MapperEntry<ComplexSource, ComplexDestination> mapperEntry;
@@ -65,21 +72,33 @@ namespace MapperBenchmark
         //}
 
         [Benchmark]
-        public ComplexDestination CustomNonTypedComplex()
+        public void CustomNonTypedComplex()
         {
-            return mapperEntry.Map(simpleSource);
+            mapperEntry.Map(simpleSource, simpleDestination);
         }
 
         [Benchmark]
-        public ComplexDestination CustomNonTypedComplexNop()
+        public void CustomNonTypedComplexNop()
         {
-            return mapperEntry.MapNop(simpleSource);
+            mapperEntry.MapNop(simpleSource, simpleDestination);
         }
 
         [Benchmark]
-        public ComplexDestination CustomNonTypedComplexDummy()
+        public void CustomNonTypedComplexDummy()
         {
-            return mapperEntry.MapDummy(simpleSource);
+            mapperEntry.MapDummy(simpleSource, simpleDestination);
+        }
+
+        [Benchmark]
+        public void ActionRawMapper()
+        {
+            actionRawMapper.Map(simpleSource, simpleDestination);
+        }
+
+        [Benchmark]
+        public void ActionBoxedRawMapper()
+        {
+            actionBoxedRawMapper.Map(simpleSource, simpleDestination);
         }
 
         // TODO ToString, Parse, Complex, Array, SubObjectEquals?
@@ -113,6 +132,66 @@ namespace MapperBenchmark
         public float FloatValue { get; set; }
 
         public DateTime DateTimeValue { get; set; }
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public sealed class ActionRawMapper
+    {
+        private readonly Action<ComplexSource, ComplexDestination>[] actions;
+
+        public ActionRawMapper()
+        {
+            actions = new Action<ComplexSource, ComplexDestination>[]
+            {
+                (s, d) => { d.StringValue = s.StringValue; },
+                (s, d) => { d.IntValue = s.IntValue; },
+                (s, d) => { d.LongValue = s.LongValue; },
+                (s, d) => { d.NullableIntValue = s.NullableIntValue; },
+                (s, d) => { d.FloatValue = s.FloatValue; },
+                (s, d) => { d.DateTimeValue = s.DateTimeValue; },
+            };
+        }
+
+        public void Map(ComplexSource source, ComplexDestination destination)
+        {
+            for (var i = 0; i < actions.Length; i++)
+            {
+                actions[i](source, destination);
+            }
+        }
+    }
+
+    public sealed class ActionBoxedRawMapper
+    {
+        private readonly Action<ComplexSource, ComplexDestination>[] actions;
+
+        public ActionBoxedRawMapper()
+        {
+            actions = new Action<ComplexSource, ComplexDestination>[]
+            {
+                (s, d) => { d.StringValue = (string)Wrap(s.StringValue); },
+                (s, d) => { d.IntValue = (int)Wrap(s.IntValue); },
+                (s, d) => { d.LongValue = (long)Wrap(s.LongValue); },
+                (s, d) => { d.NullableIntValue = (int?)Wrap(s.NullableIntValue); },
+                (s, d) => { d.FloatValue = (float)Wrap(s.FloatValue); },
+                (s, d) => { d.DateTimeValue = (DateTime)Wrap(s.DateTimeValue); },
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static object Wrap<T>(T source)
+        {
+            return source;
+        }
+
+        public void Map(ComplexSource source, ComplexDestination destination)
+        {
+            for (var i = 0; i < actions.Length; i++)
+            {
+                actions[i](source, destination);
+            }
+        }
     }
 
     // --------------------------------------------------------------------------------
@@ -182,9 +261,29 @@ namespace MapperBenchmark
             return destination;
         }
 
+        public TDestination MapNop(TSource source, TDestination destination)
+        {
+            for (var i = 0; i < dummyActions.Length; i++)
+            {
+                dummyActions0[i](source, destination);
+            }
+
+            return destination;
+        }
+
         public TDestination MapDummy(TSource source)
         {
             var destination = factory();
+            for (var i = 0; i < dummyActions.Length; i++)
+            {
+                dummyActions[i].Execute(source, destination);
+            }
+
+            return destination;
+        }
+
+        public TDestination MapDummy(TSource source, TDestination destination)
+        {
             for (var i = 0; i < dummyActions.Length; i++)
             {
                 dummyActions[i].Execute(source, destination);
@@ -204,12 +303,6 @@ namespace MapperBenchmark
             var destinationProperties = ComparerEnumerable.ToDictionary(destinationType
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public), x => x.Name, x => x);
 
-            // TODO which is better if or action
-            // TODO typed if and typed action(func chain and inline?)
-
-            // TODO benchmark int to int copy raw and boxed copy
-
-            // TODO typed
             var destinationFactory = DelegateFactory.Default.CreateFactory<TDestination>();
 
             var actions = new List<Action<TSource, TDestination>>();
@@ -249,4 +342,10 @@ namespace MapperBenchmark
             return new MapperEntry<TSource, TDestination>(destinationFactory, actions.ToArray());
         }
     }
+
+    public sealed class TypedCopyActionFactory<TSource, TDestination, TProperty>
+    {
+        // TODO
+    }
+
 }
