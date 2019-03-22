@@ -38,48 +38,68 @@ namespace MapperBenchmark
     [Config(typeof(BenchmarkConfig))]
     public class Benchmark
     {
-        private readonly SimpleSource simpleSource = new SimpleSource();
+        private readonly ComplexSource simpleSource = new ComplexSource();
 
         private IMapper mapper;
 
-        private MapperEntry<SimpleSource, SimpleDestination> mapperEntry;
+        private MapperEntry<ComplexSource, ComplexDestination> mapperEntry;
 
         [GlobalSetup]
         public void Setup()
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<SimpleSource, SimpleDestination>();
+                cfg.CreateMap<ComplexSource, ComplexDestination>();
             });
 
             mapper = config.CreateMapper();
 
-            mapperEntry = MapperFactory.CreateMapper<SimpleSource, SimpleDestination>();
+            mapperEntry = MapperFactory.CreateMapper<ComplexSource, ComplexDestination>();
         }
 
-        [Benchmark]
-        public SimpleDestination AutoMapperSimple()
-        {
-            return mapper.Map<SimpleSource, SimpleDestination>(simpleSource);
-        }
+        //[Benchmark]
+        //public ComplexDestination AutoMapperComplex()
+        //{
+        //    return mapper.Map<ComplexSource, ComplexDestination>(simpleSource);
+        //}
 
         [Benchmark]
-        public SimpleDestination CustomNonTypedSimple()
+        public ComplexDestination CustomNonTypedComplex()
         {
-            return (SimpleDestination)mapperEntry.Map(simpleSource);
+            return (ComplexDestination)mapperEntry.Map(simpleSource);
         }
 
         // TODO ToString, Parse, Complex, Array, SubObjectEquals?
     }
 
-    public class SimpleSource
+    public class ComplexSource
     {
-        public int Value { get; set; }
+        public string StringValue { get; set; }
+
+        public int IntValue { get; set; }
+
+        public long LongValue { get; set; }
+
+        public int? NullableIntValue { get; set; }
+
+        public float FloatValue { get; set; }
+
+        public DateTime DateTimeValue { get; set; }
     }
 
-    public class SimpleDestination
+    public class ComplexDestination
     {
-        public int Value { get; set; }
+        public string StringValue { get; set; }
+
+        public int IntValue { get; set; }
+
+        public long LongValue { get; set; }
+
+        public int? NullableIntValue { get; set; }
+
+        public float FloatValue { get; set; }
+
+        public DateTime DateTimeValue { get; set; }
     }
 
     // --------------------------------------------------------------------------------
@@ -145,6 +165,7 @@ namespace MapperBenchmark
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .ToDictionary(x => x.Name, x => x);
 
+            // TODO typed
             var destinationFactory = DelegateFactory.Default.CreateFactory<TDestination>();
 
             var actions = new List<Action<TSource, TDestination>>();
@@ -155,6 +176,7 @@ namespace MapperBenchmark
                     continue;
                 }
 
+                // TODO typed
                 var sourceGetter = DelegateFactory.Default.CreateGetter(sourcePi);
                 var destinationSetter = DelegateFactory.Default.CreateSetter(destinationPi);
 
