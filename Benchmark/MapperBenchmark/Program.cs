@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Smart.Collections.Generic;
-using Smart.Converter;
-using Smart.Reflection;
-
-namespace MapperBenchmark
+﻿namespace MapperBenchmark
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using AutoMapper;
 
@@ -18,6 +14,10 @@ namespace MapperBenchmark
     using BenchmarkDotNet.Exporters;
     using BenchmarkDotNet.Jobs;
     using BenchmarkDotNet.Running;
+
+    using Smart.Collections.Generic;
+    using Smart.Converter;
+    using Smart.Reflection;
 
     public static class Program
     {
@@ -65,11 +65,11 @@ namespace MapperBenchmark
             mapperEntry = MapperFactory.CreateMapper<ComplexSource, ComplexDestination>();
         }
 
-        //[Benchmark]
-        //public ComplexDestination AutoMapperComplex()
-        //{
-        //    return mapper.Map<ComplexSource, ComplexDestination>(simpleSource);
-        //}
+        [Benchmark]
+        public void AutoMapperComplex()
+        {
+            mapper.Map(simpleSource, simpleDestination);
+        }
 
         [Benchmark]
         public void CustomNonTypedComplex()
@@ -84,12 +84,6 @@ namespace MapperBenchmark
         }
 
         [Benchmark]
-        public void CustomNonTypedComplexDummy()
-        {
-            mapperEntry.MapDummy(simpleSource, simpleDestination);
-        }
-
-        [Benchmark]
         public void ActionRawMapper()
         {
             actionRawMapper.Map(simpleSource, simpleDestination);
@@ -101,7 +95,7 @@ namespace MapperBenchmark
             actionBoxedRawMapper.Map(simpleSource, simpleDestination);
         }
 
-        // TODO ToString, Parse, Complex, Array, SubObjectEquals?
+        // TODO ToString, Parse, Complex, Array(IE same?), SubObjectEquals?
     }
 
     public class ComplexSource
@@ -196,18 +190,6 @@ namespace MapperBenchmark
 
     // --------------------------------------------------------------------------------
 
-    public interface IMapperAction<in TSource, in TDestination>
-    {
-        void Execute(TSource source, TDestination destination);
-    }
-
-    public sealed class DummyMapper<TSource, TDestination> : IMapperAction<TSource, TDestination>
-    {
-        public void Execute(TSource source, TDestination destination)
-        {
-        }
-    }
-
     public sealed class MapperEntry<TSource, TDestination>
     {
         private readonly Func<TDestination> factory;
@@ -216,8 +198,6 @@ namespace MapperBenchmark
 
         private readonly Action<TSource, TDestination>[] dummyActions0;
 
-        private readonly IMapperAction<TSource, TDestination>[] dummyActions;
-
         public MapperEntry(Func<TDestination> factory, Action<TSource, TDestination>[] mapActions)
         {
             this.factory = factory;
@@ -225,9 +205,6 @@ namespace MapperBenchmark
             var nop = (Action<TSource, TDestination>)((s, d) => { });
             dummyActions0 = Enumerable.Range(0, mapActions.Length)
                 .Select(x => nop)
-                .ToArray();
-            dummyActions = Enumerable.Range(0, mapActions.Length)
-                .Select(x => new DummyMapper<TSource, TDestination>())
                 .ToArray();
         }
 
@@ -250,46 +227,12 @@ namespace MapperBenchmark
             return destination;
         }
 
-        public TDestination MapNop(TSource source)
+        public void MapNop(TSource source, TDestination destination)
         {
-            var destination = factory();
-            for (var i = 0; i < dummyActions.Length; i++)
+            for (var i = 0; i < dummyActions0.Length; i++)
             {
                 dummyActions0[i](source, destination);
             }
-
-            return destination;
-        }
-
-        public TDestination MapNop(TSource source, TDestination destination)
-        {
-            for (var i = 0; i < dummyActions.Length; i++)
-            {
-                dummyActions0[i](source, destination);
-            }
-
-            return destination;
-        }
-
-        public TDestination MapDummy(TSource source)
-        {
-            var destination = factory();
-            for (var i = 0; i < dummyActions.Length; i++)
-            {
-                dummyActions[i].Execute(source, destination);
-            }
-
-            return destination;
-        }
-
-        public TDestination MapDummy(TSource source, TDestination destination)
-        {
-            for (var i = 0; i < dummyActions.Length; i++)
-            {
-                dummyActions[i].Execute(source, destination);
-            }
-
-            return destination;
         }
     }
 
@@ -313,21 +256,23 @@ namespace MapperBenchmark
                     continue;
                 }
 
-                // TODO typed
-                var sourceGetter = DelegateFactory.Default.CreateGetter(sourcePi);
-                var destinationSetter = DelegateFactory.Default.CreateSetter(destinationPi);
+                if (!sourcePi.CanRead || !destinationPi.CanWrite)
+                {
+                    continue;
+                }
 
                 if (sourcePi.PropertyType.IsAssignableFrom(destinationPi.PropertyType))
                 {
-                    // TODO Typed
-                    // action class (non convert)<TS, TD, TP>
-                    actions.Add((s, d) =>
-                    {
-                        destinationSetter(d, sourceGetter(s));
-                    });
+                    var method = typeof(MapperFactory).GetMethod(nameof(MakeMapper), BindingFlags.Static | BindingFlags.NonPublic);
+                    var genericMethod = method.MakeGenericMethod(sourceType, destinationType, sourcePi.PropertyType);
+                    var action = (Action<TSource, TDestination>)genericMethod.Invoke(null, new object[] { sourcePi, destinationPi });
+                    actions.Add(action);
                 }
                 else
                 {
+                    var sourceGetter = DelegateFactory.Default.CreateGetter(sourcePi);
+                    var destinationSetter = DelegateFactory.Default.CreateSetter(destinationPi);
+
                     // TODO Typed
                     // (need typed converter)
                     // action class (convert)<TS, TD, TSP, TDP>
@@ -341,11 +286,15 @@ namespace MapperBenchmark
 
             return new MapperEntry<TSource, TDestination>(destinationFactory, actions.ToArray());
         }
-    }
 
-    public sealed class TypedCopyActionFactory<TSource, TDestination, TProperty>
-    {
-        // TODO
+        private static Action<TS, TD> MakeMapper<TS, TD, TP>(PropertyInfo sourcePi, PropertyInfo destinationPi)
+        {
+            var sourceGetter = DelegateFactory.Default.CreateGetter<TS, TP>(sourcePi);
+            var destinationSetter = DelegateFactory.Default.CreateSetter<TD, TP>(destinationPi);
+            return (s, d) =>
+            {
+                destinationSetter(d, sourceGetter(s));
+            };
+        }
     }
-
 }
