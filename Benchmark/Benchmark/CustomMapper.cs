@@ -9,7 +9,14 @@
         void Map(object source, object destination);
     }
 
-    public sealed class ActionMapper<TSource, TDestination> : IActionMapper
+    public interface IActionMapper<in TSource, TDestination> : IActionMapper
+    {
+        TDestination Map(TSource source);
+
+        void Map(TSource source, TDestination destination);
+    }
+
+    public sealed class ActionMapper<TSource, TDestination> : IActionMapper<TSource, TDestination>
     {
         private readonly Func<TDestination> factory;
 
@@ -74,7 +81,7 @@
                 throw new ArgumentException("Type is not registered.");
             }
 
-            return ((ActionMapper<TSource, TDestination>)mapper).Map(source);
+            return ((IActionMapper<TSource, TDestination>)mapper).Map(source);
         }
 
         public void Map<TSource, TDestination>(TSource source, TDestination destination)
@@ -89,7 +96,7 @@
                 throw new ArgumentException("Type is not registered.");
             }
 
-            ((ActionMapper<TSource, TDestination>)mapper).Map(source, destination);
+            ((IActionMapper<TSource, TDestination>)mapper).Map(source, destination);
         }
 
         public TDestination Map<TDestination>(object source)

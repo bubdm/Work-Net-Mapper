@@ -28,7 +28,8 @@ namespace Benchmark
             AddExporter(MarkdownExporter.Default, MarkdownExporter.GitHub);
             AddDiagnoser(MemoryDiagnoser.Default);
             //AddJob(Job.LongRun);
-            AddJob(Job.MediumRun);
+            //AddJob(Job.MediumRun);
+            AddJob(Job.ShortRun);
         }
     }
 
@@ -45,9 +46,9 @@ namespace Benchmark
 
         private readonly ActionMapperFactory rawActionMapperFactory = new ActionMapperFactory();
 
-        private ActionMapper<SimpleSource, SimpleDestination> instantSimpleMapper;
+        private IActionMapper<SimpleSource, SimpleDestination> instantSimpleMapper;
 
-        private ActionMapper<SimpleSource, SimpleDestination> rawSimpleMapper;
+        private IActionMapper<SimpleSource, SimpleDestination> rawSimpleMapper;
 
         [GlobalSetup]
         public void Setup()
@@ -137,6 +138,8 @@ namespace Benchmark
         // Convert
         //--------------------------------------------------------------------------------
 
-        // TODO
+        // TODO 2
     }
+
+    // TODO +interface 1
 }

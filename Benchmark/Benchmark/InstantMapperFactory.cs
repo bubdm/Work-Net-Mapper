@@ -10,7 +10,7 @@
 
     public static class InstantMapperFactory
     {
-        public static ActionMapper<TSource, TDestination> Create<TSource, TDestination>()
+        public static IActionMapper<TSource, TDestination> Create<TSource, TDestination>()
         {
             var sourceType = typeof(TSource);
             var destinationType = typeof(TDestination);

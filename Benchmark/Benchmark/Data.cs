@@ -57,7 +57,7 @@ namespace Benchmark
     // Factory
     public static class RawMapperFactory
     {
-        public static ActionMapper<SimpleSource, SimpleDestination> CreateSimpleMapper()
+        public static IActionMapper<SimpleSource, SimpleDestination> CreateSimpleMapper()
         {
             return new ActionMapper<SimpleSource, SimpleDestination>(
                 () => new SimpleDestination(),
@@ -74,7 +74,7 @@ namespace Benchmark
                 });
         }
 
-        public static ActionMapper<MixedSource, MixedDestination> CreateMixedMapper()
+        public static IActionMapper<MixedSource, MixedDestination> CreateMixedMapper()
         {
             return new ActionMapper<MixedSource, MixedDestination>(
                 () => new MixedDestination(),
