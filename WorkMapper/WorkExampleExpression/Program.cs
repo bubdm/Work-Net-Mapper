@@ -9,7 +9,8 @@ namespace WorkExampleExpression
         {
             var config = new MapperConfiguration(c =>
             {
-                c.CreateMap<SimpleSource, SimpleDestination>();
+                c.CreateMap<SimpleSource, SimpleDestination>()
+                    .ForMember(d => d.Value1, opt => opt.MapFrom(s => s.Value1));
             });
             var mapper = config.CreateMapper();        }
     }
