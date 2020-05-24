@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using Nelibur.ObjectMapper;
-
-namespace Benchmark
+﻿namespace Benchmark
 {
+    using AutoMapper;
+
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Configs;
     using BenchmarkDotNet.Diagnosers;
@@ -10,13 +9,12 @@ namespace Benchmark
     using BenchmarkDotNet.Jobs;
     using BenchmarkDotNet.Running;
 
+    using Nelibur.ObjectMapper;
+
     public static class Program
     {
         public static void Main()
         {
-            var b = new MapperBenchmark();
-            b.Setup();
-            b.SimpleInstantMapper();
             BenchmarkRunner.Run<MapperBenchmark>();
         }
     }
