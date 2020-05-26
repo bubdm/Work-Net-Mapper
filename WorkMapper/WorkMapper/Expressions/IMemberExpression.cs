@@ -19,9 +19,6 @@
 
         // MapFrom
 
-        // TODO どちらにする？
-        void MapFrom<TSourceMember>(Func<TSource, TSourceMember> function);
-
         void MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression);
 
         void MapFrom(string name);
