@@ -9,13 +9,21 @@
         // MemberInfo
         MemberInfo DestinationMember { get; }
 
-        // Null
+        // Ignore
+        void Ignore();
 
-        void NullIf(TMember value);
+        // Order
+        void Order(int order);
 
-        // Constant
+        // Condition
 
-        void Const(TMember value);
+        void Condition(Func<TSource, bool> condition);
+
+        void Condition(Func<TSource, object, bool> condition);
+
+        void Condition(Func<TSource, TDestination, bool> condition);
+
+        void Condition(Func<TSource, TDestination, object, bool> condition);
 
         // MapFrom
 
@@ -32,29 +40,21 @@
 
         void MapFrom(string name);
 
+        // Null
+
+        void NullIf(TMember value);
+
+        // Constant
+
+        void Const(TMember value);
+
         // Convert
 
-        void ConvertUsing<TValueConverter, TSourceMember>(IValueConverter<TSourceMember, TMember> converter);
+        void ConvertUsing<TSourceMember>(IValueConverter<TSourceMember, TMember> converter);
 
-        void ConvertUsing<TValueConverter, TSourceMember>()
+        void ConvertUsing<TSourceMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TMember>;
 
-        void ConvertUsing<TValueConverter, TSourceMember>(Type converterType);
-
-        // Ignore
-        void Ignore();
-
-        // Order
-        void Order(int order);
-
-        // Condition
-
-        void Condition(Func<TSource, bool> condition);
-
-        void Condition(Func<TSource, object, bool> condition);
-
-        void Condition(Func<TSource, TDestination, bool> condition);
-
-        void Condition(Func<TSource, TDestination, object, bool> condition);
+        void ConvertUsing(Type converterType);
     }
 }

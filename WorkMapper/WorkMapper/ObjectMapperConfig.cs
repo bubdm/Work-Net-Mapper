@@ -14,6 +14,10 @@ namespace WorkMapper
             throw new NotImplementedException();
         }
 
-        // TODO Config wide ? : Naming resolver Func<Dest, Source>, ...
+        public ObjectMapperConfig MemberDefault<TMember>(Action<IMemberDefaultExpression<TMember>> option)
+        {
+            // TODO Default
+            return this;
+        }
     }
 }

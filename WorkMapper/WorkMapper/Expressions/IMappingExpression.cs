@@ -1,4 +1,6 @@
-﻿namespace WorkMapper.Expressions
+﻿using System.Collections.Generic;
+
+namespace WorkMapper.Expressions
 {
     using System;
     using System.Linq.Expressions;
@@ -62,6 +64,7 @@
 
         IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option);
 
-        // TODO TypeWide ? default, null ?
+        // Default
+        IMappingExpression<TSource, TDestination> MemberDefault<TMember>(Action<IMemberDefaultExpression<TMember>> option);
     }
 }
