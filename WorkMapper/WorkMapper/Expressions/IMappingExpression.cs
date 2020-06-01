@@ -20,9 +20,26 @@
 
         IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination, object> action);
 
+        IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action);
+
+        IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>()
+            where TMappingAction : IMappingAction<TSource, TDestination>;
+
+        IMappingExpression<TSource, TDestination> BeforeMap(Type actionType);
+
         IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action);
 
         IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination, object> action);
+
+        IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action);
+
+        IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>()
+            where TMappingAction : IMappingAction<TSource, TDestination>;
+
+        IMappingExpression<TSource, TDestination> AfterMap(Type actionType);
+
+        // Match
+        IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function);
 
         // Include/Exclude
         IMappingExpression<TSource, TDestination> IncludeMember(params string[] names);
@@ -44,5 +61,7 @@
         IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
 
         IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option);
+
+        // TODO TypeWide ? default, null ?
     }
 }

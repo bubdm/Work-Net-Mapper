@@ -21,7 +21,25 @@
 
         void MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression);
 
+        void MapFrom<TSourceMember>(Expression<Func<TSource, object, TSourceMember>> expression);
+
+        void MapFrom(IValueResolver<TSource, TDestination, TMember> resolver);
+
+        void MapFrom<TValueResolver>()
+            where TValueResolver : IValueResolver<TSource, TDestination, TMember>;
+
+        void MapFrom(Type resolverType);
+
         void MapFrom(string name);
+
+        // Convert
+
+        void ConvertUsing<TValueConverter, TSourceMember>(IValueConverter<TSourceMember, TMember> converter);
+
+        void ConvertUsing<TValueConverter, TSourceMember>()
+            where TValueConverter : IValueConverter<TSourceMember, TMember>;
+
+        void ConvertUsing<TValueConverter, TSourceMember>(Type converterType);
 
         // Ignore
         void Ignore();

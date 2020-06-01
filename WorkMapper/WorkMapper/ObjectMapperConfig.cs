@@ -14,11 +14,6 @@ namespace WorkMapper
             throw new NotImplementedException();
         }
 
-        public IMappingExpression<object, object> CreateMap(Type sourceType, Type destinationType)
-        {
-            throw new NotImplementedException();
-        }
-
-        // TODO Naming resolver Func<Dest, Source>
+        // TODO Config wide ? : Naming resolver Func<Dest, Source>, ...
     }
 }
