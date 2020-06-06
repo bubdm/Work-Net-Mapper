@@ -14,7 +14,13 @@ namespace WorkMapper
             throw new NotImplementedException();
         }
 
-        public ObjectMapperConfig MemberDefault<TMember>(Action<IMemberDefaultExpression<TMember>> option)
+        public ObjectMapperConfig Default(Action<IDefaultExpression> option)
+        {
+            // TODO Default
+            return this;
+        }
+
+        public ObjectMapperConfig MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option)
         {
             // TODO Default
             return this;

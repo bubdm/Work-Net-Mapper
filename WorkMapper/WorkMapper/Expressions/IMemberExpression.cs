@@ -6,16 +6,27 @@
 
     public interface IMemberExpression<TSource, out TDestination, in TMember>
     {
-        // MemberInfo
+        //--------------------------------------------------------------------------------
+        // Info
+        //--------------------------------------------------------------------------------
+
         MemberInfo DestinationMember { get; }
 
+        //--------------------------------------------------------------------------------
         // Ignore
+        //--------------------------------------------------------------------------------
+
         void Ignore();
 
+        //--------------------------------------------------------------------------------
         // Order
+        //--------------------------------------------------------------------------------
+
         void Order(int order);
 
+        //--------------------------------------------------------------------------------
         // Condition
+        //--------------------------------------------------------------------------------
 
         void Condition(Func<TSource, bool> condition);
 
@@ -25,7 +36,9 @@
 
         void Condition(Func<TSource, TDestination, object, bool> condition);
 
+        //--------------------------------------------------------------------------------
         // MapFrom
+        //--------------------------------------------------------------------------------
 
         void MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression);
 
@@ -36,25 +49,27 @@
         void MapFrom<TValueResolver>()
             where TValueResolver : IValueResolver<TSource, TDestination, TMember>;
 
-        void MapFrom(Type resolverType);
-
         void MapFrom(string name);
 
+        //--------------------------------------------------------------------------------
         // Null
+        //--------------------------------------------------------------------------------
 
         void NullIf(TMember value);
 
+        //--------------------------------------------------------------------------------
         // Constant
+        //--------------------------------------------------------------------------------
 
         void Const(TMember value);
 
+        //--------------------------------------------------------------------------------
         // Convert
+        //--------------------------------------------------------------------------------
 
         void ConvertUsing<TSourceMember>(IValueConverter<TSourceMember, TMember> converter);
 
         void ConvertUsing<TSourceMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TMember>;
-
-        void ConvertUsing(Type converterType);
     }
 }

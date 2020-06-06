@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WorkMapper.Expressions
+﻿namespace WorkMapper.Expressions
 {
     using System;
     using System.Linq.Expressions;
@@ -8,7 +6,10 @@ namespace WorkMapper.Expressions
 
     public interface IMappingExpression<TSource, TDestination>
     {
+        //--------------------------------------------------------------------------------
         //  Factory
+        //--------------------------------------------------------------------------------
+
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory);
 
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination, object> factory);
@@ -17,7 +18,10 @@ namespace WorkMapper.Expressions
 
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination, object> factory);
 
+        //--------------------------------------------------------------------------------
         // Pre/Post process
+        //--------------------------------------------------------------------------------
+
         IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action);
 
         IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination, object> action);
@@ -26,8 +30,6 @@ namespace WorkMapper.Expressions
 
         IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>()
             where TMappingAction : IMappingAction<TSource, TDestination>;
-
-        IMappingExpression<TSource, TDestination> BeforeMap(Type actionType);
 
         IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action);
 
@@ -38,12 +40,16 @@ namespace WorkMapper.Expressions
         IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>()
             where TMappingAction : IMappingAction<TSource, TDestination>;
 
-        IMappingExpression<TSource, TDestination> AfterMap(Type actionType);
-
+        //--------------------------------------------------------------------------------
         // Match
+        //--------------------------------------------------------------------------------
+
         IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function);
 
+        //--------------------------------------------------------------------------------
         // Include/Exclude
+        //--------------------------------------------------------------------------------
+
         IMappingExpression<TSource, TDestination> IncludeMember(params string[] names);
 
         IMappingExpression<TSource, TDestination> IncludeMembers(params Expression<Func<TSource, object>>[] expressions);
@@ -56,15 +62,26 @@ namespace WorkMapper.Expressions
 
         IMappingExpression<TSource, TDestination> ExcludeMembers(params Expression<Func<TSource, object>>[] expressions);
 
+        //--------------------------------------------------------------------------------
         // All members
+        //--------------------------------------------------------------------------------
+
         void ForAllMembers(Action<IMemberExpression<TSource, TDestination, object>> option);
 
+        //--------------------------------------------------------------------------------
         // Member
+        //--------------------------------------------------------------------------------
+
         IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
 
         IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option);
 
+        //--------------------------------------------------------------------------------
         // Default
-        IMappingExpression<TSource, TDestination> MemberDefault<TMember>(Action<IMemberDefaultExpression<TMember>> option);
+        //--------------------------------------------------------------------------------
+
+        IMappingExpression<TSource, TDestination> Default(Action<IDefaultExpression> option);
+
+        IMappingExpression<TSource, TDestination> MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option);
     }
 }
