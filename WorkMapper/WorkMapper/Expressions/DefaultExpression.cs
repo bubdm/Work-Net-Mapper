@@ -3,20 +3,35 @@
     using System;
     using System.Collections.Generic;
 
+    using WorkMapper.Metadata;
+
     internal class DefaultExpression : IDefaultExpression
     {
+        private readonly DefaultEntry entry;
+
+        public DefaultExpression(DefaultEntry entry)
+        {
+            this.entry = entry;
+        }
+
         //--------------------------------------------------------------------------------
         // Null
         //--------------------------------------------------------------------------------
 
         public IDefaultExpression NullIf<TMember>(TMember value)
         {
-            throw new NotImplementedException();
+            entry.SetNullIfValue(typeof(TMember), value);
+            return this;
         }
 
         public IDefaultExpression NullIf(IDictionary<Type, object> values)
         {
-            throw new NotImplementedException();
+            foreach (var pair in values)
+            {
+                entry.SetNullIfValue(pair.Key, pair.Value);
+            }
+
+            return this;
         }
 
         //--------------------------------------------------------------------------------
@@ -25,12 +40,18 @@
 
         public IDefaultExpression Const<TMember>(TMember value)
         {
-            throw new NotImplementedException();
+            entry.SetConstValue(typeof(TMember), value);
+            return this;
         }
 
         public IDefaultExpression Const(IDictionary<Type, object> values)
         {
-            throw new NotImplementedException();
+            foreach (var pair in values)
+            {
+                entry.SetConstValue(pair.Key, pair.Value);
+            }
+
+            return this;
         }
 
         //--------------------------------------------------------------------------------
@@ -39,12 +60,14 @@
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
         {
-            throw new NotImplementedException();
+            entry.SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
+            return this;
         }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>() where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
         {
-            throw new NotImplementedException();
+            entry.SetConverterType(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), typeof(TValueConverter));
+            return this;
         }
     }
 }

@@ -4,30 +4,43 @@
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using WorkMapper.Metadata;
+
     public class MappingExpression<TSource, TDestination> : IMappingExpression<TSource, TDestination>
     {
+        private readonly MapperEntry entry;
+
+        public MappingExpression(MapperEntry entry)
+        {
+            this.entry = entry;
+        }
+
         //--------------------------------------------------------------------------------
         //  Factory
         //--------------------------------------------------------------------------------
 
         public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory)
         {
-            throw new NotImplementedException();
+            entry.SetFactory(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), factory);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination, object> factory)
         {
-            throw new NotImplementedException();
+            entry.SetFactory(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), factory);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory)
         {
-            throw new NotImplementedException();
+            entry.SetFactory(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), factory);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination, object> factory)
         {
-            throw new NotImplementedException();
+            entry.SetFactory(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), factory);
+            return this;
         }
 
         //--------------------------------------------------------------------------------
