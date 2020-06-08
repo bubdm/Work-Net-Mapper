@@ -55,7 +55,7 @@
         }
 
         //--------------------------------------------------------------------------------
-        // Convert
+        // Converter
         //--------------------------------------------------------------------------------
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)

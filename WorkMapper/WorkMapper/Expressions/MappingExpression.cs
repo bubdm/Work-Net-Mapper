@@ -49,42 +49,50 @@
 
         public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination, object> action)
         {
-            throw new NotImplementedException();
+            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
         {
-            throw new NotImplementedException();
+            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), typeof(TMappingAction));
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination, object> action)
         {
-            throw new NotImplementedException();
+            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
         {
-            throw new NotImplementedException();
+            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), typeof(TMappingAction));
+            return this;
         }
 
         //--------------------------------------------------------------------------------

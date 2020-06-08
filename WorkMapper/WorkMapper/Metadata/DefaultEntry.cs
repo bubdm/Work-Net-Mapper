@@ -13,17 +13,29 @@
 
         private Dictionary<Tuple<Type, Type>, Type> converterTypes;
 
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
+
         public void SetNullIfValue(Type type, object value)
         {
             nullIfValues ??= new Dictionary<Type, object>();
             nullIfValues[type] = value;
         }
 
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
+
         public void SetConstValue(Type type, object value)
         {
             constValues ??= new Dictionary<Type, object>();
             constValues[type] = value;
         }
+
+        //--------------------------------------------------------------------------------
+        // Converter
+        //--------------------------------------------------------------------------------
 
         public void SetConverter(Tuple<Type, Type> pair, object value)
         {
