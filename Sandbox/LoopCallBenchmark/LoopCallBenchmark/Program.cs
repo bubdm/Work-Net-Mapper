@@ -41,7 +41,7 @@
     {
         private const int N = 1000;
 
-        [Params(4, 8, 16)]
+        [Params(2, 4, 8, 12, 16, 20, 24, 32)]
         public int Size { get; set; }
 
         private IHandler[] handlers;
@@ -55,7 +55,7 @@
         }
 
         [Benchmark(OperationsPerInvoke = N, Baseline = true)]
-        public void HandlerSimple()
+        public void HandlerFor()
         {
             for (var n = 0; n < N; n++)
             {
@@ -68,7 +68,7 @@
         }
 
         [Benchmark(OperationsPerInvoke = N)]
-        public void ActionSimple()
+        public void ActionFor()
         {
             for (var n = 0; n < N; n++)
             {
@@ -79,7 +79,31 @@
                 }
             }
         }
-   }
+
+        [Benchmark(OperationsPerInvoke = N)]
+        public void HandlerEach()
+        {
+            for (var n = 0; n < N; n++)
+            {
+                foreach (var handler in handlers)
+                {
+                    handler.Process(null, null);
+                }
+            }
+        }
+
+        [Benchmark(OperationsPerInvoke = N)]
+        public void ActionEach()
+        {
+            for (var n = 0; n < N; n++)
+            {
+                foreach (var action in actions)
+                {
+                    action(null, null);
+                }
+            }
+        }
+    }
 
     public interface IHandler
     {
