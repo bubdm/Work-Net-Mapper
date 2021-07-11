@@ -5,7 +5,7 @@
     public interface IMapperFactory
     {
         // TODO context?, to reference other type exists
-        IMapper Create(MapperEntry entry);
+        object Create(MapperEntry entry);
 
         // TODO post process ?
     }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WorkMapper
+namespace WorkMapper.Mappers
 {
-    public sealed class ObjectMapper
+    class ReflectionMapperFactory
     {
     }
 }

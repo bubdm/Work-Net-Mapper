@@ -3,7 +3,7 @@ using WorkMapper.Expressions;
 
 namespace WorkMapper
 {
-    public sealed class ObjectMapperConfig
+    public sealed class MapperConfig
     {
         // (Default)ObjectFactory
         // (Default)ConverterFactory
@@ -14,13 +14,13 @@ namespace WorkMapper
             throw new NotImplementedException();
         }
 
-        public ObjectMapperConfig Default(Action<IDefaultExpression> option)
+        public MapperConfig Default(Action<IDefaultExpression> option)
         {
             // TODO Default
             return this;
         }
 
-        public ObjectMapperConfig MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option)
+        public MapperConfig MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option)
         {
             // TODO Default
             return this;
