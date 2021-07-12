@@ -1,28 +1,28 @@
-﻿namespace WorkMapper.Expressions
-{
-    using System;
+﻿//namespace WorkMapper.Expressions
+//{
+//    using System;
 
-    public interface ITypeDefaultExpression<in TMember>
-    {
-        //--------------------------------------------------------------------------------
-        // Null
-        //--------------------------------------------------------------------------------
+//    public interface ITypeDefaultExpression<in TMember>
+//    {
+//        //--------------------------------------------------------------------------------
+//        // Null
+//        //--------------------------------------------------------------------------------
 
-        ITypeDefaultExpression<TMember> NullIf(TMember value);
+//        ITypeDefaultExpression<TMember> NullIf(TMember value);
 
-        //--------------------------------------------------------------------------------
-        // Constant
-        //--------------------------------------------------------------------------------
+//        //--------------------------------------------------------------------------------
+//        // Constant
+//        //--------------------------------------------------------------------------------
 
-        ITypeDefaultExpression<TMember> Const(TMember value);
+//        ITypeDefaultExpression<TMember> Const(TMember value);
 
-        //--------------------------------------------------------------------------------
-        // Convert
-        //--------------------------------------------------------------------------------
+//        //--------------------------------------------------------------------------------
+//        // Convert
+//        //--------------------------------------------------------------------------------
 
-        ITypeDefaultExpression<TMember> ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
+//        ITypeDefaultExpression<TMember> ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
 
-        ITypeDefaultExpression<TMember> ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
-            where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>;
-    }
-}
+//        ITypeDefaultExpression<TMember> ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
+//            where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>;
+//    }
+//}

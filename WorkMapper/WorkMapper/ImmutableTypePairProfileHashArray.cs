@@ -10,7 +10,7 @@ namespace WorkMapper
     {
         private const int Factor = 3;
 
-        private static readonly Node EmptyNode = new Node(typeof(EmptyKey), typeof(EmptyKey), string.Empty, default);
+        private static readonly Node EmptyNode = new(typeof(EmptyKey), typeof(EmptyKey), string.Empty, default);
 
         private readonly Node[] nodes;
 
