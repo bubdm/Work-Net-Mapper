@@ -1,4 +1,6 @@
-﻿namespace WorkExpression
+﻿using BenchmarkDotNet.Columns;
+
+namespace FuncTypeBenchmark
 {
     using System;
     using System.Linq.Expressions;
@@ -32,10 +34,15 @@
         public BenchmarkConfig()
         {
             AddExporter(MarkdownExporter.Default, MarkdownExporter.GitHub);
+            AddColumn(
+                StatisticColumn.Mean,
+                StatisticColumn.Min,
+                StatisticColumn.Max,
+                StatisticColumn.P90,
+                StatisticColumn.Error,
+                StatisticColumn.StdDev);
             AddDiagnoser(MemoryDiagnoser.Default);
-            AddJob(Job.LongRun);
-            //AddJob(Job.MediumRun);
-            //AddJob(Job.ShortRun);
+            AddJob(Job.MediumRun);
         }
     }
 

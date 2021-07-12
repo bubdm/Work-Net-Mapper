@@ -1,4 +1,4 @@
-﻿namespace WorkCast
+﻿namespace CastCostBehchmark
 {
     using System;
     using System.Runtime.CompilerServices;

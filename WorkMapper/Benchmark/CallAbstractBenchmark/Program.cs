@@ -1,6 +1,7 @@
-﻿namespace WorkCallAbstractBenchmark
+﻿namespace CallAbstractBenchmark
 {
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Columns;
     using BenchmarkDotNet.Configs;
     using BenchmarkDotNet.Diagnosers;
     using BenchmarkDotNet.Exporters;
@@ -20,10 +21,15 @@
         public BenchmarkConfig()
         {
             AddExporter(MarkdownExporter.Default, MarkdownExporter.GitHub);
+            AddColumn(
+                StatisticColumn.Mean,
+                StatisticColumn.Min,
+                StatisticColumn.Max,
+                StatisticColumn.P90,
+                StatisticColumn.Error,
+                StatisticColumn.StdDev);
             AddDiagnoser(MemoryDiagnoser.Default);
-            //AddJob(Job.LongRun);
-            //AddJob(Job.MediumRun);
-            AddJob(Job.ShortRun);
+            AddJob(Job.MediumRun);
         }
     }
 

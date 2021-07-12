@@ -50,7 +50,7 @@
         [GlobalSetup]
         public void Setup()
         {
-            handlers = Enumerable.Range(1, Size).Select(_ => new Handler()).ToArray();
+            handlers = Enumerable.Range(1, Size).Select(_ => (IHandler)new Handler()).ToArray();
             actions = Enumerable.Range(1, Size).Select(_ => (Action<object, object>)((_, _) => { })).ToArray();
         }
 

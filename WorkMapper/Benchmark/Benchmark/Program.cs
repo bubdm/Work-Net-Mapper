@@ -86,17 +86,23 @@
         [Benchmark]
         public SimpleDestination SimpleInstantMapper() => instantActionMapperFactory.Map<SimpleDestination>(simpleSource);
 
-
+        // Near Tiny
         [Benchmark]
         public SimpleDestination SimpleRawMapper() => rawActionMapperFactory.Map<SimpleDestination>(simpleSource);
 
+        //--------------------------------------------------------------------------------
+        // Without lookup
+        //--------------------------------------------------------------------------------
+
+        // Slow (object based/boxed & delegate getter/setter)
         [Benchmark]
         public SimpleDestination SimpleInstantMapperWoLookup() => instantSimpleMapper.Map(simpleSource);
 
-
+        // Fast (No loop, No boxed)
         [Benchmark]
         public SimpleDestination SimpleRawMapperWoLookup() => rawSimpleMapper.Map(simpleSource);
 
+        // Max
         [Benchmark]
         public SimpleDestination SimpleHand()
         {

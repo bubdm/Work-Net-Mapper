@@ -1,7 +1,6 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 
-namespace WorkExampleExpression
+namespace ExampleExpression
 {
     class Program
     {

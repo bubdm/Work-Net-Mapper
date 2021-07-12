@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 
-namespace WorkExpression
+namespace FuncTypeBenchmark
 {
     public static class ExpressionTest
     {
