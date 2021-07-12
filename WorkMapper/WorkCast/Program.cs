@@ -1,32 +1,156 @@
-﻿using System;
-
-namespace WorkCast
+﻿namespace WorkCast
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var ret1t = TypedConvert(ClassToClass, "");
-            var ret2t = TypedConvert(ClassToStruct, "");
-            var ret3t = TypedConvert(StructToStruct, 0);
-            var ret4t = TypedConvert(StructToClass, 0);
+    using System;
+    using System.Runtime.CompilerServices;
 
-            var ret1 = Convert(x => ClassToClass((string)x), "");
-            var ret2 = Convert(x => ClassToStruct((string)x), "");
-            var ret3 = Convert(x => StructToStruct((int)x), 0);
-            var ret4 = Convert(x => StructToClass((int)x), 0);
+    using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Configs;
+    using BenchmarkDotNet.Diagnosers;
+    using BenchmarkDotNet.Exporters;
+    using BenchmarkDotNet.Jobs;
+    using BenchmarkDotNet.Running;
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            BenchmarkRunner.Run<Benchmark>();
+        }
+    }
+
+    public class BenchmarkConfig : ManualConfig
+    {
+        public BenchmarkConfig()
+        {
+            AddExporter(MarkdownExporter.Default, MarkdownExporter.GitHub);
+            AddDiagnoser(MemoryDiagnoser.Default);
+            AddJob(Job.MediumRun);
+        }
+    }
+
+
+    [Config(typeof(BenchmarkConfig))]
+    public class Benchmark
+    {
+        private const int N = 1000;
+
+        private readonly Func<string, string> tc2c = Converter.ClassToClass;
+        private readonly Func<string, int> tc2s = Converter.ClassToStruct;
+        private readonly Func<int, int> ts2s = Converter.StructToStruct;
+        private readonly Func<int, string> ts2c = Converter.StructToClass;
+
+        private readonly Func<object, object> oc2c = x => Converter.ClassToClass((string)x);
+        private readonly Func<object, object> oc2s = x => Converter.ClassToStruct((string)x);
+        private readonly Func<object, object> os2s = x => Converter.StructToStruct((int)x);
+        private readonly Func<object, object> os2c = x => Converter.StructToClass((int)x);
+
+        [Benchmark(OperationsPerInvoke = N)]
+        public string TypedClassToClass()
+        {
+            var ret = default(string);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.TypedConvert(tc2c, string.Empty);
+            }
+            return ret;
         }
 
-        private static TD TypedConvert<TS, TD>(Func<TS, TD> converter, TS source) => converter(source);
+        [Benchmark(OperationsPerInvoke = N)]
+        public int TypedClassToStruct()
+        {
+            var ret = default(int);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.TypedConvert(tc2s, string.Empty);
+            }
+            return ret;
+        }
 
-        private static object Convert(Func<object, object> converter, object source) => converter(source);
+        [Benchmark(OperationsPerInvoke = N)]
+        public int TypedStructToStruct()
+        {
+            var ret = default(int);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.TypedConvert(ts2s, 0);
+            }
+            return ret;
+        }
 
-        private static string ClassToClass(string s) => s;
+        [Benchmark(OperationsPerInvoke = N)]
+        public string TypedStructToClass()
+        {
+            var ret = default(string);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.TypedConvert(ts2c, 0);
+            }
+            return ret;
+        }
 
-        private static int ClassToStruct(string s) => s.Length;
+        [Benchmark(OperationsPerInvoke = N)]
+        public object ObjectClassToClass()
+        {
+            var ret = default(object);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.Convert(oc2c, string.Empty);
+            }
+            return ret;
+        }
 
-        private static int StructToStruct(int i) => i;
+        [Benchmark(OperationsPerInvoke = N)]
+        public object ObjectClassToStruct()
+        {
+            var ret = default(object);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.Convert(oc2s, string.Empty);
+            }
+            return ret;
+        }
 
-        private static string StructToClass(int i) => i.ToString();
+        [Benchmark(OperationsPerInvoke = N)]
+        public object ObjectStructToStruct()
+        {
+            var ret = default(object);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.Convert(os2s, 0);
+            }
+            return ret;
+        }
+
+        [Benchmark(OperationsPerInvoke = N)]
+        public object ObjectStructToClass()
+        {
+            var ret = default(object);
+            for (var i = 0; i < N; i++)
+            {
+                ret = Converter.Convert(os2c, 0);
+            }
+            return ret;
+        }
+    }
+
+    public static class Converter
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TD TypedConvert<TS, TD>(Func<TS, TD> converter, TS source) => converter(source);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static object Convert(Func<object, object> converter, object source) => converter(source);
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static string ClassToClass(string s) => string.Empty;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static int ClassToStruct(string s) => 0;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static int StructToStruct(int i) => 0;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static string StructToClass(int i) => string.Empty;
     }
 }
