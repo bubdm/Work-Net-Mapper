@@ -4,6 +4,15 @@
 
     public sealed class Mapper
     {
+        private readonly TypePairHashArray mapperCache = new();
+
+        private readonly TypePairHashArray mapperWithContextCache = new();
+
+        private readonly TypePairProfileHashArray profileMapperCache = new();
+
+        private readonly TypePairProfileHashArray profileMapperWithContextCache = new();
+
+
         //--------------------------------------------------------------------------------
         // Get
         //--------------------------------------------------------------------------------

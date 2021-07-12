@@ -1,12 +1,12 @@
-﻿namespace WorkMapper.Mappers
-{
-    using WorkMapper.Metadata;
+﻿//namespace WorkMapper.Mappers
+//{
+//    using WorkMapper.Metadata;
 
-    public interface IMapperFactory
-    {
-        // TODO context?, to reference other type exists
-        object Create(MapperEntry entry);
+//    public interface IMapperFactory
+//    {
+//        // TODO context?, to reference other type exists
+//        object Create(MapperEntry entry);
 
-        // TODO post process ?
-    }
-}
+//        // TODO post process ?
+//    }
+//}
