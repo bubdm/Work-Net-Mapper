@@ -1,21 +1,21 @@
-namespace WorkMapper
+using WorkMapper.Mappers;
+
+namespace WorkMapper.Collections
 {
     using System;
-    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Runtime.CompilerServices;
 
-    [DebuggerDisplay("{" + nameof(Diagnostics) + "}")]
-    internal sealed class TypePairHashArray
+    internal sealed class ContextMapperHashArray
     {
-        private const int InitialSize = 256;
-
         private const int Factor = 3;
 
-        private static readonly Node EmptyNode = new(typeof(EmptyKey), typeof(EmptyKey), default!);
+        private static readonly Node EmptyNode = new(typeof(EmptyKey), typeof(EmptyKey), typeof(object), default!);
 
         private readonly object sync = new();
+
+        private readonly int initialSize;
 
         private Node[] nodes;
 
@@ -27,9 +27,10 @@ namespace WorkMapper
         // Constructor
         //--------------------------------------------------------------------------------
 
-        public TypePairHashArray()
+        public ContextMapperHashArray(int initialSize)
         {
-            nodes = CreateInitialTable();
+            this.initialSize = initialSize;
+            nodes = CreateInitialTable(initialSize);
         }
 
         //--------------------------------------------------------------------------------
@@ -37,11 +38,11 @@ namespace WorkMapper
         //--------------------------------------------------------------------------------
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int CalculateHash(Type sourceType, Type targetType)
+        private static int CalculateHash(Type sourceType, Type targetType, Type contextType)
         {
             unchecked
             {
-                return sourceType.GetHashCode() ^ (targetType.GetHashCode() * 397);
+                return sourceType.GetHashCode() ^ (targetType.GetHashCode() * 397) ^ contextType.GetHashCode();
             }
         }
 
@@ -86,9 +87,9 @@ namespace WorkMapper
             return (int)(size + 1);
         }
 
-        private static Node[] CreateInitialTable()
+        private static Node[] CreateInitialTable(int size)
         {
-            var newNodes = new Node[InitialSize];
+            var newNodes = new Node[size];
 
             for (var i = 0; i < newNodes.Length; i++)
             {
@@ -136,7 +137,7 @@ namespace WorkMapper
                     var next = node.Next;
                     node.Next = null;
 
-                    UpdateLink(ref nodes[CalculateHash(node.SourceType, node.TargetType) & (nodes.Length - 1)], node);
+                    UpdateLink(ref nodes[CalculateHash(node.SourceType, node.TargetType, node.ContextType) & (nodes.Length - 1)], node);
 
                     node = next;
                 }
@@ -146,7 +147,7 @@ namespace WorkMapper
 
         private void AddNode(Node node)
         {
-            var requestSize = Math.Max(InitialSize, (count + 1) * Factor);
+            var requestSize = Math.Max(initialSize, (count + 1) * Factor);
             var size = CalculateSize(requestSize);
             if (size > nodes.Length)
             {
@@ -158,7 +159,7 @@ namespace WorkMapper
 
                 RelocateNodes(newNodes, nodes);
 
-                UpdateLink(ref newNodes[CalculateHash(node.SourceType, node.TargetType) & (newNodes.Length - 1)], node);
+                UpdateLink(ref newNodes[CalculateHash(node.SourceType, node.TargetType, node.ContextType) & (newNodes.Length - 1)], node);
 
                 Interlocked.MemoryBarrier();
 
@@ -170,9 +171,9 @@ namespace WorkMapper
             {
                 Interlocked.MemoryBarrier();
 
-                UpdateLink(ref nodes[CalculateHash(node.SourceType, node.TargetType) & (nodes.Length - 1)], node);
+                UpdateLink(ref nodes[CalculateHash(node.SourceType, node.TargetType, node.ContextType) & (nodes.Length - 1)], node);
 
-                depth = Math.Max(CalculateDepth(nodes[CalculateHash(node.SourceType, node.TargetType) & (nodes.Length - 1)]), depth);
+                depth = Math.Max(CalculateDepth(nodes[CalculateHash(node.SourceType, node.TargetType, node.ContextType) & (nodes.Length - 1)]), depth);
                 count++;
             }
         }
@@ -181,22 +182,11 @@ namespace WorkMapper
         // Public
         //--------------------------------------------------------------------------------
 
-        public DiagnosticsInfo Diagnostics
-        {
-            get
-            {
-                lock (sync)
-                {
-                    return new DiagnosticsInfo(nodes.Length, depth, count);
-                }
-            }
-        }
-
         public void Clear()
         {
             lock (sync)
             {
-                var newNodes = CreateInitialTable();
+                var newNodes = CreateInitialTable(initialSize);
 
                 Interlocked.MemoryBarrier();
 
@@ -207,10 +197,10 @@ namespace WorkMapper
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(Type sourceType, Type targetType, [MaybeNullWhen(false)] out object? item)
+        public bool TryGetValue(Type sourceType, Type targetType, Type contextType, [MaybeNullWhen(false)] out ObjectMapperInfo? item)
         {
             var temp = nodes;
-            var node = temp[CalculateHash(sourceType, targetType) & (temp.Length - 1)];
+            var node = temp[CalculateHash(sourceType, targetType, contextType) & (temp.Length - 1)];
             do
             {
                 if ((node.SourceType == sourceType) && (node.TargetType == targetType))
@@ -226,12 +216,12 @@ namespace WorkMapper
             return false;
         }
 
-        public object AddIfNotExist(Type sourceType, Type targetType, Func<Type, Type, object> valueFactory)
+        public ObjectMapperInfo AddIfNotExist(Type sourceType, Type targetType, Type contextType, Func<Type, Type, ObjectMapperInfo> valueFactory)
         {
             lock (sync)
             {
                 // Double checked locking
-                if (TryGetValue(sourceType, targetType, out var currentValue))
+                if (TryGetValue(sourceType, targetType, contextType, out var currentValue))
                 {
                     return currentValue!;
                 }
@@ -239,12 +229,12 @@ namespace WorkMapper
                 var value = valueFactory(sourceType, targetType);
 
                 // Check if added by recursive
-                if (TryGetValue(sourceType, targetType, out currentValue))
+                if (TryGetValue(sourceType, targetType, contextType, out currentValue))
                 {
                     return currentValue!;
                 }
 
-                AddNode(new Node(sourceType, targetType, value));
+                AddNode(new Node(sourceType, targetType, contextType, value));
 
                 return value;
             }
@@ -266,38 +256,19 @@ namespace WorkMapper
 
             public readonly Type TargetType;
 
-            public readonly object Item;
+            public readonly Type ContextType;
+
+            public readonly ObjectMapperInfo Item;
 
             public Node? Next;
 
-            public Node(Type sourceType, Type targetType, object item)
+            public Node(Type sourceType, Type targetType, Type contextType, ObjectMapperInfo item)
             {
                 SourceType = sourceType;
                 TargetType = targetType;
+                ContextType = contextType;
                 Item = item;
             }
-        }
-
-        //--------------------------------------------------------------------------------
-        // Diagnostics
-        //--------------------------------------------------------------------------------
-
-        public sealed class DiagnosticsInfo
-        {
-            public int Width { get; }
-
-            public int Depth { get; }
-
-            public int Count { get; }
-
-            public DiagnosticsInfo(int width, int depth, int count)
-            {
-                Width = width;
-                Depth = depth;
-                Count = count;
-            }
-
-            public override string ToString() => $"Count={Count}, Width={Width}, Depth={Depth}";
         }
     }
 }

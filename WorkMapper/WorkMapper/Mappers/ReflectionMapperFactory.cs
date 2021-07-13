@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WorkMapper.Mappers
 {
-    class ReflectionMapperFactory
+    internal class ReflectionMapperFactory
     {
     }
 }

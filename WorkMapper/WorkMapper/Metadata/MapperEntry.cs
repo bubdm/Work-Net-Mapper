@@ -1,10 +1,10 @@
-﻿//namespace WorkMapper.Metadata
-//{
+﻿namespace WorkMapper.Metadata
+{
 //    using System;
 //    using System.Collections.Generic;
 
-//    public class MapperEntry
-//    {
+    public class MapperEntry
+    {
 //        private Dictionary<Tuple<Type, Type>, object> factories;
 
 //        private Dictionary<Tuple<Type, Type>, List<object>> beforeMaps;
@@ -81,5 +81,5 @@
 //            values = null;
 //            return false;
 //        }
-//    }
-//}
+    }
+}
