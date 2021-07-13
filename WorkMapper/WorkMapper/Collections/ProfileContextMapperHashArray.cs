@@ -197,7 +197,7 @@ namespace WorkMapper.Collections
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(string profile, Type sourceType, Type targetType, Type contextType, [MaybeNullWhen(false)] out ObjectMapperInfo? item)
+        public bool TryGetValue(string profile, Type sourceType, Type targetType, Type contextType, [NotNullWhen(true)] out ContextObjectMapperInfo? item)
         {
             var temp = nodes;
             var node = temp[CalculateHash(profile, sourceType, targetType, contextType) & (temp.Length - 1)];
@@ -216,7 +216,7 @@ namespace WorkMapper.Collections
             return false;
         }
 
-        public ObjectMapperInfo AddIfNotExist(string profile, Type sourceType, Type targetType, Type contextType, Func<string, Type, Type, Type, ObjectMapperInfo> valueFactory)
+        public ContextObjectMapperInfo AddIfNotExist(string profile, Type sourceType, Type targetType, Type contextType, Func<string, Type, Type, Type, ContextObjectMapperInfo> valueFactory)
         {
             lock (sync)
             {
@@ -260,11 +260,11 @@ namespace WorkMapper.Collections
 
             public readonly Type ContextType;
 
-            public readonly ObjectMapperInfo Item;
+            public readonly ContextObjectMapperInfo Item;
 
             public Node? Next;
 
-            public Node(string profile, Type sourceType, Type targetType, Type contextType, ObjectMapperInfo item)
+            public Node(string profile, Type sourceType, Type targetType, Type contextType, ContextObjectMapperInfo item)
             {
                 Profile = profile;
                 SourceType = sourceType;

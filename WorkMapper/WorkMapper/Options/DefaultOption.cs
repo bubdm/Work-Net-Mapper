@@ -1,10 +1,10 @@
-﻿//namespace WorkMapper.Metadata
-//{
+﻿namespace WorkMapper.Options
+{
 //    using System;
 //    using System.Collections.Generic;
 
-//    public class DefaultEntry
-//    {
+    public class DefaultOption
+    {
 //        private Dictionary<Type, object> nullIfValues;
 
 //        private Dictionary<Type, object> constValues;
@@ -92,5 +92,5 @@
 //            value = null;
 //            return false;
 //        }
-//    }
-//}
+    }
+}

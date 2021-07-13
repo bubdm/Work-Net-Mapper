@@ -197,7 +197,7 @@ namespace WorkMapper.Collections
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(string profile, Type sourceType, Type targetType, [MaybeNullWhen(false)] out ObjectMapperInfo? item)
+        public bool TryGetValue(string profile, Type sourceType, Type targetType, [NotNullWhen(true)] out ObjectMapperInfo? item)
         {
             var temp = nodes;
             var node = temp[CalculateHash(profile, sourceType, targetType) & (temp.Length - 1)];

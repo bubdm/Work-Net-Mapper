@@ -1,4 +1,4 @@
-﻿//namespace WorkMapper.Metadata
+﻿//namespace WorkMapper.Options
 //{
 //    using System.Linq.Expressions;
 

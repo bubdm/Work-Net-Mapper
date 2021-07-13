@@ -1,11 +1,14 @@
-﻿namespace WorkMapper.Mappers
+﻿using WorkMapper.Options;
+
+namespace WorkMapper.Mappers
 {
-    using WorkMapper.Metadata;
 
     internal interface IMapperFactory
     {
         // TODO context?, to reference other type exists
-        ObjectMapperInfo Create(MapperEntry entry);
+        ObjectMapperInfo CreateInfo(DefaultOption defaultEntry, MapperOption entry);
+
+        ContextObjectMapperInfo CreateContextInfo(DefaultOption defaultEntry, MapperOption entry);
 
         // TODO post process ?
     }

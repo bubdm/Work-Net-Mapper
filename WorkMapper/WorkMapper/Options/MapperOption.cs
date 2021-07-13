@@ -1,10 +1,21 @@
-﻿namespace WorkMapper.Metadata
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace WorkMapper.Options
 {
 //    using System;
 //    using System.Collections.Generic;
 
-    public class MapperEntry
+    public class MapperOption
     {
+        [AllowNull]
+        public Type SourceType { get; set; }
+
+        [AllowNull]
+        public Type DestinationType { get; set; }
+
+        public Type? ContextType { get; set; }
+
 //        private Dictionary<Tuple<Type, Type>, object> factories;
 
 //        private Dictionary<Tuple<Type, Type>, List<object>> beforeMaps;

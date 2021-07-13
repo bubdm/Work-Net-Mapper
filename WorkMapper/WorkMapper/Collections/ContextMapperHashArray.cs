@@ -197,7 +197,7 @@ namespace WorkMapper.Collections
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(Type sourceType, Type targetType, Type contextType, [MaybeNullWhen(false)] out ObjectMapperInfo? item)
+        public bool TryGetValue(Type sourceType, Type targetType, Type contextType, [NotNullWhen(true)] out ContextObjectMapperInfo? item)
         {
             var temp = nodes;
             var node = temp[CalculateHash(sourceType, targetType, contextType) & (temp.Length - 1)];
@@ -216,7 +216,7 @@ namespace WorkMapper.Collections
             return false;
         }
 
-        public ObjectMapperInfo AddIfNotExist(Type sourceType, Type targetType, Type contextType, Func<Type, Type, ObjectMapperInfo> valueFactory)
+        public ContextObjectMapperInfo AddIfNotExist(Type sourceType, Type targetType, Type contextType, Func<Type, Type, Type, ContextObjectMapperInfo> valueFactory)
         {
             lock (sync)
             {
@@ -226,7 +226,7 @@ namespace WorkMapper.Collections
                     return currentValue!;
                 }
 
-                var value = valueFactory(sourceType, targetType);
+                var value = valueFactory(sourceType, targetType, contextType);
 
                 // Check if added by recursive
                 if (TryGetValue(sourceType, targetType, contextType, out currentValue))
@@ -258,11 +258,11 @@ namespace WorkMapper.Collections
 
             public readonly Type ContextType;
 
-            public readonly ObjectMapperInfo Item;
+            public readonly ContextObjectMapperInfo Item;
 
             public Node? Next;
 
-            public Node(Type sourceType, Type targetType, Type contextType, ObjectMapperInfo item)
+            public Node(Type sourceType, Type targetType, Type contextType, ContextObjectMapperInfo item)
             {
                 SourceType = sourceType;
                 TargetType = targetType;
