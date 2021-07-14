@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using WorkMapper.Components;
     using WorkMapper.Expressions;
 
     public sealed class DefaultOption

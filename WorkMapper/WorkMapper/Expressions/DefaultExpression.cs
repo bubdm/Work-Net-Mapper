@@ -2,6 +2,7 @@
 {
     using System;
 
+    using WorkMapper.Components;
     using WorkMapper.Options;
 
     internal class DefaultExpression : IDefaultExpression

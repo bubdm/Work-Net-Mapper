@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WorkMapper.Expressions
+namespace WorkMapper.Components
 {
     public interface IFactoryResolver
     {

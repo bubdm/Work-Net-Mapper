@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using Smart.Converter;
     using Smart.Reflection;
 
+    using WorkMapper.Components;
     using WorkMapper.Expressions;
     using WorkMapper.Handlers;
     using WorkMapper.Mappers;
@@ -27,6 +29,7 @@
         public MapperConfig()
         {
             SafeMode(false);
+            DefaultOption.SetConverterResolver(new DefaultConverterResolver(ObjectConverter.Default));
         }
 
         public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()
@@ -68,10 +71,12 @@
             if (value)
             {
                 MapperFactory = ReflectionMapperFactory.Instance;
+                DefaultOption.SetFactoryResolver(new DefaultFactoryResolver(ReflectionDelegateFactory.Default));
             }
             else
             {
                 MapperFactory = ReflectionHelper.IsCodegenAllowed ? EmitMapperFactory.Instance : ReflectionMapperFactory.Instance;
+                DefaultOption.SetFactoryResolver(new DefaultFactoryResolver(DelegateFactory.Default));
             }
             return this;
         }

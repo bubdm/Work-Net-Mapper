@@ -2,6 +2,8 @@
 {
     using System;
 
+    using WorkMapper.Components;
+
     public interface IDefaultExpression
     {
         //--------------------------------------------------------------------------------
