@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ExampleExpression
 {
@@ -6,23 +9,43 @@ namespace ExampleExpression
     {
         static void Main(string[] args)
         {
-            var config = new MapperConfiguration(c =>
+            var a = 0;
+            MapFrom<Data, int>(x => x.Value);
+            MapFrom<Data, int>(x => 0);
+            MapFrom<Data, int>(x => a);
+            MapFrom<Data, int>(x => x.Value.ToString().Length);
+        }
+
+        public static void MapFrom<TSource, TMember>(Expression<Func<TSource, TMember>> expression)
+        {
+            Debug.WriteLine("--");
+            Debug.WriteLine(expression.NodeType);
+            Debug.WriteLine(expression.Body.GetType());
+
+            if (expression.Body is MemberExpression memberExpression)
             {
-                c.CreateMap<SimpleSource, SimpleDestination>()
-                    .ForMember(d => d.Value1, opt => opt.MapFrom(s => s.Value1));
-            });
-            var mapper = config.CreateMapper();        }
+                var type = typeof(TSource);
+                var pi = memberExpression.Member as PropertyInfo;
+                if ((pi == null) || ((type != pi.ReflectedType) && !type.IsSubclassOf(pi.ReflectedType)))
+                {
+                    return;
+                }
+
+                Debug.WriteLine(pi.Name);
+                return;
+            }
+
+            if (expression.Body is ConstantExpression constantExpression)
+            {
+                Debug.WriteLine(constantExpression.Value);
+                return;
+            }
+        }
+
     }
 
-    public class SimpleSource
+    public class Data
     {
-        public int Value1 { get; set; }
-        public string Value2 { get; set; }
-    }
-
-    public class SimpleDestination
-    {
-        public int Value1 { get; set; }
-        public string Value2 { get; set; }
+        public int Value { get; set; }
     }
 }
