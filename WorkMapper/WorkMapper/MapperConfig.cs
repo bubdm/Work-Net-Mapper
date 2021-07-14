@@ -1,7 +1,4 @@
-﻿//using System;
-//using WorkMapper.Expressions;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using Smart.Reflection;
@@ -29,7 +26,6 @@ namespace WorkMapper
         internal IEnumerable<MapperEntry> MapperOptions => new List<MapperEntry>();
 
 
-//        // (Default)ObjectFactory
 //        // (Default)ConverterFactory
 //        // (ValueHolderSupport!) Fallback?, ILOnly?, Expression自動？
 

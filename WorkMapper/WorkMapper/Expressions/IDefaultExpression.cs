@@ -8,27 +8,15 @@
         // Factory
         //--------------------------------------------------------------------------------
 
+        IDefaultExpression FactoryUsing(IFactoryResolver resolver);
+
         IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory);
-
-        IDefaultExpression FactoryUsing(IObjectFactory factory);
-
-        //--------------------------------------------------------------------------------
-        // Null
-        //--------------------------------------------------------------------------------
-
-        IDefaultExpression NullIf<TMember>(TMember value);
-
-        IDefaultExpression NullIgnore(Type type);
-
-        //--------------------------------------------------------------------------------
-        // Constant
-        //--------------------------------------------------------------------------------
-
-        IDefaultExpression Const<TMember>(TMember value);
 
         //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
+
+        IDefaultExpression ConvertUsing(IConverterResolver resolver);
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter);
 
@@ -37,5 +25,19 @@
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter);
+
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
+
+        IDefaultExpression Const<TMember>(TMember value);
+
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
+
+        IDefaultExpression NullIf<TMember>(TMember value);
+
+        IDefaultExpression NullIgnore(Type type);
     }
 }
