@@ -1,11 +1,11 @@
-﻿//namespace WorkMapper.Expressions
-//{
+﻿namespace WorkMapper.Expressions
+{
 //    using System;
 //    using System.Linq.Expressions;
 //    using System.Reflection;
 
-//    public interface IMappingExpression<TSource, TDestination>
-//    {
+    public interface IMappingExpression<TSource, TDestination>
+    {
 //        //--------------------------------------------------------------------------------
 //        //  Factory
 //        //--------------------------------------------------------------------------------
@@ -83,5 +83,10 @@
 //        IMappingExpression<TSource, TDestination> Default(Action<IDefaultExpression> option);
 
 //        IMappingExpression<TSource, TDestination> MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option);
-//    }
-//}
+    }
+
+    public interface IMappingExpression<TSource, TDestination, TContext>
+    {
+        // TODO
+    }
+}

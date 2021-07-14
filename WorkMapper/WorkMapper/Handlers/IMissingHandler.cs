@@ -6,6 +6,6 @@ namespace WorkMapper.Handlers
 {
     public interface IMissingHandler
     {
-        MapperOption? Handle(Type sourceType, Type destinationType, Type? contextType);
+        MappingOption? Handle(Type sourceType, Type destinationType, Type? contextType);
     }
 }

@@ -10,6 +10,7 @@
     using WorkMapper.Mappers;
     using WorkMapper.Options;
 
+    // TODO (ValueHolderSupport!) ILOnly?, Expression自動？
     public sealed class Mapper
     {
         private readonly MapperHashArray mapperCache = new(128);
@@ -21,7 +22,7 @@
 
         private readonly DefaultOption defaultOption;
 
-        private readonly Dictionary<(string?, Type, Type, Type?), MapperOption> mapperOptions;
+        private readonly Dictionary<(string?, Type, Type, Type?), MappingOption> mapperOptions;
 
         private readonly IMissingHandler[] handlers;
 
@@ -33,7 +34,7 @@
             mapperOptions = config.MapperOptions.ToDictionary(
                 x => (x.Profile, x.Option.SourceType, x.Option.DestinationType, x.Option.ContextType),
                 x => x.Option);
-            handlers = config.MissingHandlers;
+            handlers = config.MissingHandlers.ToArray();
             factory = config.MapperFactory;
         }
 

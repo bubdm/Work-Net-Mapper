@@ -1,38 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Smart.Reflection;
-
-using WorkMapper.Expressions;
-using WorkMapper.Handlers;
-using WorkMapper.Mappers;
-using WorkMapper.Options;
-
-namespace WorkMapper
+﻿namespace WorkMapper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+
+    using Smart.Reflection;
+
+    using WorkMapper.Expressions;
+    using WorkMapper.Handlers;
+    using WorkMapper.Mappers;
+    using WorkMapper.Options;
+
     public sealed class MapperConfig
     {
+        private readonly List<MapperEntry> entries = new();
+
         internal DefaultOption DefaultOption { get; } = new();
 
-        // TODO
+        public List<IMissingHandler> MissingHandlers { get; } = new();
 
-        // TODO CreateにしてDefaultをくわせる？
-        internal IMapperFactory MapperFactory => ReflectionHelper.IsCodegenAllowed
-            ? EmitMapperFactory.Instance
-            : ReflectionMapperFactory.Instance;
+        [AllowNull]
+        internal IMapperFactory MapperFactory { get; private set; }
 
-        internal IMissingHandler[] MissingHandlers => Array.Empty<IMissingHandler>();
+        internal IEnumerable<MapperEntry> MapperOptions => entries;
 
-        internal IEnumerable<MapperEntry> MapperOptions => new List<MapperEntry>();
+        public MapperConfig()
+        {
+            SafeMode(false);
+        }
 
+        public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()
+        {
+            var option = new MappingOption(typeof(TSource), typeof(TDestination), null);
+            entries.Add(new MapperEntry(null, option));
+            return new MappingExpression<TSource, TDestination>(option);
+        }
 
-//        // (Default)ConverterFactory
-//        // (ValueHolderSupport!) Fallback?, ILOnly?, Expression自動？
+        public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>(string profile)
+        {
+            var option = new MappingOption(typeof(TSource), typeof(TDestination), null);
+            entries.Add(new MapperEntry(profile, option));
+            return new MappingExpression<TSource, TDestination>(option);
+        }
 
-//        public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()
-//        {
-//            throw new NotImplementedException();
-//        }
+        public IMappingExpression<TSource, TDestination, TContext> CreateMap<TSource, TDestination, TContext>()
+        {
+            var option = new MappingOption(typeof(TSource), typeof(TDestination), typeof(TContext));
+            entries.Add(new MapperEntry(null, option));
+            return new MappingExpression<TSource, TDestination, TContext>(option);
+        }
+
+        public IMappingExpression<TSource, TDestination, TContext> CreateMap<TSource, TDestination, TContext>(string profile)
+        {
+            var option = new MappingOption(typeof(TSource), typeof(TDestination), typeof(TContext));
+            entries.Add(new MapperEntry(profile, option));
+            return new MappingExpression<TSource, TDestination, TContext>(option);
+        }
 
         public MapperConfig Default(Action<IDefaultExpression> option)
         {
@@ -40,10 +63,17 @@ namespace WorkMapper
             return this;
         }
 
-//        public MapperConfig MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option)
-//        {
-//            // TODO Default
-//            return this;
-//        }
+        internal MapperConfig SafeMode(bool value)
+        {
+            if (value)
+            {
+                MapperFactory = ReflectionMapperFactory.Instance;
+            }
+            else
+            {
+                MapperFactory = ReflectionHelper.IsCodegenAllowed ? EmitMapperFactory.Instance : ReflectionMapperFactory.Instance;
+            }
+            return this;
+        }
     }
 }

@@ -6,9 +6,9 @@ namespace WorkMapper
     {
         public string? Profile { get; }
 
-        public MapperOption Option { get; }
+        public MappingOption Option { get; }
 
-        public MapperEntry(string? profile, MapperOption option)
+        public MapperEntry(string? profile, MappingOption option)
         {
             Profile = profile;
             Option = option;

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-
-namespace WorkMapper.Options
+﻿namespace WorkMapper.Options
 {
-//    using System;
+    using System;
 //    using System.Collections.Generic;
 
-    public class MapperOption
+    public class MappingOption
     {
-        [AllowNull]
-        public Type SourceType { get; set; }
+        public Type SourceType { get; }
 
-        [AllowNull]
-        public Type DestinationType { get; set; }
+        public Type DestinationType { get; }
 
         public Type? ContextType { get; set; }
 
@@ -21,6 +16,13 @@ namespace WorkMapper.Options
 //        private Dictionary<Tuple<Type, Type>, List<object>> beforeMaps;
 
 //        private Dictionary<Tuple<Type, Type>, List<object>> afterMaps;
+
+        public MappingOption(Type sourceType, Type destinationType, Type? contextType)
+        {
+            SourceType = sourceType;
+            DestinationType = destinationType;
+            ContextType = contextType;
+        }
 
 //        //--------------------------------------------------------------------------------
 //        //  Factory

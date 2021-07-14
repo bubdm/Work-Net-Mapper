@@ -1,15 +1,19 @@
-﻿using System;
-
-using WorkMapper.Mappers;
-using WorkMapper.Options;
-
-namespace WorkMapper.Handlers
+﻿namespace WorkMapper.Handlers
 {
+    using System;
+
+    using WorkMapper.Options;
+
     public sealed class DefaultMapperHandler : IMissingHandler
     {
-        public MapperOption? Handle(Type sourceType, Type destinationType, Type? contextType)
+        public MappingOption? Handle(Type sourceType, Type destinationType, Type? contextType)
         {
-            throw new NotImplementedException();
+            if (contextType is not null)
+            {
+                return null;
+            }
+
+            return new MappingOption(sourceType, destinationType, null);
         }
     }
 }
