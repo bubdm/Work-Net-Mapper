@@ -42,7 +42,7 @@
                 else
                 {
                     var converter = ObjectConverter.Default.CreateConverter(sourcePi.PropertyType, destinationPi.PropertyType);
-                    if (converter != null)
+                    if (converter is not null)
                     {
                         actions.Add((s, d) => setter(d, converter(getter(s))));
                     }

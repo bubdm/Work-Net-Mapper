@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 using Smart.Reflection;
 
+using WorkMapper.Expressions;
 using WorkMapper.Handlers;
 using WorkMapper.Mappers;
 using WorkMapper.Options;
@@ -14,6 +15,8 @@ namespace WorkMapper
 {
     public sealed class MapperConfig
     {
+        internal DefaultOption DefaultOption { get; } = new();
+
         // TODO
 
         // TODO CreateにしてDefaultをくわせる？
@@ -22,8 +25,6 @@ namespace WorkMapper
             : ReflectionMapperFactory.Instance;
 
         internal IMissingHandler[] MissingHandlers => Array.Empty<IMissingHandler>();
-
-        internal DefaultOption DefaultOption => new DefaultOption();
 
         internal IEnumerable<MapperEntry> MapperOptions => new List<MapperEntry>();
 
@@ -37,11 +38,11 @@ namespace WorkMapper
 //            throw new NotImplementedException();
 //        }
 
-//        public MapperConfig Default(Action<IDefaultExpression> option)
-//        {
-//            // TODO Default
-//            return this;
-//        }
+        public MapperConfig Default(Action<IDefaultExpression> option)
+        {
+            option(new DefaultExpression(DefaultOption));
+            return this;
+        }
 
 //        public MapperConfig MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option)
 //        {

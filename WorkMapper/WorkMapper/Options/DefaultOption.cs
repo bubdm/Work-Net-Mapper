@@ -1,96 +1,153 @@
 ﻿namespace WorkMapper.Options
 {
-//    using System;
-//    using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
-    public class DefaultOption
+    using WorkMapper.Expressions;
+
+    public sealed class DefaultOption
     {
-//        private Dictionary<Type, object> nullIfValues;
+        private Dictionary<Type, object>? factories;
 
-//        private Dictionary<Type, object> constValues;
+        private IObjectFactory? factory;
 
-//        private Dictionary<Tuple<Type, Type>, object> converters;
+        private Dictionary<Type, object?>? nullIfValues;
 
-//        private Dictionary<Tuple<Type, Type>, Type> converterTypes;
+        private HashSet<Type>? nullIgnores;
 
-//        //--------------------------------------------------------------------------------
-//        // Null
-//        //--------------------------------------------------------------------------------
+        private Dictionary<Type, object?>? constValues;
 
-//        public void SetNullIfValue(Type type, object value)
-//        {
-//            nullIfValues ??= new Dictionary<Type, object>();
-//            nullIfValues[type] = value;
-//        }
+        private Dictionary<Tuple<Type, Type>, object>? converters;
 
-//        //--------------------------------------------------------------------------------
-//        // Constant
-//        //--------------------------------------------------------------------------------
+        private Dictionary<Tuple<Type, Type>, Type>? converterTypes;
 
-//        public void SetConstValue(Type type, object value)
-//        {
-//            constValues ??= new Dictionary<Type, object>();
-//            constValues[type] = value;
-//        }
+        //--------------------------------------------------------------------------------
+        // Factory
+        //--------------------------------------------------------------------------------
 
-//        //--------------------------------------------------------------------------------
-//        // Converter
-//        //--------------------------------------------------------------------------------
+        public void SetFactory<TDestination>(Func<TDestination> value)
+        {
+            factories ??= new Dictionary<Type, object>();
+            factories[value.GetType().GetGenericArguments()[0]] = value;
+        }
 
-//        public void SetConverter(Tuple<Type, Type> pair, object value)
-//        {
-//            converters ??= new Dictionary<Tuple<Type, Type>, object>();
-//            converters[pair] = value;
-//        }
+        public void SetFactory(IObjectFactory value)
+        {
+            this.factory = value;
+        }
 
-//        public void SetConverterType(Tuple<Type, Type> pair, Type type)
-//        {
-//            converterTypes ??= new Dictionary<Tuple<Type, Type>, Type>();
-//            converterTypes[pair] = type;
-//        }
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
 
-//        public bool TryGetNullIfValue(Type type, out object value)
-//        {
-//            if ((nullIfValues != null) && nullIfValues.TryGetValue(type, out value))
-//            {
-//                return true;
-//            }
+        public void SetNullIfValue<TMember>(TMember value)
+        {
+            nullIfValues ??= new Dictionary<Type, object?>();
+            nullIfValues[typeof(TMember)] = value;
+        }
 
-//            value = null;
-//            return false;
-//        }
+        public void SetNullIgnore(Type type)
+        {
+            nullIgnores ??= new HashSet<Type>();
+            nullIgnores.Add(type);
+        }
 
-//        public bool TryGetConstValue(Type type, out object value)
-//        {
-//            if ((constValues != null) && constValues.TryGetValue(type, out value))
-//            {
-//                return true;
-//            }
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
 
-//            value = null;
-//            return false;
-//        }
+        public void SetConstValue<TMember>(TMember value)
+        {
+            constValues ??= new Dictionary<Type, object?>();
+            constValues[typeof(TMember)] = value;
+        }
 
-//        public bool TryGetConverter(Tuple<Type, Type> pair, out object value)
-//        {
-//            if ((converters != null) && converters.TryGetValue(pair, out value))
-//            {
-//                return true;
-//            }
+        //--------------------------------------------------------------------------------
+        // Converter
+        //--------------------------------------------------------------------------------
 
-//            value = null;
-//            return false;
-//        }
+        public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter) =>
+            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
 
-//        public bool TryGetConverterType(Tuple<Type, Type> pair, out Type value)
-//        {
-//            if ((converterTypes != null) && converterTypes.TryGetValue(pair, out value))
-//            {
-//                return true;
-//            }
+        public void SetConverter<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TDestinationMember, TContext> converter) =>
+            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
 
-//            value = null;
-//            return false;
-//        }
+        public void SetConverter<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter) =>
+            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
+
+        public void SetConverter<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter) =>
+            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
+
+        private void SetConverter(Tuple<Type, Type> pair, object value)
+        {
+            converters ??= new Dictionary<Tuple<Type, Type>, object>();
+            converters[pair] = value;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Internal
+        //--------------------------------------------------------------------------------
+
+        internal object? GetFactory(Type type)
+        {
+            if ((factories is not null) && factories.TryGetValue(type, out var value))
+            {
+                return value;
+            }
+
+            return null;
+        }
+
+        internal IObjectFactory? GetFactory() => factory;
+
+        internal bool TryGetNullIfValue(Type type, out object? value)
+        {
+            if ((nullIfValues is not null) && nullIfValues.TryGetValue(type, out value))
+            {
+                return true;
+            }
+
+            value = null;
+            return false;
+        }
+
+        internal bool IsNullIgnore(Type type)
+        {
+            return (nullIgnores is not null) && nullIgnores.Contains(type);
+        }
+
+        internal bool TryGetConstValue(Type type, out object? value)
+        {
+            if ((constValues is not null) && constValues.TryGetValue(type, out value))
+            {
+                return true;
+            }
+
+            value = null;
+            return false;
+        }
+
+        internal bool TryGetConverter(Tuple<Type, Type> pair, [NotNullWhen(true)] out object? value)
+        {
+            if ((converters is not null) && converters.TryGetValue(pair, out value))
+            {
+                return true;
+            }
+
+            value = null;
+            return false;
+        }
+
+        internal bool TryGetConverterType(Tuple<Type, Type> pair, [NotNullWhen(true)] out Type? value)
+        {
+            if ((converterTypes is not null) && converterTypes.TryGetValue(pair, out value))
+            {
+                return true;
+            }
+
+            value = null;
+            return false;
+        }
     }
 }

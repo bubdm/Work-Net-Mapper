@@ -1,73 +1,86 @@
-﻿//namespace WorkMapper.Expressions
-//{
-//    using System;
-//    using System.Collections.Generic;
+﻿namespace WorkMapper.Expressions
+{
+    using System;
 
-//    using WorkMapper.Metadata;
+    using WorkMapper.Options;
 
-//    internal class DefaultExpression : IDefaultExpression
-//    {
-//        private readonly DefaultEntry entry;
+    internal class DefaultExpression : IDefaultExpression
+    {
+        private readonly DefaultOption option;
 
-//        public DefaultExpression(DefaultEntry entry)
-//        {
-//            this.entry = entry;
-//        }
+        public DefaultExpression(DefaultOption option)
+        {
+            this.option = option;
+        }
 
-//        //--------------------------------------------------------------------------------
-//        // Null
-//        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        // Factory
+        //--------------------------------------------------------------------------------
 
-//        public IDefaultExpression NullIf<TMember>(TMember value)
-//        {
-//            entry.SetNullIfValue(typeof(TMember), value);
-//            return this;
-//        }
+        public IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory)
+        {
+            option.SetFactory(factory);
+            return this;
+        }
 
-//        public IDefaultExpression NullIf(IDictionary<Type, object> values)
-//        {
-//            foreach (var pair in values)
-//            {
-//                entry.SetNullIfValue(pair.Key, pair.Value);
-//            }
+        public IDefaultExpression FactoryUsing(IObjectFactory factory)
+        {
+            option.SetFactory(factory);
+            return this;
+        }
 
-//            return this;
-//        }
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
 
-//        //--------------------------------------------------------------------------------
-//        // Constant
-//        //--------------------------------------------------------------------------------
+        public IDefaultExpression NullIf<TMember>(TMember value)
+        {
+            option.SetNullIfValue(value);
+            return this;
+        }
 
-//        public IDefaultExpression Const<TMember>(TMember value)
-//        {
-//            entry.SetConstValue(typeof(TMember), value);
-//            return this;
-//        }
+        public IDefaultExpression NullIgnore(Type type)
+        {
+            option.SetNullIgnore(type);
+            return this;
+        }
 
-//        public IDefaultExpression Const(IDictionary<Type, object> values)
-//        {
-//            foreach (var pair in values)
-//            {
-//                entry.SetConstValue(pair.Key, pair.Value);
-//            }
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
 
-//            return this;
-//        }
+        public IDefaultExpression Const<TMember>(TMember value)
+        {
+            option.SetConstValue(value);
+            return this;
+        }
 
-//        //--------------------------------------------------------------------------------
-//        // Converter
-//        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        // Converter
+        //--------------------------------------------------------------------------------
 
-//        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
-//        {
-//            entry.SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
-//            return this;
-//        }
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
 
-//        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>() where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
-//        {
-//            entry.SetConverterType(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), typeof(TValueConverter));
-//            return this;
-//        }
-//    }
-//}
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TDestinationMember, TContext> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
+
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
+
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
+    }
+}

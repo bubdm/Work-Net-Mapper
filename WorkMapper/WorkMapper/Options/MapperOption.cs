@@ -34,7 +34,7 @@ namespace WorkMapper.Options
 
 //        public bool TryGetFactory(Tuple<Type, Type> pair, out object value)
 //        {
-//            if ((factories != null) && factories.TryGetValue(pair, out value))
+//            if ((factories is not null) && factories.TryGetValue(pair, out value))
 //            {
 //                return true;
 //            }
@@ -61,7 +61,7 @@ namespace WorkMapper.Options
 
 //        public bool TryGetBeforeMaps(Tuple<Type, Type> pair, out List<object> values)
 //        {
-//            if ((beforeMaps != null) && beforeMaps.TryGetValue(pair, out values))
+//            if ((beforeMaps is not null) && beforeMaps.TryGetValue(pair, out values))
 //            {
 //                return true;
 //            }
@@ -84,7 +84,7 @@ namespace WorkMapper.Options
 
 //        public bool TryGetAfterMaps(Tuple<Type, Type> pair, out List<object> values)
 //        {
-//            if ((afterMaps != null) && afterMaps.TryGetValue(pair, out values))
+//            if ((afterMaps is not null) && afterMaps.TryGetValue(pair, out values))
 //            {
 //                return true;
 //            }

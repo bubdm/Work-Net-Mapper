@@ -1,33 +1,41 @@
-﻿//namespace WorkMapper.Expressions
-//{
-//    using System;
-//    using System.Collections.Generic;
+﻿namespace WorkMapper.Expressions
+{
+    using System;
 
-//    public interface IDefaultExpression
-//    {
-//        //--------------------------------------------------------------------------------
-//        // Null
-//        //--------------------------------------------------------------------------------
+    public interface IDefaultExpression
+    {
+        //--------------------------------------------------------------------------------
+        // Factory
+        //--------------------------------------------------------------------------------
 
-//        IDefaultExpression NullIf<TMember>(TMember value);
+        IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory);
 
-//        IDefaultExpression NullIf(IDictionary<Type, object> values);
+        IDefaultExpression FactoryUsing(IObjectFactory factory);
 
-//        //--------------------------------------------------------------------------------
-//        // Constant
-//        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
 
-//        IDefaultExpression Const<TMember>(TMember value);
+        IDefaultExpression NullIf<TMember>(TMember value);
 
-//        IDefaultExpression Const(IDictionary<Type, object> values);
+        IDefaultExpression NullIgnore(Type type);
 
-//        //--------------------------------------------------------------------------------
-//        // Convert
-//        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
 
-//        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
+        IDefaultExpression Const<TMember>(TMember value);
 
-//        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
-//            where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>;
-//    }
-//}
+        //--------------------------------------------------------------------------------
+        // Convert
+        //--------------------------------------------------------------------------------
+
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter);
+
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TDestinationMember, TContext> converter);
+
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
+
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter);
+    }
+}

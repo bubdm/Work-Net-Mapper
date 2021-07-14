@@ -26,7 +26,7 @@ namespace ExampleExpression
             {
                 var type = typeof(TSource);
                 var pi = memberExpression.Member as PropertyInfo;
-                if ((pi == null) || ((type != pi.ReflectedType) && !type.IsSubclassOf(pi.ReflectedType)))
+                if ((pi is null) || ((type != pi.ReflectedType) && !type.IsSubclassOf(pi.ReflectedType)))
                 {
                     return;
                 }
