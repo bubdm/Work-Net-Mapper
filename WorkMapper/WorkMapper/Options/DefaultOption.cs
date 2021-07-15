@@ -50,8 +50,15 @@
         public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter) =>
             SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
 
+        public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter) =>
+            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
+
         public void SetConverter<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter) =>
             SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
+
+        public void SetConverter<TSourceMember, TDestinationMember, TValueConverter>()
+            where TValueConverter : IValueConverter<TSourceMember, TDestinationMember> =>
+            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), typeof(TValueConverter));
 
         private void SetConverter(Tuple<Type, Type> pair, object value)
         {

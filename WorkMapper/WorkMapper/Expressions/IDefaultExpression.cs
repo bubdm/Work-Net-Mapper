@@ -1,10 +1,9 @@
-﻿using WorkMapper.Functions;
-
-namespace WorkMapper.Expressions
+﻿namespace WorkMapper.Expressions
 {
     using System;
 
     using WorkMapper.Components;
+    using WorkMapper.Functions;
 
     public interface IDefaultExpression
     {
