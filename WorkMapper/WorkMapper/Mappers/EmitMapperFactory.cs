@@ -10,12 +10,7 @@ namespace WorkMapper.Mappers
     {
         public static EmitMapperFactory Instance { get; } = new();
 
-        public ObjectMapperInfo CreateInfo(DefaultOption defaultEntry, MappingOption entry)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ContextObjectMapperInfo CreateContextInfo(DefaultOption defaultEntry, MappingOption entry)
+        public object CreateInfo(IMapper mapper, DefaultOption defaultEntry, MappingOption entry)
         {
             throw new NotImplementedException();
         }

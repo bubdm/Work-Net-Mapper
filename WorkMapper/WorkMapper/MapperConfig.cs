@@ -46,20 +46,6 @@
             return new MappingExpression<TSource, TDestination>(option);
         }
 
-        public IMappingExpression<TSource, TDestination, TContext> CreateMap<TSource, TDestination, TContext>()
-        {
-            var option = new MappingOption(typeof(TSource), typeof(TDestination), typeof(TContext));
-            entries.Add(new MapperEntry(null, option));
-            return new MappingExpression<TSource, TDestination, TContext>(option);
-        }
-
-        public IMappingExpression<TSource, TDestination, TContext> CreateMap<TSource, TDestination, TContext>(string profile)
-        {
-            var option = new MappingOption(typeof(TSource), typeof(TDestination), typeof(TContext));
-            entries.Add(new MapperEntry(profile, option));
-            return new MappingExpression<TSource, TDestination, TContext>(option);
-        }
-
         public MapperConfig Default(Action<IDefaultExpression> option)
         {
             option(new DefaultExpression(DefaultOption));

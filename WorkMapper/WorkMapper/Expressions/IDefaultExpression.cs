@@ -24,11 +24,12 @@ namespace WorkMapper.Expressions
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter);
 
-        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TContext, TDestinationMember> converter);
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter);
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
 
-        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter);
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
+            where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>;
 
         //--------------------------------------------------------------------------------
         // Constant

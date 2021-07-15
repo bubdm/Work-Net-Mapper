@@ -4,6 +4,8 @@
     using System.Linq.Expressions;
     using System.Reflection;
 
+    // TODO Nest
+
     public interface IMemberExpression<TSource, out TDestination, in TMember>
     {
         //--------------------------------------------------------------------------------
@@ -71,10 +73,5 @@
 
         //void ConvertUsing<TSourceMember, TValueConverter>()
         //    where TValueConverter : IValueConverter<TSourceMember, TMember>;
-    }
-
-    public interface IMemberExpression<TSource, out TDestination, in TMember, TContext>
-    {
-
     }
 }

@@ -15,80 +15,129 @@
             this.option = option;
         }
 
-        //--------------------------------------------------------------------------------
-        // Factory
-        //--------------------------------------------------------------------------------
+        ////--------------------------------------------------------------------------------
+        //// Factory
+        ////--------------------------------------------------------------------------------
 
+        //public IDefaultExpression FactoryUsing(IFactoryResolver resolver)
+        //{
+        //    option.SetFactoryResolver(resolver);
+        //    return this;
+        //}
+
+        //public IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory)
+        //{
+        //    option.SetFactory(factory);
+        //    return this;
+        //}
+
+        ////--------------------------------------------------------------------------------
+        //// Converter
+        ////--------------------------------------------------------------------------------
+
+        //public IDefaultExpression ConvertUsing(IConverterResolver resolver)
+        //{
+        //    option.SetConverterResolver(resolver);
+        //    return this;
+        //}
+
+        //public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
+        //{
+        //    option.SetConverter(converter);
+        //    return this;
+        //}
+
+        //public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TContext, TDestinationMember> converter)
+        //{
+        //    option.SetConverter(converter);
+        //    return this;
+        //}
+
+        //public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
+        //{
+        //    option.SetConverter(converter);
+        //    return this;
+        //}
+
+        //public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter)
+        //{
+        //    option.SetConverter(converter);
+        //    return this;
+        //}
+
+        ////--------------------------------------------------------------------------------
+        //// Constant
+        ////--------------------------------------------------------------------------------
+
+        //public IDefaultExpression Const<TMember>(TMember value)
+        //{
+        //    option.SetConstValue(value);
+        //    return this;
+        //}
+
+        ////--------------------------------------------------------------------------------
+        //// Null
+        ////--------------------------------------------------------------------------------
+
+        //public IDefaultExpression NullIf<TMember>(TMember value)
+        //{
+        //    option.SetNullIfValue(value);
+        //    return this;
+        //}
+
+        //public IDefaultExpression NullIgnore(Type type)
+        //{
+        //    option.SetNullIgnore(type);
+        //    return this;
+        //}
         public IDefaultExpression FactoryUsing(IFactoryResolver resolver)
         {
-            option.SetFactoryResolver(resolver);
-            return this;
+            throw new NotImplementedException();
         }
 
         public IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory)
         {
-            option.SetFactory(factory);
-            return this;
+            throw new NotImplementedException();
         }
-
-        //--------------------------------------------------------------------------------
-        // Converter
-        //--------------------------------------------------------------------------------
 
         public IDefaultExpression ConvertUsing(IConverterResolver resolver)
         {
-            option.SetConverterResolver(resolver);
-            return this;
+            throw new NotImplementedException();
         }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
         {
-            option.SetConverter(converter);
-            return this;
+            throw new NotImplementedException();
         }
 
-        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TContext, TDestinationMember> converter)
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter)
         {
-            option.SetConverter(converter);
-            return this;
+            throw new NotImplementedException();
         }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
         {
-            option.SetConverter(converter);
-            return this;
+            throw new NotImplementedException();
         }
 
-        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(IValueConverter<TSourceMember, TDestinationMember, TContext> converter)
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>() where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
         {
-            option.SetConverter(converter);
-            return this;
+            throw new NotImplementedException();
         }
-
-        //--------------------------------------------------------------------------------
-        // Constant
-        //--------------------------------------------------------------------------------
 
         public IDefaultExpression Const<TMember>(TMember value)
         {
-            option.SetConstValue(value);
-            return this;
+            throw new NotImplementedException();
         }
-
-        //--------------------------------------------------------------------------------
-        // Null
-        //--------------------------------------------------------------------------------
 
         public IDefaultExpression NullIf<TMember>(TMember value)
         {
-            option.SetNullIfValue(value);
-            return this;
+            throw new NotImplementedException();
         }
 
         public IDefaultExpression NullIgnore(Type type)
         {
-            option.SetNullIgnore(type);
-            return this;
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,17 +1,7 @@
 ﻿namespace WorkMapper.Functions
 {
-    public interface IObjectFactory
+    public interface IObjectFactory<out TDestination>
     {
-        TDestination Create<TDestination>();
-    }
-
-    public interface IObjectFactory<in TSource>
-    {
-        TDestination Create<TDestination>(TSource source);
-    }
-
-    public interface IObjectFactory<in TSource, in TContext>
-    {
-        TDestination Create<TDestination>(TSource source, TContext context);
+        TDestination Create(ResolutionContext context);
     }
 }

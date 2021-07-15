@@ -1,5 +1,3 @@
-using WorkMapper.Mappers;
-
 namespace WorkMapper.Collections
 {
     using System;
@@ -197,7 +195,7 @@ namespace WorkMapper.Collections
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(string profile, Type sourceType, Type targetType, [NotNullWhen(true)] out ObjectMapperInfo? item)
+        public bool TryGetValue(string profile, Type sourceType, Type targetType, [NotNullWhen(true)] out object? item)
         {
             var temp = nodes;
             var node = temp[CalculateHash(profile, sourceType, targetType) & (temp.Length - 1)];
@@ -216,7 +214,7 @@ namespace WorkMapper.Collections
             return false;
         }
 
-        public ObjectMapperInfo AddIfNotExist(string profile, Type sourceType, Type targetType, Func<string, Type, Type, ObjectMapperInfo> valueFactory)
+        public object AddIfNotExist(string profile, Type sourceType, Type targetType, Func<string, Type, Type, object> valueFactory)
         {
             lock (sync)
             {
@@ -258,11 +256,11 @@ namespace WorkMapper.Collections
 
             public readonly Type TargetType;
 
-            public readonly ObjectMapperInfo Item;
+            public readonly object Item;
 
             public Node? Next;
 
-            public Node(string profile, Type sourceType, Type targetType, ObjectMapperInfo item)
+            public Node(string profile, Type sourceType, Type targetType, object item)
             {
                 Profile = profile;
                 SourceType = sourceType;
