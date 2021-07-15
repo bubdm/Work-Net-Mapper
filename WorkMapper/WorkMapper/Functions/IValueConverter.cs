@@ -1,4 +1,4 @@
-﻿namespace WorkMapper.Expressions
+﻿namespace WorkMapper.Functions
 {
     public interface IValueConverter<in TSourceMember, out TDestinationMember>
     {

@@ -3,6 +3,7 @@
     using System;
 
     using WorkMapper.Components;
+    using WorkMapper.Functions;
     using WorkMapper.Options;
 
     internal class DefaultExpression : IDefaultExpression
@@ -46,7 +47,7 @@
             return this;
         }
 
-        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TDestinationMember, TContext> converter)
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TContext, TDestinationMember> converter)
         {
             option.SetConverter(converter);
             return this;

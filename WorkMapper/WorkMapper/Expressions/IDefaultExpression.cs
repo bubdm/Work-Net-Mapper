@@ -1,4 +1,6 @@
-﻿namespace WorkMapper.Expressions
+﻿using WorkMapper.Functions;
+
+namespace WorkMapper.Expressions
 {
     using System;
 
@@ -22,7 +24,7 @@
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter);
 
-        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TDestinationMember, TContext> converter);
+        IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TContext, TDestinationMember> converter);
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter);
 

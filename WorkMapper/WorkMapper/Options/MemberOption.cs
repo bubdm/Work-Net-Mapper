@@ -1,11 +1,20 @@
-﻿//namespace WorkMapper.Options
-//{
-//    using System.Linq.Expressions;
+﻿namespace WorkMapper.Options
+{
+    using System.Reflection;
 
-//    public class MemberEntry
-//    {
-//        public object Converter { get; set; }
+    using System.Linq.Expressions;
 
-//        public Expression Expression { get; set; }
-//    }
-//}
+    public class MemberOption
+    {
+        public PropertyInfo Property { get; }
+
+        public object? Converter { get; set; }
+
+        public Expression? Expression { get; set; }
+
+        public MemberOption(PropertyInfo property)
+        {
+            Property = property;
+        }
+    }
+}

@@ -5,7 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
 
     using WorkMapper.Components;
-    using WorkMapper.Expressions;
+    using WorkMapper.Functions;
 
     public sealed class DefaultOption
     {
@@ -50,7 +50,7 @@
         public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter) =>
             SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
 
-        public void SetConverter<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TDestinationMember, TContext> converter) =>
+        public void SetConverter<TSourceMember, TDestinationMember, TContext>(Func<TSourceMember, TContext, TDestinationMember> converter) =>
             SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), converter);
 
         public void SetConverter<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter) =>

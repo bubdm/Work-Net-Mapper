@@ -1,92 +1,127 @@
 ﻿namespace WorkMapper.Expressions
 {
-//    using System;
-//    using System.Linq.Expressions;
-//    using System.Reflection;
+    using System;
+    using System.Linq.Expressions;
+
+    using WorkMapper.Functions;
 
     public interface IMappingExpression<TSource, TDestination>
     {
-//        //--------------------------------------------------------------------------------
-//        //  Factory
-//        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        //  Factory
+        //--------------------------------------------------------------------------------
 
-//        IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory);
+        IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory);
 
-//        IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination, object> factory);
+        IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory);
 
-//        IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory);
+        IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory factory);
 
-//        IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination, object> factory);
+        IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TSource> factory);
 
-//        //--------------------------------------------------------------------------------
-//        // Pre/Post process
-//        //--------------------------------------------------------------------------------
+        // Type
 
-//        IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>();
 
-//        IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination, object> action);
+        //--------------------------------------------------------------------------------
+        // Pre/Post process
+        //--------------------------------------------------------------------------------
 
-//        IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action);
 
-//        IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>()
-//            where TMappingAction : IMappingAction<TSource, TDestination>;
+        IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action);
 
-//        IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action);
 
-//        IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination, object> action);
+        IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action);
 
-//        IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action);
+        // Type
 
-//        IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>()
-//            where TMappingAction : IMappingAction<TSource, TDestination>;
+        IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>();
 
-//        //--------------------------------------------------------------------------------
-//        // Match
-//        //--------------------------------------------------------------------------------
+        IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>();
 
-//        IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function);
+        //--------------------------------------------------------------------------------
+        // Match
+        //--------------------------------------------------------------------------------
 
-//        //--------------------------------------------------------------------------------
-//        // Include/Exclude
-//        //--------------------------------------------------------------------------------
+        IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function);
 
-//        IMappingExpression<TSource, TDestination> IncludeMember(params string[] names);
+        //--------------------------------------------------------------------------------
+        // Member
+        //--------------------------------------------------------------------------------
 
-//        IMappingExpression<TSource, TDestination> IncludeMembers(params Expression<Func<TSource, object>>[] expressions);
-
-//        IMappingExpression<TSource, TDestination> IncludeMember(Func<MemberInfo, bool> filter);
-
-//        IMappingExpression<TSource, TDestination> ExcludeMember(params string[] names);
-
-//        IMappingExpression<TSource, TDestination> ExcludeMember(Func<MemberInfo, bool> filter);
-
-//        IMappingExpression<TSource, TDestination> ExcludeMembers(params Expression<Func<TSource, object>>[] expressions);
-
-//        //--------------------------------------------------------------------------------
-//        // All members
-//        //--------------------------------------------------------------------------------
-
-//        void ForAllMembers(Action<IMemberExpression<TSource, TDestination, object>> option);
-
-//        //--------------------------------------------------------------------------------
-//        // Member
-//        //--------------------------------------------------------------------------------
-
-//        IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
-
-//        IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option);
-
-//        //--------------------------------------------------------------------------------
-//        // Default
-//        //--------------------------------------------------------------------------------
-
-//        IMappingExpression<TSource, TDestination> Default(Action<IDefaultExpression> option);
-
-//        IMappingExpression<TSource, TDestination> MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option);
+        IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
     }
 
     public interface IMappingExpression<TSource, TDestination, TContext>
     {
-        // TODO
+        //--------------------------------------------------------------------------------
+        //  Factory
+        //--------------------------------------------------------------------------------
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing(Func<TDestination> factory);
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing(Func<TSource, TDestination> factory);
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing(IObjectFactory<TSource> factory);
+
+        // With context
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing(Func<TContext, TDestination> factory);
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing(Func<TSource, TContext, TDestination> factory);
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing(IObjectFactory<TSource, TContext> factory);
+
+        // Type
+
+        IMappingExpression<TSource, TDestination, TContext> FactoryUsing<TObjectFactory>();
+
+        //--------------------------------------------------------------------------------
+        // Pre/Post process
+        //--------------------------------------------------------------------------------
+
+        IMappingExpression<TSource, TDestination, TContext> BeforeMap(Action<TSource, TDestination> action);
+
+        IMappingExpression<TSource, TDestination, TContext> BeforeMap(IMappingAction<TSource, TDestination> action);
+
+        IMappingExpression<TSource, TDestination, TContext> AfterMap(Action<TSource, TDestination> action);
+
+        IMappingExpression<TSource, TDestination, TContext> AfterMap(IMappingAction<TSource, TDestination> action);
+
+        // With context
+
+        IMappingExpression<TSource, TDestination, TContext> BeforeMap(Action<TSource, TDestination, TContext> action);
+
+        IMappingExpression<TSource, TDestination, TContext> BeforeMap(IMappingAction<TSource, TDestination, TContext> action);
+
+        IMappingExpression<TSource, TDestination, TContext> BeforeMap<TMappingAction>(IMappingAction<TSource, TDestination, TContext> action);
+
+        IMappingExpression<TSource, TDestination, TContext> AfterMap(Action<TSource, TDestination, TContext> action);
+
+        IMappingExpression<TSource, TDestination, TContext> AfterMap(IMappingAction<TSource, TDestination, TContext> action);
+
+        IMappingExpression<TSource, TDestination, TContext> AfterMap<TMappingAction>(IMappingAction<TSource, TDestination, TContext> action);
+
+        // Type
+
+        IMappingExpression<TSource, TDestination, TContext> BeforeMap<TMappingAction>();
+
+        IMappingExpression<TSource, TDestination, TContext> AfterMap<TMappingAction>();
+
+        //--------------------------------------------------------------------------------
+        // Match
+        //--------------------------------------------------------------------------------
+
+        IMappingExpression<TSource, TDestination, TContext> MatchMember(Func<string, string> function);
+
+        //--------------------------------------------------------------------------------
+        // Member
+        //--------------------------------------------------------------------------------
+
+        IMappingExpression<TSource, TDestination, TContext> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
+
+        IMappingExpression<TSource, TDestination, TContext> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember, TContext>> option);
     }
 }
