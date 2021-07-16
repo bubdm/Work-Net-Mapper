@@ -48,22 +48,32 @@
         }
 
         public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> value) =>
-            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
+            SetConverterInternal(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
 
         public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> value) =>
-            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
+            SetConverterInternal(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
 
         public void SetConverter<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> value) =>
-            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
+            SetConverterInternal(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
 
         public void SetConverter<TSourceMember, TDestinationMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TDestinationMember> =>
-            SetConverter(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), typeof(TValueConverter));
+            SetConverterInternal(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), typeof(TValueConverter));
 
-        private void SetConverter(Tuple<Type, Type> pair, object value)
+        private void SetConverterInternal(Tuple<Type, Type> pair, object value)
         {
             converters ??= new Dictionary<Tuple<Type, Type>, object>();
             converters[pair] = value;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
+
+        public void SetConstValue<TMember>(TMember value)
+        {
+            constValues ??= new Dictionary<Type, object?>();
+            constValues[typeof(TMember)] = value;
         }
 
         //--------------------------------------------------------------------------------
@@ -80,16 +90,6 @@
         {
             nullIgnores ??= new HashSet<Type>();
             nullIgnores.Add(type);
-        }
-
-        //--------------------------------------------------------------------------------
-        // Constant
-        //--------------------------------------------------------------------------------
-
-        public void SetConstValue<TMember>(TMember value)
-        {
-            constValues ??= new Dictionary<Type, object?>();
-            constValues[typeof(TMember)] = value;
         }
 
         //--------------------------------------------------------------------------------

@@ -26,18 +26,18 @@
 
         IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action);
 
-        IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination, ResolutionContext> action);
 
-        IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>(IMappingAction<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action);
 
         IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>()
             where TMappingAction : IMappingAction<TSource, TDestination>;
 
         IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action);
 
-        IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination, ResolutionContext> action);
 
-        IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>(IMappingAction<TSource, TDestination> action);
+        IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action);
 
         IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>()
             where TMappingAction : IMappingAction<TSource, TDestination>;
@@ -58,6 +58,6 @@
         // Default
         //--------------------------------------------------------------------------------
 
-        // TODO
+        IMappingExpression<TSource, TDestination> Default(Action<IMappingDefaultExpression> action);
     }
 }

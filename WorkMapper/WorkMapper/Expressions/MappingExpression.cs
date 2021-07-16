@@ -55,80 +55,52 @@
 
         public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            option.AddBeforeMap(action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            option.AddBeforeMap(action);
+            return this;
         }
 
-        public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>(IMappingAction<TSource, TDestination> action)
+        public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination, ResolutionContext> action)
         {
-            throw new NotImplementedException();
+            option.AddBeforeMap(action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
         {
-            throw new NotImplementedException();
+            option.AddBeforeMap<TSource, TDestination, TMappingAction>();
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            option.AddAfterMap(action);
+            return this;
         }
 
         public IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action)
         {
-            throw new NotImplementedException();
+            option.AddAfterMap(action);
+            return this;
         }
 
-        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>(IMappingAction<TSource, TDestination> action)
+        public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination, ResolutionContext> action)
         {
-            throw new NotImplementedException();
+            option.AddAfterMap(action);
+            return this;
         }
 
-        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
+        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>()
+            where TMappingAction : IMappingAction<TSource, TDestination>
         {
-            throw new NotImplementedException();
+            option.AddAfterMap<TSource, TDestination, TMappingAction>();
+            return this;
         }
-
-        //        public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action)
-        //        {
-        //            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
-        //            return this;
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action)
-        //        {
-        //            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
-        //            return this;
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
-        //        {
-        //            entry.AddBeforeMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), typeof(TMappingAction));
-        //            return this;
-        //        }
-
-
-        //        public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action)
-        //        {
-        //            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
-        //            return this;
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action)
-        //        {
-        //            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), action);
-        //            return this;
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
-        //        {
-        //            entry.AddAfterMap(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), typeof(TMappingAction));
-        //            return this;
-        //        }
 
         //        //--------------------------------------------------------------------------------
         //        // Match
@@ -162,20 +134,6 @@
         //            throw new NotImplementedException();
         //        }
 
-        //        //--------------------------------------------------------------------------------
-        //        // Default
-        //        //--------------------------------------------------------------------------------
-
-        //        public IMappingExpression<TSource, TDestination> Default(Action<IDefaultExpression> option)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> MemberDefault<TMember>(Action<ITypeDefaultExpression<TMember>> option)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
         public IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function)
         {
             throw new NotImplementedException();
@@ -184,6 +142,16 @@
         public IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option)
         {
             throw new NotImplementedException();
+        }
+
+        //--------------------------------------------------------------------------------
+        // Default
+        //--------------------------------------------------------------------------------
+
+        public IMappingExpression<TSource, TDestination> Default(Action<IMappingDefaultExpression> action)
+        {
+            action(new MappingDefaultExpression(option));
+            return this;
         }
     }
 }

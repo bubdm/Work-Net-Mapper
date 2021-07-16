@@ -1,39 +1,79 @@
-﻿//namespace WorkMapper.Expressions
-//{
-//    using System;
+﻿namespace WorkMapper.Expressions
+{
+    using System;
 
-//    internal class TypeDefaultExpression<TMember> : ITypeDefaultExpression<TMember>
-//    {
-//        //--------------------------------------------------------------------------------
-//        // Null
-//        //--------------------------------------------------------------------------------
+    using WorkMapper.Components;
+    using WorkMapper.Functions;
+    using WorkMapper.Options;
 
-//        public ITypeDefaultExpression<TMember> NullIf(TMember value)
-//        {
-//            throw new NotImplementedException();
-//        }
+    internal class MappingDefaultExpression : IMappingDefaultExpression
+    {
+        private readonly MappingOption option;
 
-//        //--------------------------------------------------------------------------------
-//        // Constant
-//        //--------------------------------------------------------------------------------
+        public MappingDefaultExpression(MappingOption option)
+        {
+            this.option = option;
+        }
 
-//        public ITypeDefaultExpression<TMember> Const(TMember value)
-//        {
-//            throw new NotImplementedException();
-//        }
+        //--------------------------------------------------------------------------------
+        // Converter
+        //--------------------------------------------------------------------------------
 
-//        //--------------------------------------------------------------------------------
-//        // Convert
-//        //--------------------------------------------------------------------------------
+        public IMappingDefaultExpression ConvertUsing(IConverterResolver resolver)
+        {
+            option.SetConverterResolver(resolver);
+            return this;
+        }
 
-//        public ITypeDefaultExpression<TMember> ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
-//        {
-//            throw new NotImplementedException();
-//        }
+        public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
 
-//        public ITypeDefaultExpression<TMember> ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>() where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
-//        {
-//            throw new NotImplementedException();
-//        }
-//    }
-//}
+        public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
+
+        public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
+        {
+            option.SetConverter(converter);
+            return this;
+        }
+
+        public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
+            where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
+        {
+            option.SetConverter<TSourceMember, TDestinationMember, TValueConverter>();
+            return this;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
+
+        public IMappingDefaultExpression Const<TMember>(TMember value)
+        {
+            option.SetConstValue(value);
+            return this;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
+
+        public IMappingDefaultExpression NullIf<TMember>(TMember value)
+        {
+            option.SetNullIfValue(value);
+            return this;
+        }
+
+        public IMappingDefaultExpression NullIgnore(Type type)
+        {
+            option.SetNullIgnore(type);
+            return this;
+        }
+    }
+}
