@@ -13,7 +13,7 @@
                 return null;
             }
 
-            return new MappingOption(sourceType, destinationType, null);
+            return new MappingOption(sourceType, destinationType);
         }
     }
 }

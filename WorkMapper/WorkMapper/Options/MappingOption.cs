@@ -1,4 +1,8 @@
-﻿namespace WorkMapper.Options
+﻿using System.Collections.Generic;
+
+using WorkMapper.Functions;
+
+namespace WorkMapper.Options
 {
     using System;
 //    using System.Collections.Generic;
@@ -9,41 +13,47 @@
 
         public Type DestinationType { get; }
 
-        public Type? ContextType { get; set; }
+        private object? factory;
+
+        // TODO Member
 
 //        private Dictionary<Tuple<Type, Type>, object> factories;
 
-//        private Dictionary<Tuple<Type, Type>, List<object>> beforeMaps;
+        private List<object>? beforeMaps;
 
-//        private Dictionary<Tuple<Type, Type>, List<object>> afterMaps;
+        private List<object>? afterMaps;
 
-        public MappingOption(Type sourceType, Type destinationType, Type? contextType)
+        public MappingOption(Type sourceType, Type destinationType)
         {
             SourceType = sourceType;
             DestinationType = destinationType;
-            ContextType = contextType;
         }
 
-//        //--------------------------------------------------------------------------------
-//        //  Factory
-//        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        //  Factory
+        //--------------------------------------------------------------------------------
 
-//        public void SetFactory(Tuple<Type, Type> pair, object value)
-//        {
-//            factories ??= new Dictionary<Tuple<Type, Type>, object>();
-//            factories[pair] = value;
-//        }
+        public void SetFactory<TDestination>(Func<TDestination> value)
+        {
+            factory = value;
+        }
 
-//        public bool TryGetFactory(Tuple<Type, Type> pair, out object value)
-//        {
-//            if ((factories is not null) && factories.TryGetValue(pair, out value))
-//            {
-//                return true;
-//            }
+        public void SetFactory<TSource, TDestination>(Func<TSource, TDestination> value)
+        {
+            factory = value;
+        }
 
-//            value = null;
-//            return false;
-//        }
+        public void SetFactory<TDestination>(IObjectFactory<TDestination> value)
+        {
+            factory = value;
+        }
+
+        public void SetFactory<TDestination, TObjectFactory>()
+            where TObjectFactory : IObjectFactory<TDestination>
+        {
+            factory = typeof(TObjectFactory);
+        }
+
 
 //        //--------------------------------------------------------------------------------
 //        // Pre/Post process
@@ -61,17 +71,6 @@
 //            list.Add(value);
 //        }
 
-//        public bool TryGetBeforeMaps(Tuple<Type, Type> pair, out List<object> values)
-//        {
-//            if ((beforeMaps is not null) && beforeMaps.TryGetValue(pair, out values))
-//            {
-//                return true;
-//            }
-
-//            values = null;
-//            return false;
-//        }
-
 //        public void AddAfterMap(Tuple<Type, Type> pair, object value)
 //        {
 //            afterMaps ??= new Dictionary<Tuple<Type, Type>, List<object>>();
@@ -84,6 +83,17 @@
 //            list.Add(value);
 //        }
 
+//        public bool TryGetBeforeMaps(Tuple<Type, Type> pair, out List<object> values)
+//        {
+//            if ((beforeMaps is not null) && beforeMaps.TryGetValue(pair, out values))
+//            {
+//                return true;
+//            }
+
+//            values = null;
+//            return false;
+//        }
+
 //        public bool TryGetAfterMaps(Tuple<Type, Type> pair, out List<object> values)
 //        {
 //            if ((afterMaps is not null) && afterMaps.TryGetValue(pair, out values))
@@ -94,5 +104,11 @@
 //            values = null;
 //            return false;
 //        }
+
+        //--------------------------------------------------------------------------------
+        //  Internal
+        //--------------------------------------------------------------------------------
+
+        internal object? GetFactory() => factory;
     }
 }

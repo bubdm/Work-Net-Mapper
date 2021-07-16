@@ -24,21 +24,74 @@
         //  Factory
         //--------------------------------------------------------------------------------
 
-        //        public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory)
-        //        {
-        //            entry.SetFactory(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), factory);
-        //            return this;
-        //        }
+        public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory)
+        {
+            option.SetFactory(factory);
+            return this;
+        }
 
-        //        public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory)
-        //        {
-        //            entry.SetFactory(new Tuple<Type, Type>(typeof(TSource), typeof(TDestination)), factory);
-        //            return this;
-        //        }
+        public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory)
+        {
+            option.SetFactory(factory);
+            return this;
+        }
 
-        //        //--------------------------------------------------------------------------------
-        //        // Pre/Post process
-        //        //--------------------------------------------------------------------------------
+        public IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TDestination> factory)
+        {
+            option.SetFactory(factory);
+            return this;
+        }
+
+        public IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>()
+            where TObjectFactory : IObjectFactory<TDestination>
+        {
+            option.SetFactory<TDestination, TObjectFactory>();
+            return this;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Pre/Post process
+        //--------------------------------------------------------------------------------
+
+        public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>(IMappingAction<TSource, TDestination> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>(IMappingAction<TSource, TDestination> action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
+        {
+            throw new NotImplementedException();
+        }
 
         //        public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action)
         //        {
@@ -87,40 +140,6 @@
         //        }
 
         //        //--------------------------------------------------------------------------------
-        //        // Include/Exclude
-        //        //--------------------------------------------------------------------------------
-
-        //        public IMappingExpression<TSource, TDestination> IncludeMember(params string[] names)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> IncludeMembers(params Expression<Func<TSource, object>>[] expressions)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> IncludeMember(Func<MemberInfo, bool> filter)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> ExcludeMember(params string[] names)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> ExcludeMember(Func<MemberInfo, bool> filter)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> ExcludeMembers(params Expression<Func<TSource, object>>[] expressions)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        //--------------------------------------------------------------------------------
         //        // All members
         //        //--------------------------------------------------------------------------------
 
@@ -156,65 +175,6 @@
         //        {
         //            throw new NotImplementedException();
         //        }
-        public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TDestination> factory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>() where TObjectFactory : IObjectFactory<TDestination>
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> BeforeMap(Action<TSource, TDestination> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> BeforeMap(IMappingAction<TSource, TDestination> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>(IMappingAction<TSource, TDestination> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> BeforeMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> AfterMap(Action<TSource, TDestination> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> AfterMap(IMappingAction<TSource, TDestination> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>(IMappingAction<TSource, TDestination> action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IMappingExpression<TSource, TDestination> AfterMap<TMappingAction>() where TMappingAction : IMappingAction<TSource, TDestination>
-        {
-            throw new NotImplementedException();
-        }
 
         public IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function)
         {

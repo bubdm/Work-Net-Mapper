@@ -19,7 +19,7 @@
 
         private readonly DefaultOption defaultOption;
 
-        private readonly Dictionary<(string?, Type, Type, Type?), MappingOption> mapperOptions;
+        private readonly Dictionary<(string?, Type, Type), MappingOption> mapperOptions;
 
         private readonly IMissingHandler[] handlers;
 
@@ -29,7 +29,7 @@
         {
             defaultOption = config.DefaultOption;
             mapperOptions = config.MapperOptions.ToDictionary(
-                x => (x.Profile, x.Option.SourceType, x.Option.DestinationType, x.Option.ContextType),
+                x => (x.Profile, x.Option.SourceType, x.Option.DestinationType),
                 x => x.Option);
             handlers = config.MissingHandlers.ToArray();
             factory = config.MapperFactory;
@@ -43,7 +43,7 @@
         {
             lock (sync)
             {
-                if (!mapperOptions.TryGetValue((profile, sourceType, destinationType, null), out var mapperOption) &&
+                if (!mapperOptions.TryGetValue((profile, sourceType, destinationType), out var mapperOption) &&
                     !String.IsNullOrEmpty(profile))
                 {
                     mapperOption = handlers
@@ -51,7 +51,7 @@
                         .FirstOrDefault(x => x is not null);
                     if (mapperOption is not null)
                     {
-                        mapperOptions[(profile, sourceType, destinationType, null)] = mapperOption;
+                        mapperOptions[(profile, sourceType, destinationType)] = mapperOption;
                     }
                 }
 

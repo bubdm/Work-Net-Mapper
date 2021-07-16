@@ -34,14 +34,14 @@
 
         public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()
         {
-            var option = new MappingOption(typeof(TSource), typeof(TDestination), null);
+            var option = new MappingOption(typeof(TSource), typeof(TDestination));
             entries.Add(new MapperEntry(null, option));
             return new MappingExpression<TSource, TDestination>(option);
         }
 
         public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>(string profile)
         {
-            var option = new MappingOption(typeof(TSource), typeof(TDestination), null);
+            var option = new MappingOption(typeof(TSource), typeof(TDestination));
             entries.Add(new MapperEntry(profile, option));
             return new MappingExpression<TSource, TDestination>(option);
         }
