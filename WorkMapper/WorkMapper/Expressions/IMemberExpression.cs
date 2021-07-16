@@ -4,7 +4,8 @@
     using System.Linq.Expressions;
     using System.Reflection;
 
-    // TODO Nest
+    using WorkMapper.Components;
+    using WorkMapper.Functions;
 
     public interface IMemberExpression<TSource, out TDestination, in TMember>
     {
@@ -18,60 +19,72 @@
         // Ignore
         //--------------------------------------------------------------------------------
 
-        void Ignore();
+        IMemberExpression<TSource, TDestination, TMember> Ignore();
+
+        //--------------------------------------------------------------------------------
+        // Nest
+        //--------------------------------------------------------------------------------
+
+        IMemberExpression<TSource, TDestination, TMember> Nested();
 
         //--------------------------------------------------------------------------------
         // Order
         //--------------------------------------------------------------------------------
 
-        void Order(int order);
-
-        ////--------------------------------------------------------------------------------
-        //// Condition
-        ////--------------------------------------------------------------------------------
-
-        //void Condition(Func<TSource, bool> condition);
-
-        //void Condition(Func<TSource, object, bool> condition);
-
-        //void Condition(Func<TSource, TDestination, bool> condition);
-
-        //void Condition(Func<TSource, TDestination, object, bool> condition);
-
-        ////--------------------------------------------------------------------------------
-        //// MapFrom
-        ////--------------------------------------------------------------------------------
-
-        //void MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression);
-
-        //void MapFrom<TSourceMember>(Expression<Func<TSource, object, TSourceMember>> expression);
-
-        //void MapFrom(IValueResolver<TSource, TDestination, TMember> resolver);
-
-        //void MapFrom<TValueResolver>()
-        //    where TValueResolver : IValueResolver<TSource, TDestination, TMember>;
-
-        //void MapFrom(string name);
+        IMemberExpression<TSource, TDestination, TMember> Order(int order);
 
         //--------------------------------------------------------------------------------
-        // Null
+        // Condition
         //--------------------------------------------------------------------------------
 
-        void NullIf(TMember value);
+        IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, bool> condition);
+
+        IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, ResolutionContext, bool> condition);
+
+        IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, bool> condition);
+
+        IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, ResolutionContext, bool> condition);
+
+        //--------------------------------------------------------------------------------
+        // MapFrom
+        //--------------------------------------------------------------------------------
+
+        IMemberExpression<TSource, TDestination, TMember> MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression);
+
+        IMemberExpression<TSource, TDestination, TMember> MapFrom<TSourceMember>(Expression<Func<TSource, ResolutionContext, TSourceMember>> expression);
+
+        IMemberExpression<TSource, TDestination, TMember> MapFrom(IValueResolver<TSource, TDestination, TMember> resolver);
+
+        IMemberExpression<TSource, TDestination, TMember> MapFrom<TValueResolver>()
+            where TValueResolver : IValueResolver<TSource, TDestination, TMember>;
+
+        IMemberExpression<TSource, TDestination, TMember> MapFrom(string name);
 
         //--------------------------------------------------------------------------------
         // Constant
         //--------------------------------------------------------------------------------
 
-        void Const(TMember value);
+        IMemberExpression<TSource, TDestination, TMember> Const(TMember value);
 
-        ////--------------------------------------------------------------------------------
-        //// Convert
-        ////--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
 
-        //void ConvertUsing<TSourceMember>(IValueConverter<TSourceMember, TMember> converter);
+        IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value);
 
-        //void ConvertUsing<TSourceMember, TValueConverter>()
-        //    where TValueConverter : IValueConverter<TSourceMember, TMember>;
+        //--------------------------------------------------------------------------------
+        // Convert
+        //--------------------------------------------------------------------------------
+
+        IMemberExpression<TSource, TDestination, TMember> ConvertUsing(IConverterResolver resolver);
+
+        IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, TMember> converter);
+
+        IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, ResolutionContext, TMember> converter);
+
+        IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(IValueConverter<TSourceMember, TMember> converter);
+
+        IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember, TValueConverter>()
+            where TValueConverter : IValueConverter<TSourceMember, TMember>;
     }
 }
