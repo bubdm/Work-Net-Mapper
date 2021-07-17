@@ -12,7 +12,7 @@
     using WorkMapper.Mappers;
     using WorkMapper.Options;
 
-    public sealed class Mapper : DisposableObject, IMapper
+    public sealed class Mapper : DisposableObject
     {
         private readonly MapperHashArray mapperCache = new(128);
         private readonly ProfileMapperHashArray profileMapperCache = new(32);
@@ -78,7 +78,8 @@
                         : $"Mapper not found. profile=[{profile}], sourceType=[{sourceType}], destinationType=[{destinationType}]");
                 }
 
-                return factory.CreateInfo(this, defaultOption, mapperOption);
+                // TODO
+                return factory.Create(new MapperCreateContext(defaultOption, mapperOption));
             }
         }
 

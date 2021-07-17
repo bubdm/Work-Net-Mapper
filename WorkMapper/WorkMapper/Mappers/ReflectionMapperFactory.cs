@@ -12,7 +12,7 @@ namespace WorkMapper.Mappers
         // IConverterResolver, IFactoryResolver, IFunctionActivatorはDI
 
 
-        public object CreateInfo(IMapper mapper, DefaultOption defaultOption, MappingOption mappingOption)
+        public object Create(MapperCreateContext context)
         {
             throw new NotImplementedException();
         }

@@ -1,13 +1,10 @@
-﻿using Smart.ComponentModel;
-
-using WorkMapper.Components;
-using WorkMapper.Options;
-
-namespace WorkMapper.Mappers
+﻿namespace WorkMapper.Mappers
 {
+
+    using WorkMapper.Options;
 
     internal interface IMapperFactory
     {
-        object CreateInfo(IMapper mapper, DefaultOption defaultOption, MappingOption mappingOption);
+        object Create(MapperCreateContext context);
     }
 }
