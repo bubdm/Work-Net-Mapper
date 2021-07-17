@@ -27,8 +27,6 @@
 
         // Default
 
-        private IConverterResolver? converterResolver;
-
         private Dictionary<Tuple<Type, Type>, object>? converters;
 
         private Dictionary<Type, object?>? constValues;
@@ -127,11 +125,6 @@
         // Converter
         //--------------------------------------------------------------------------------
 
-        public void SetConverterResolver(IConverterResolver value)
-        {
-            converterResolver = value;
-        }
-
         public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> value) =>
             SetConverterInternal(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
 
@@ -190,8 +183,6 @@
         internal Func<string, string?>? GetMatcher() => matcher;
 
         // Default
-
-        internal IConverterResolver? GetConverterResolver() => converterResolver;
 
         internal bool TryGetConverter(Tuple<Type, Type> pair, [NotNullWhen(true)] out object? value)
         {

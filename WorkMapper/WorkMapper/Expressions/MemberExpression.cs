@@ -4,7 +4,6 @@
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
     using WorkMapper.Options;
 
@@ -148,12 +147,6 @@
         //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
-
-        public IMemberExpression<TSource, TDestination, TMember> ConvertUsing(IConverterResolver resolver)
-        {
-            memberOption.SetConverter(resolver);
-            return this;
-        }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, TMember> converter)
         {

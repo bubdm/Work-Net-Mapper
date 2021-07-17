@@ -2,34 +2,40 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
 
+    using Smart.ComponentModel;
     using Smart.Converter;
     using Smart.Reflection;
 
     using WorkMapper.Components;
     using WorkMapper.Expressions;
-    using WorkMapper.Handlers;
     using WorkMapper.Mappers;
     using WorkMapper.Options;
 
     public sealed class MapperConfig
     {
+        private readonly ComponentConfig config = new();
+
+        private readonly DefaultOption defaultOption= new();
+
         private readonly List<MapperEntry> entries = new();
-
-        internal DefaultOption DefaultOption { get; } = new();
-
-        public List<IMissingHandler> MissingHandlers { get; } = new();
-
-        [AllowNull]
-        internal IMapperFactory MapperFactory { get; private set; }
-
-        internal IEnumerable<MapperEntry> MapperOptions => entries;
 
         public MapperConfig()
         {
-            SafeMode(false);
-            DefaultOption.SetConverterResolver(new DefaultConverterResolver(ObjectConverter.Default));
+            if (ReflectionHelper.IsCodegenAllowed)
+            {
+                config.Add<IMapperFactory, EmitMapperFactory>();
+            }
+            else
+            {
+                config.Add<IMapperFactory, ReflectionMapperFactory>();
+            }
+
+            config.Add<IFactoryResolver, DefaultFactoryResolver>();
+            config.Add<IConverterResolver, DefaultConverterResolver>();
+
+            config.Add<IDelegateFactory>(DelegateFactory.Default);
+            config.Add<IObjectConverter>(ObjectConverter.Default);
         }
 
         public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()
@@ -48,23 +54,20 @@
 
         public MapperConfig Default(Action<IDefaultExpression> option)
         {
-            option(new DefaultExpression(DefaultOption));
+            option(new DefaultExpression(defaultOption));
             return this;
         }
 
-        internal MapperConfig SafeMode(bool value)
+        public MapperConfig Configure(Action<ComponentConfig> action)
         {
-            if (value)
-            {
-                MapperFactory = ReflectionMapperFactory.Instance;
-                DefaultOption.SetFactoryResolver(new DefaultFactoryResolver(ReflectionDelegateFactory.Default));
-            }
-            else
-            {
-                MapperFactory = ReflectionHelper.IsCodegenAllowed ? EmitMapperFactory.Instance : ReflectionMapperFactory.Instance;
-                DefaultOption.SetFactoryResolver(new DefaultFactoryResolver(DelegateFactory.Default));
-            }
+            action(config);
             return this;
         }
+
+        internal ComponentContainer GetComponentContainer() => config.ToContainer();
+
+        internal DefaultOption GetDefaultOption() => defaultOption;
+
+        internal IEnumerable<MapperEntry> GetEntries() => entries;
     }
 }

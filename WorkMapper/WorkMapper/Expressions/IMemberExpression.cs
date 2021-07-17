@@ -81,8 +81,6 @@
         // Convert
         //--------------------------------------------------------------------------------
 
-        IMemberExpression<TSource, TDestination, TMember> ConvertUsing(IConverterResolver resolver);
-
         IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, TMember> converter);
 
         IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, ResolutionContext, TMember> converter);

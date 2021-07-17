@@ -2,7 +2,6 @@
 {
     using System;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
 
     public interface IDefaultExpression
@@ -11,15 +10,11 @@
         // Factory
         //--------------------------------------------------------------------------------
 
-        IDefaultExpression FactoryUsing(IFactoryResolver resolver);
-
         IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory);
 
         //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
-
-        IDefaultExpression ConvertUsing(IConverterResolver resolver);
 
         IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter);
 

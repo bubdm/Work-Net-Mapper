@@ -19,12 +19,6 @@
         // Converter
         //--------------------------------------------------------------------------------
 
-        public IMappingDefaultExpression ConvertUsing(IConverterResolver resolver)
-        {
-            mappingOption.SetConverterResolver(resolver);
-            return this;
-        }
-
         public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
         {
             mappingOption.SetConverter(converter);

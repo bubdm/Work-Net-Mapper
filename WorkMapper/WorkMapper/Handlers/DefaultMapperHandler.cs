@@ -6,6 +6,8 @@
 
     public sealed class DefaultMapperHandler : IMissingHandler
     {
+        public int Priority { get; set; } = Int32.MinValue;
+
         public MappingOption? Handle(Type sourceType, Type destinationType, Type? contextType)
         {
             if (contextType is not null)

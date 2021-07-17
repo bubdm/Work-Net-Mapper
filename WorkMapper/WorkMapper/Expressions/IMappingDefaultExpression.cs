@@ -2,7 +2,6 @@
 {
     using System;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
 
     public interface IMappingDefaultExpression
@@ -10,8 +9,6 @@
         //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
-
-        IMappingDefaultExpression ConvertUsing(IConverterResolver resolver);
 
         IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter);
 

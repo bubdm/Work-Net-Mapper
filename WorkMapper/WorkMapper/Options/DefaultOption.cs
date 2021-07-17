@@ -9,11 +9,7 @@
 
     public sealed class DefaultOption
     {
-        private IFactoryResolver? factoryResolver;
-
         private Dictionary<Type, object>? factories;
-
-        private IConverterResolver? converterResolver;
 
         private Dictionary<Tuple<Type, Type>, object>? converters;
 
@@ -27,11 +23,6 @@
         // Factory
         //--------------------------------------------------------------------------------
 
-        public void SetFactoryResolver(IFactoryResolver value)
-        {
-            factoryResolver = value;
-        }
-
         public void SetFactory<TDestination>(Func<TDestination> value)
         {
             factories ??= new Dictionary<Type, object>();
@@ -41,11 +32,6 @@
         //--------------------------------------------------------------------------------
         // Converter
         //--------------------------------------------------------------------------------
-
-        public void SetConverterResolver(IConverterResolver value)
-        {
-            converterResolver = value;
-        }
 
         public void SetConverter<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> value) =>
             SetConverterInternal(new Tuple<Type, Type>(typeof(TSourceMember), typeof(TDestinationMember)), value);
@@ -96,8 +82,6 @@
         // Internal
         //--------------------------------------------------------------------------------
 
-        internal IFactoryResolver? GetFactoryResolver() => factoryResolver;
-
         internal object? GetFactory(Type type)
         {
             if ((factories is not null) && factories.TryGetValue(type, out var value))
@@ -107,8 +91,6 @@
 
             return null;
         }
-
-        internal IConverterResolver? GetConverterResolver() => converterResolver;
 
         internal bool TryGetConverter(Tuple<Type, Type> pair, [NotNullWhen(true)] out object? value)
         {

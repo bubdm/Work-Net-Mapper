@@ -19,12 +19,6 @@
         // Factory
         //--------------------------------------------------------------------------------
 
-        public IDefaultExpression FactoryUsing(IFactoryResolver resolver)
-        {
-            option.SetFactoryResolver(resolver);
-            return this;
-        }
-
         public IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory)
         {
             option.SetFactory(factory);
@@ -34,12 +28,6 @@
         //--------------------------------------------------------------------------------
         // Converter
         //--------------------------------------------------------------------------------
-
-        public IDefaultExpression ConvertUsing(IConverterResolver resolver)
-        {
-            option.SetConverterResolver(resolver);
-            return this;
-        }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
         {

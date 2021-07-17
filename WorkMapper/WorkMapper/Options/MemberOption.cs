@@ -107,8 +107,6 @@
         // Convert
         //--------------------------------------------------------------------------------
 
-        public void SetConverter(IConverterResolver value) => converter = value;
-
         public void SetConverter<TSourceMember, TMember>(Func<TSourceMember, TMember> value) => converter = value;
 
         public void SetConverter<TSourceMember, TMember>(Func<TSourceMember, ResolutionContext, TMember> value) => converter = value;

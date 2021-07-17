@@ -5,17 +5,21 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
 
+    using Smart.ComponentModel;
+
     using WorkMapper.Collections;
     using WorkMapper.Handlers;
     using WorkMapper.Mappers;
     using WorkMapper.Options;
 
-    public sealed class Mapper : IMapper
+    public sealed class Mapper : DisposableObject, IMapper
     {
         private readonly MapperHashArray mapperCache = new(128);
         private readonly ProfileMapperHashArray profileMapperCache = new(32);
 
         private readonly object sync = new();
+
+        private readonly ComponentContainer components;
 
         private readonly DefaultOption defaultOption;
 
@@ -27,12 +31,24 @@
 
         internal Mapper(MapperConfig config)
         {
-            defaultOption = config.DefaultOption;
-            mapperOptions = config.MapperOptions.ToDictionary(
+            components = config.GetComponentContainer();
+            defaultOption = config.GetDefaultOption();
+            mapperOptions = config.GetEntries().ToDictionary(
                 x => (x.Profile, x.Option.SourceType, x.Option.DestinationType),
                 x => x.Option);
-            handlers = config.MissingHandlers.ToArray();
-            factory = config.MapperFactory;
+
+            handlers = components.GetAll<IMissingHandler>().OrderByDescending(x => x.Priority).ToArray();
+            factory = components.Get<IMapperFactory>();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                components.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         //--------------------------------------------------------------------------------
