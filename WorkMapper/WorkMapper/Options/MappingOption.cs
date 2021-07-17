@@ -1,11 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using WorkMapper.Components;
-
-namespace WorkMapper.Options
+﻿namespace WorkMapper.Options
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Reflection;
 
+    using WorkMapper.Components;
     using WorkMapper.Functions;
 
     public class MappingOption
@@ -24,8 +25,6 @@ namespace WorkMapper.Options
 
         private Func<string, string?>? matcher;
 
-        // TODO member
-
         // Default
 
         private IConverterResolver? converterResolver;
@@ -38,14 +37,21 @@ namespace WorkMapper.Options
 
         private HashSet<Type>? nullIgnores;
 
+        // Member
+
+        public MemberOption[] MemberOptions { get; }
+
         public MappingOption(Type sourceType, Type destinationType)
         {
             SourceType = sourceType;
             DestinationType = destinationType;
+            MemberOptions = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Select(x => new MemberOption(x))
+                .ToArray();
         }
 
         //--------------------------------------------------------------------------------
-        //  Factory
+        // Factory
         //--------------------------------------------------------------------------------
 
         public void SetFactory<TDestination>(Func<TDestination> value)
@@ -172,7 +178,7 @@ namespace WorkMapper.Options
         }
 
         //--------------------------------------------------------------------------------
-        //  Internal
+        // Internal
         //--------------------------------------------------------------------------------
 
         internal object? GetFactory() => factory;
@@ -180,6 +186,8 @@ namespace WorkMapper.Options
         internal IReadOnlyList<object> GetBeforeMaps() => beforeMaps ?? (IReadOnlyList<object>)Array.Empty<object>();
 
         internal IReadOnlyList<object> GetAfterMaps() => afterMaps ?? (IReadOnlyList<object>)Array.Empty<object>();
+
+        internal Func<string, string?>? GetMatcher() => matcher;
 
         // Default
 

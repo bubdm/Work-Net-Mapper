@@ -8,7 +8,7 @@
     public interface IMappingExpression<TSource, TDestination>
     {
         //--------------------------------------------------------------------------------
-        //  Factory
+        // Factory
         //--------------------------------------------------------------------------------
 
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory);

@@ -10,14 +10,14 @@
 
     internal class MemberExpression<TSource, TDestination, TMember> : IMemberExpression<TSource, TDestination, TMember>
     {
-        private readonly MemberOption option;
+        private readonly MemberOption memberOption;
 
         public PropertyInfo DestinationMember { get; }
 
-        public MemberExpression(PropertyInfo property, MemberOption option)
+        public MemberExpression(PropertyInfo property, MemberOption memberOption)
         {
             DestinationMember = property;
-            this.option = option;
+            this.memberOption = memberOption;
         }
 
         //--------------------------------------------------------------------------------
@@ -26,7 +26,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> Ignore()
         {
-            option.SetIgnore();
+            memberOption.SetIgnore();
             return this;
         }
 
@@ -36,7 +36,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> Nested()
         {
-            option.SetNested();
+            memberOption.SetNested();
             return this;
         }
 
@@ -46,7 +46,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> Order(int order)
         {
-            option.SetOrder(order);
+            memberOption.SetOrder(order);
             return this;
         }
 
@@ -56,37 +56,37 @@
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, bool> condition)
         {
-            option.SetCondition(condition);
+            memberOption.SetCondition(condition);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, ResolutionContext, bool> condition)
         {
-            option.SetCondition(condition);
+            memberOption.SetCondition(condition);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, bool> condition)
         {
-            option.SetCondition(condition);
+            memberOption.SetCondition(condition);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, ResolutionContext, bool> condition)
         {
-            option.SetCondition(condition);
+            memberOption.SetCondition(condition);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(IMemberCondition<TSource, TDestination> condition)
         {
-            option.SetCondition(condition);
+            memberOption.SetCondition(condition);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition<TMemberCondition>() where TMemberCondition : IMemberCondition<TSource, TDestination>
         {
-            option.SetCondition<TMemberCondition>();
+            memberOption.SetCondition<TMemberCondition>();
             return this;
         }
 
@@ -96,32 +96,32 @@
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression)
         {
-            option.SetMapFrom(expression);
+            memberOption.SetMapFrom(expression);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom<TSourceMember>(Expression<Func<TSource, ResolutionContext, TSourceMember>> expression)
         {
-            option.SetMapFrom(expression);
+            memberOption.SetMapFrom(expression);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom(IValueResolver<TSource, TDestination, TMember> resolver)
         {
-            option.SetMapFrom(resolver);
+            memberOption.SetMapFrom(resolver);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom<TValueResolver>()
             where TValueResolver : IValueResolver<TSource, TDestination, TMember>
         {
-            option.SetMapFrom<TSource, TDestination, TMember, TValueResolver>();
+            memberOption.SetMapFrom<TSource, TDestination, TMember, TValueResolver>();
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom(string sourcePath)
         {
-            option.SetMapFrom(sourcePath);
+            memberOption.SetMapFrom(sourcePath);
             return this;
         }
 
@@ -131,7 +131,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> Const(TMember value)
         {
-            option.SetConst(value);
+            memberOption.SetConst(value);
             return this;
         }
 
@@ -141,7 +141,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value)
         {
-            option.SetNullIf(value);
+            memberOption.SetNullIf(value);
             return this;
         }
 
@@ -151,32 +151,32 @@
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing(IConverterResolver resolver)
         {
-            option.SetConverter(resolver);
+            memberOption.SetConverter(resolver);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, TMember> converter)
         {
-            option.SetConverter(converter);
+            memberOption.SetConverter(converter);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, ResolutionContext, TMember> converter)
         {
-            option.SetConverter(converter);
+            memberOption.SetConverter(converter);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(IValueConverter<TSourceMember, TMember> converter)
         {
-            option.SetConverter(converter);
+            memberOption.SetConverter(converter);
             return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TMember>
         {
-            option.SetConverter<TSourceMember, TMember, TValueConverter>();
+            memberOption.SetConverter<TSourceMember, TMember, TValueConverter>();
             return this;
         }
     }

@@ -8,11 +8,11 @@
 
     internal class MappingDefaultExpression : IMappingDefaultExpression
     {
-        private readonly MappingOption option;
+        private readonly MappingOption mappingOption;
 
-        public MappingDefaultExpression(MappingOption option)
+        public MappingDefaultExpression(MappingOption mappingOption)
         {
-            this.option = option;
+            this.mappingOption = mappingOption;
         }
 
         //--------------------------------------------------------------------------------
@@ -21,32 +21,32 @@
 
         public IMappingDefaultExpression ConvertUsing(IConverterResolver resolver)
         {
-            option.SetConverterResolver(resolver);
+            mappingOption.SetConverterResolver(resolver);
             return this;
         }
 
         public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
         {
-            option.SetConverter(converter);
+            mappingOption.SetConverter(converter);
             return this;
         }
 
         public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter)
         {
-            option.SetConverter(converter);
+            mappingOption.SetConverter(converter);
             return this;
         }
 
         public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
         {
-            option.SetConverter(converter);
+            mappingOption.SetConverter(converter);
             return this;
         }
 
         public IMappingDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
         {
-            option.SetConverter<TSourceMember, TDestinationMember, TValueConverter>();
+            mappingOption.SetConverter<TSourceMember, TDestinationMember, TValueConverter>();
             return this;
         }
 
@@ -56,7 +56,7 @@
 
         public IMappingDefaultExpression Const<TMember>(TMember value)
         {
-            option.SetConstValue(value);
+            mappingOption.SetConstValue(value);
             return this;
         }
 
@@ -66,13 +66,13 @@
 
         public IMappingDefaultExpression NullIf<TMember>(TMember value)
         {
-            option.SetNullIfValue(value);
+            mappingOption.SetNullIfValue(value);
             return this;
         }
 
         public IMappingDefaultExpression NullIgnore(Type type)
         {
-            option.SetNullIgnore(type);
+            mappingOption.SetNullIgnore(type);
             return this;
         }
     }
