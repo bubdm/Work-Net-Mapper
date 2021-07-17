@@ -6,109 +6,178 @@
 
     using WorkMapper.Components;
     using WorkMapper.Functions;
+    using WorkMapper.Options;
 
     internal class MemberExpression<TSource, TDestination, TMember> : IMemberExpression<TSource, TDestination, TMember>
     {
-        public MemberInfo DestinationMember { get; }
+        private readonly MemberOption option;
 
-        public MemberExpression(MemberInfo destinationMember)
+        public PropertyInfo DestinationMember { get; }
+
+        public MemberExpression(PropertyInfo property, MemberOption option)
         {
-            DestinationMember = destinationMember;
+            DestinationMember = property;
+            this.option = option;
         }
+
+        //--------------------------------------------------------------------------------
+        // Ignore
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> Ignore()
         {
-            throw new NotImplementedException();
+            option.SetIgnore();
+            return this;
         }
+
+        //--------------------------------------------------------------------------------
+        // Nested
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> Nested()
         {
-            throw new NotImplementedException();
+            option.SetNested();
+            return this;
         }
+
+        //--------------------------------------------------------------------------------
+        // Order
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> Order(int order)
         {
-            throw new NotImplementedException();
+            option.SetOrder(order);
+            return this;
         }
+
+        //--------------------------------------------------------------------------------
+        // Condition
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, bool> condition)
         {
-            throw new NotImplementedException();
+            option.SetCondition(condition);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, ResolutionContext, bool> condition)
         {
-            throw new NotImplementedException();
+            option.SetCondition(condition);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, bool> condition)
         {
-            throw new NotImplementedException();
+            option.SetCondition(condition);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, ResolutionContext, bool> condition)
         {
-            throw new NotImplementedException();
+            option.SetCondition(condition);
+            return this;
         }
+
+        public IMemberExpression<TSource, TDestination, TMember> Condition(IMemberCondition<TSource, TDestination> condition)
+        {
+            option.SetCondition(condition);
+            return this;
+        }
+
+        public IMemberExpression<TSource, TDestination, TMember> Condition<TMemberCondition>() where TMemberCondition : IMemberCondition<TSource, TDestination>
+        {
+            option.SetCondition<TMemberCondition>();
+            return this;
+        }
+
+        //--------------------------------------------------------------------------------
+        // MapFrom
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom<TSourceMember>(Expression<Func<TSource, TSourceMember>> expression)
         {
-            throw new NotImplementedException();
+            option.SetMapFrom(expression);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom<TSourceMember>(Expression<Func<TSource, ResolutionContext, TSourceMember>> expression)
         {
-            throw new NotImplementedException();
+            option.SetMapFrom(expression);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> MapFrom(IValueResolver<TSource, TDestination, TMember> resolver)
         {
-            throw new NotImplementedException();
+            option.SetMapFrom(resolver);
+            return this;
         }
 
-        public IMemberExpression<TSource, TDestination, TMember> MapFrom<TValueResolver>() where TValueResolver : IValueResolver<TSource, TDestination, TMember>
+        public IMemberExpression<TSource, TDestination, TMember> MapFrom<TValueResolver>()
+            where TValueResolver : IValueResolver<TSource, TDestination, TMember>
         {
-            throw new NotImplementedException();
+            option.SetMapFrom<TSource, TDestination, TMember, TValueResolver>();
+            return this;
         }
 
-        public IMemberExpression<TSource, TDestination, TMember> MapFrom(string name)
+        public IMemberExpression<TSource, TDestination, TMember> MapFrom(string sourcePath)
         {
-            throw new NotImplementedException();
+            option.SetMapFrom(sourcePath);
+            return this;
         }
+
+        //--------------------------------------------------------------------------------
+        // Const
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> Const(TMember value)
         {
-            throw new NotImplementedException();
+            option.SetConst(value);
+            return this;
         }
+
+        //--------------------------------------------------------------------------------
+        // NullIf
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value)
         {
-            throw new NotImplementedException();
+            option.SetNullIf(value);
+            return this;
         }
+
+        //--------------------------------------------------------------------------------
+        // Convert
+        //--------------------------------------------------------------------------------
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing(IConverterResolver resolver)
         {
-            throw new NotImplementedException();
+            option.SetConverter(resolver);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, TMember> converter)
         {
-            throw new NotImplementedException();
+            option.SetConverter(converter);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(Func<TSourceMember, ResolutionContext, TMember> converter)
         {
-            throw new NotImplementedException();
+            option.SetConverter(converter);
+            return this;
         }
 
         public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember>(IValueConverter<TSourceMember, TMember> converter)
         {
-            throw new NotImplementedException();
+            option.SetConverter(converter);
+            return this;
         }
 
-        public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember, TValueConverter>() where TValueConverter : IValueConverter<TSourceMember, TMember>
+        public IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember, TValueConverter>()
+            where TValueConverter : IValueConverter<TSourceMember, TMember>
         {
-            throw new NotImplementedException();
+            option.SetConverter<TSourceMember, TMember, TValueConverter>();
+            return this;
         }
     }
 }

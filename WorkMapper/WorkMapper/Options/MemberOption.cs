@@ -1,10 +1,11 @@
 ﻿namespace WorkMapper.Options
 {
     using System;
-
+    using System.Linq.Expressions;
     using System.Reflection;
 
-    using System.Linq.Expressions;
+    using WorkMapper.Components;
+    using WorkMapper.Functions;
 
     public class MemberOption
     {
@@ -18,20 +19,15 @@
 
         private object? condition;
 
-        private object? from;
+        private object? mapFrom;
 
-        // TODO use
-        private object? constantValue;
+        private bool useConst;
+        private object? constValue;
 
-        // TODO use
+        private bool useNullIf;
         private object? nullIfValue;
 
         private object? converter;
-
-
-        //public object? Converter { get; set; }
-
-        //public Expression? Expression { get; set; }
 
         public MemberOption(PropertyInfo property)
         {
@@ -56,16 +52,94 @@
 
         public void SetOrder(int value) => order = value;
 
-        // TODO
+        //--------------------------------------------------------------------------------
+        // Condition
+        //--------------------------------------------------------------------------------
+
+        public void SetCondition<TSource>(Func<TSource, bool> value) => condition = value;
+
+        public void SetCondition<TSource>(Func<TSource, ResolutionContext, bool> value) => condition = value;
+
+        public void SetCondition<TSource, TDestination>(Func<TSource, TDestination, bool> value) => condition = value;
+
+        public void SetCondition<TSource, TDestination>(Func<TSource, TDestination, ResolutionContext, bool> value) => condition = value;
+
+        public void SetCondition<TSource, TDestination>(IMemberCondition<TSource, TDestination> value) => condition = value;
+
+        public void SetCondition<TMemberCondition>() => condition = typeof(TMemberCondition);
+
+        //--------------------------------------------------------------------------------
+        // MapFrom
+        //--------------------------------------------------------------------------------
+
+        public void SetMapFrom<TSource, TSourceMember>(Expression<Func<TSource, TSourceMember>> value) => mapFrom = value;
+
+        public void SetMapFrom<TSource, TSourceMember>(Expression<Func<TSource, ResolutionContext, TSourceMember>> value) => mapFrom = value;
+
+        public void SetMapFrom<TSource, TDestination, TMember>(IValueResolver<TSource, TDestination, TMember> value) => mapFrom = value;
+
+        public void SetMapFrom<TSource, TDestination, TMember, TValueResolver>()
+            where TValueResolver : IValueResolver<TSource, TDestination, TMember> => mapFrom = typeof(TValueResolver);
+
+        public void SetMapFrom(string value) => mapFrom = value;
+
+        //--------------------------------------------------------------------------------
+        // Const
+        //--------------------------------------------------------------------------------
+
+        public void SetConst<TMember>(TMember value)
+        {
+            useConst = true;
+            constValue = value;
+        }
+
+        //--------------------------------------------------------------------------------
+        // NullIf
+        //--------------------------------------------------------------------------------
+
+        public void SetNullIf<TMember>(TMember value)
+        {
+            useNullIf = true;
+            nullIfValue = value;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Convert
+        //--------------------------------------------------------------------------------
+
+        public void SetConverter(IConverterResolver value) => converter = value;
+
+        public void SetConverter<TSourceMember, TMember>(Func<TSourceMember, TMember> value) => converter = value;
+
+        public void SetConverter<TSourceMember, TMember>(Func<TSourceMember, ResolutionContext, TMember> value) => converter = value;
+
+        public void SetConverter<TSourceMember, TMember>(IValueConverter<TSourceMember, TMember> value) => converter = value;
+
+        public void SetConverter<TSourceMember, TMember, TValueConverter>()
+            where TValueConverter : IValueConverter<TSourceMember, TMember> => converter = typeof(TValueConverter);
 
         //--------------------------------------------------------------------------------
         // Internal
         //--------------------------------------------------------------------------------
 
-        public bool IsIgnore() => ignore;
+        internal bool IsIgnore() => ignore;
 
-        public bool IsNested() => nested;
+        internal bool IsNested() => nested;
 
-        public int GetOrder() => order;
+        internal int GetOrder() => order;
+
+        internal object? GetCondition() => condition;
+
+        internal object? GetMapFrom() => mapFrom;
+
+        internal bool UseConst() => useConst;
+
+        internal object? GetConstValue() => constValue;
+
+        internal bool UseNullIf() => useNullIf;
+
+        internal object? GetNullIfValue() => nullIfValue;
+
+        internal object? GetConverter() => converter;
     }
 }

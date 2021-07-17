@@ -13,7 +13,7 @@
         // Info
         //--------------------------------------------------------------------------------
 
-        MemberInfo DestinationMember { get; }
+        PropertyInfo DestinationMember { get; }
 
         //--------------------------------------------------------------------------------
         // Ignore
@@ -45,6 +45,11 @@
 
         IMemberExpression<TSource, TDestination, TMember> Condition(Func<TSource, TDestination, ResolutionContext, bool> condition);
 
+        IMemberExpression<TSource, TDestination, TMember> Condition(IMemberCondition<TSource, TDestination> condition);
+
+        IMemberExpression<TSource, TDestination, TMember> Condition<TMemberCondition>()
+            where TMemberCondition : IMemberCondition<TSource, TDestination>;
+
         //--------------------------------------------------------------------------------
         // MapFrom
         //--------------------------------------------------------------------------------
@@ -58,7 +63,7 @@
         IMemberExpression<TSource, TDestination, TMember> MapFrom<TValueResolver>()
             where TValueResolver : IValueResolver<TSource, TDestination, TMember>;
 
-        IMemberExpression<TSource, TDestination, TMember> MapFrom(string name);
+        IMemberExpression<TSource, TDestination, TMember> MapFrom(string sourcePath);
 
         //--------------------------------------------------------------------------------
         // Constant

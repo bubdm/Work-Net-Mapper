@@ -22,6 +22,8 @@ namespace WorkMapper.Options
 
         private List<object>? afterMaps;
 
+        private Func<string, string?>? matcher;
+
         // TODO member
 
         // Default
@@ -108,6 +110,12 @@ namespace WorkMapper.Options
             afterMaps ??= new List<object>();
             afterMaps.Add(value);
         }
+
+        //--------------------------------------------------------------------------------
+        // Match
+        //--------------------------------------------------------------------------------
+
+        public void SetMatcher(Func<string, string?> value) => matcher = value;
 
         //--------------------------------------------------------------------------------
         // Converter

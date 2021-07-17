@@ -46,13 +46,15 @@
         // Match
         //--------------------------------------------------------------------------------
 
-        IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function);
+        IMappingExpression<TSource, TDestination> MatchMember(Func<string, string?> matcher);
 
         //--------------------------------------------------------------------------------
         // Member
         //--------------------------------------------------------------------------------
 
         IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
+
+        IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option);
 
         //--------------------------------------------------------------------------------
         // Default

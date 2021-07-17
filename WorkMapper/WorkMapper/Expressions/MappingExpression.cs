@@ -102,44 +102,27 @@
             return this;
         }
 
-        //        //--------------------------------------------------------------------------------
-        //        // Match
-        //        //--------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------
+        // Match
+        //--------------------------------------------------------------------------------
 
-        //        public IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
+        public IMappingExpression<TSource, TDestination> MatchMember(Func<string, string?> matcher)
+        {
+            option.SetMatcher(matcher);
+            return this;
+        }
 
-        //        //--------------------------------------------------------------------------------
-        //        // All members
-        //        //--------------------------------------------------------------------------------
 
-        //        public void ForAllMembers(Action<IMemberExpression<TSource, TDestination, object>> option)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
+        //--------------------------------------------------------------------------------
+        // Member
+        //--------------------------------------------------------------------------------
 
-        //        //--------------------------------------------------------------------------------
-        //        // Member
-        //        //--------------------------------------------------------------------------------
-
-        //        public IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        //        public IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
-
-        public IMappingExpression<TSource, TDestination> MatchMember(Func<string, string> function)
+        public IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option)
         {
             throw new NotImplementedException();
         }
 
-        public IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option)
+        public IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option)
         {
             throw new NotImplementedException();
         }
