@@ -1,0 +1,296 @@
+  IL_0001:  ldnull
+  IL_0002:  callvirt   instance void WorkIL.Data::set_StringValue(string)
+
+  IL_0008:  ldsfld     string [System.Runtime]System.String::Empty
+  IL_000d:  callvirt   instance void WorkIL.Data::set_StringValue(string)
+
+  IL_0013:  ldstr      "123"
+  IL_0018:  callvirt   instance void WorkIL.Data::set_StringValue(string)
+
+--------------------
+  IL_001e:  ldc.i4.0
+  IL_001f:  callvirt   instance void WorkIL.Data::set_ByteValue(uint8)
+
+  IL_0025:  ldc.i4.s   10
+  IL_0027:  callvirt   instance void WorkIL.Data::set_ByteValue(uint8)
+
+  IL_002d:  ldc.i4     0xff
+  IL_0032:  callvirt   instance void WorkIL.Data::set_ByteValue(uint8)
+
+--------------------
+  IL_0038:  ldc.i4.0
+  IL_0039:  callvirt   instance void WorkIL.Data::set_CharValue(char)
+
+  IL_003f:  ldc.i4     0xffff
+  IL_0044:  callvirt   instance void WorkIL.Data::set_CharValue(char)
+
+  IL_004a:  ldc.i4.0
+  IL_004b:  callvirt   instance void WorkIL.Data::set_CharValue(char)
+
+--------------------
+  IL_0051:  ldc.i4.0
+  IL_0052:  callvirt   instance void WorkIL.Data::set_ShortValue(int16)
+
+  IL_0058:  ldc.i4.1
+  IL_0059:  callvirt   instance void WorkIL.Data::set_ShortValue(int16)
+
+  IL_005f:  ldc.i4.m1
+  IL_0060:  callvirt   instance void WorkIL.Data::set_ShortValue(int16)
+
+  IL_0066:  ldc.i4.s   10
+  IL_0068:  callvirt   instance void WorkIL.Data::set_ShortValue(int16)
+
+  IL_006e:  ldc.i4     0x7fff
+  IL_0073:  callvirt   instance void WorkIL.Data::set_ShortValue(int16)
+
+  IL_0079:  ldc.i4     0xffff8000
+  IL_007e:  callvirt   instance void WorkIL.Data::set_ShortValue(int16)
+
+--------------------
+  IL_0084:  ldc.i4.0
+  IL_0085:  callvirt   instance void WorkIL.Data::set_IntValue(int32)
+
+  IL_008b:  ldc.i4.1
+  IL_008c:  callvirt   instance void WorkIL.Data::set_IntValue(int32)
+
+  IL_0092:  ldc.i4.m1
+  IL_0093:  callvirt   instance void WorkIL.Data::set_IntValue(int32)
+
+  IL_0099:  ldc.i4.s   10
+  IL_009b:  callvirt   instance void WorkIL.Data::set_IntValue(int32)
+
+  IL_00a1:  ldc.i4     0x7fffffff
+  IL_00a6:  callvirt   instance void WorkIL.Data::set_IntValue(int32)
+
+  IL_00ac:  ldc.i4     0x80000000
+  IL_00b1:  callvirt   instance void WorkIL.Data::set_IntValue(int32)
+
+--------------------
+  IL_00b7:  ldc.i4.0
+  IL_00b8:  conv.i8
+  IL_00b9:  callvirt   instance void WorkIL.Data::set_LongValue(int64)
+
+  IL_00bf:  ldc.i4.1
+  IL_00c0:  conv.i8
+  IL_00c1:  callvirt   instance void WorkIL.Data::set_LongValue(int64)
+
+  IL_00c7:  ldc.i4.m1
+  IL_00c8:  conv.i8
+  IL_00c9:  callvirt   instance void WorkIL.Data::set_LongValue(int64)
+
+  IL_00cf:  ldc.i4.s   10
+  IL_00d1:  conv.i8
+  IL_00d2:  callvirt   instance void WorkIL.Data::set_LongValue(int64)
+
+  IL_00d8:  ldc.i8     0x7fffffffffffffff
+  IL_00e1:  callvirt   instance void WorkIL.Data::set_LongValue(int64)
+
+  IL_00e7:  ldc.i8     0x8000000000000000
+  IL_00f0:  callvirt   instance void WorkIL.Data::set_LongValue(int64)
+
+--------------------
+  IL_00f6:  ldc.i4.0
+  IL_00f7:  callvirt   instance void WorkIL.Data::set_UIntValue(uint32)
+
+  IL_00fd:  ldc.i4.1
+  IL_00fe:  callvirt   instance void WorkIL.Data::set_UIntValue(uint32)
+
+  IL_0104:  ldc.i4.s   10
+  IL_0106:  callvirt   instance void WorkIL.Data::set_UIntValue(uint32)
+
+  IL_010c:  ldc.i4.m1
+  IL_010d:  callvirt   instance void WorkIL.Data::set_UIntValue(uint32)
+
+  IL_0113:  ldc.i4.0
+  IL_0114:  callvirt   instance void WorkIL.Data::set_UIntValue(uint32)
+
+--------------------
+  IL_011a:  ldc.i4.0
+  IL_011b:  conv.i8
+  IL_011c:  callvirt   instance void WorkIL.Data::set_ULongValue(uint64)
+
+  IL_0122:  ldc.i4.1
+  IL_0123:  conv.i8
+  IL_0124:  callvirt   instance void WorkIL.Data::set_ULongValue(uint64)
+
+  IL_012a:  ldc.i4.s   10
+  IL_012c:  conv.i8
+  IL_012d:  callvirt   instance void WorkIL.Data::set_ULongValue(uint64)
+
+  IL_0133:  ldc.i4.m1
+  IL_0134:  conv.i8
+  IL_0135:  callvirt   instance void WorkIL.Data::set_ULongValue(uint64)
+
+  IL_013b:  ldc.i4.0
+  IL_013c:  conv.i8
+  IL_013d:  callvirt   instance void WorkIL.Data::set_ULongValue(uint64)
+
+--------------------
+  IL_0143:  ldc.i4.0
+  IL_0144:  newobj     instance void valuetype [System.Runtime]System.Nullable`1<int32>::.ctor(!0)
+  IL_0149:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+  IL_014f:  ldc.i4.1
+  IL_0150:  newobj     instance void valuetype [System.Runtime]System.Nullable`1<int32>::.ctor(!0)
+  IL_0155:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+  IL_015b:  ldc.i4.m1
+  IL_015c:  newobj     instance void valuetype [System.Runtime]System.Nullable`1<int32>::.ctor(!0)
+  IL_0161:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+  IL_0167:  ldc.i4.s   10
+  IL_0169:  newobj     instance void valuetype [System.Runtime]System.Nullable`1<int32>::.ctor(!0)
+  IL_016e:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+  IL_0174:  ldc.i4     0x7fffffff
+  IL_0179:  newobj     instance void valuetype [System.Runtime]System.Nullable`1<int32>::.ctor(!0)
+  IL_017e:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+  IL_0184:  ldc.i4     0x80000000
+  IL_0189:  newobj     instance void valuetype [System.Runtime]System.Nullable`1<int32>::.ctor(!0)
+  IL_018e:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+  IL_0194:  ldloca.s   V_0
+  IL_0196:  initobj    valuetype [System.Runtime]System.Nullable`1<int32>
+  IL_019c:  ldloc.0
+  IL_019d:  callvirt   instance void WorkIL.Data::set_NullableIntValue(valuetype [System.Runtime]System.Nullable`1<int32>)
+
+--------------------
+  IL_01a3:  ldc.r4     0.0
+  IL_01a8:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01ae:  ldc.r4     1.
+  IL_01b3:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01b9:  ldc.r4     10.
+  IL_01be:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01c4:  ldc.r4     3.4028235e+38
+  IL_01c9:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01cf:  ldc.r4     -3.4028235e+38
+  IL_01d4:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01da:  ldc.r4     -nan(ind)
+  IL_01df:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01e5:  ldc.r4     1.4012985e-45
+  IL_01ea:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01f0:  ldc.r4     inf
+  IL_01f5:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+  IL_01fb:  ldc.r4     -inf
+  IL_0200:  callvirt   instance void WorkIL.Data::set_FloatValue(float32)
+
+--------------------
+  IL_0206:  ldc.r8     0.0
+  IL_020f:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_0215:  ldc.r8     1.
+  IL_021e:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_0224:  ldc.r8     10.
+  IL_022d:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_0233:  ldc.r8     1.7976931348623157e+308
+  IL_023c:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_0242:  ldc.r8     -1.7976931348623157e+308
+  IL_024b:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_0251:  ldc.r8     -nan(ind)
+  IL_025a:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_0260:  ldc.r8     4.9406564584124654e-324
+  IL_0269:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_026f:  ldc.r8     inf
+  IL_0278:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+  IL_027e:  ldc.r8     -inf
+  IL_0287:  callvirt   instance void WorkIL.Data::set_DoubleValue(float64)
+
+--------------------
+  IL_028d:  ldc.i4.0
+  IL_028e:  callvirt   instance void WorkIL.Data::set_BoolValue(bool)
+
+  IL_0294:  ldc.i4.1
+  IL_0295:  callvirt   instance void WorkIL.Data::set_BoolValue(bool)
+
+--------------------
+  IL_029b:  ldsfld     valuetype [System.Runtime]System.Decimal [System.Runtime]System.Decimal::Zero
+  IL_02a0:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02a6:  ldsfld     valuetype [System.Runtime]System.Decimal [System.Runtime]System.Decimal::One
+  IL_02ab:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02b1:  ldsfld     valuetype [System.Runtime]System.Decimal [System.Runtime]System.Decimal::MinusOne
+  IL_02b6:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02bc:  ldc.i4.s   10
+  IL_02be:  newobj     instance void [System.Runtime]System.Decimal::.ctor(int32)
+  IL_02c3:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02c9:  ldc.i4.m1
+  IL_02ca:  ldc.i4.m1
+  IL_02cb:  ldc.i4.m1
+  IL_02cc:  ldc.i4.0
+  IL_02cd:  ldc.i4.0
+  IL_02ce:  newobj     instance void [System.Runtime]System.Decimal::.ctor(int32,
+                                                                           int32,
+                                                                           int32,
+                                                                           bool,
+                                                                           uint8)
+  IL_02d3:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02d9:  ldc.i4.m1
+  IL_02da:  ldc.i4.m1
+  IL_02db:  ldc.i4.m1
+  IL_02dc:  ldc.i4.1
+  IL_02dd:  ldc.i4.0
+  IL_02de:  newobj     instance void [System.Runtime]System.Decimal::.ctor(int32,
+                                                                           int32,
+                                                                           int32,
+                                                                           bool,
+                                                                           uint8)
+  IL_02e3:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02e9:  ldsfld     valuetype [System.Runtime]System.Decimal [System.Runtime]System.Decimal::Zero
+  IL_02ee:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02f4:  ldsfld     valuetype [System.Runtime]System.Decimal [System.Runtime]System.Decimal::One
+  IL_02f9:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_02ff:  ldsfld     valuetype [System.Runtime]System.Decimal [System.Runtime]System.Decimal::MinusOne
+  IL_0304:  callvirt   instance void WorkIL.Data::set_DecimalValue(valuetype [System.Runtime]System.Decimal)
+
+  IL_030a:  ldsfld     native int [System.Runtime]System.IntPtr::Zero
+  IL_030f:  callvirt   instance void WorkIL.Data::set_IntPtrValue(native int)
+
+  IL_0315:  call       native int [System.Runtime]System.IntPtr::get_MaxValue()
+  IL_031a:  callvirt   instance void WorkIL.Data::set_IntPtrValue(native int)
+
+  IL_0320:  call       native int [System.Runtime]System.IntPtr::get_MinValue()
+  IL_0325:  callvirt   instance void WorkIL.Data::set_IntPtrValue(native int)
+
+--------------------
+  IL_032b:  ldc.i4.0
+  IL_032c:  callvirt   instance void WorkIL.Data::set_EnumValue(valuetype WorkIL.MyEnum)
+
+  IL_0332:  ldc.i4.1
+  IL_0333:  callvirt   instance void WorkIL.Data::set_EnumValue(valuetype WorkIL.MyEnum)
+
+--------------------
+  IL_0339:  ldloca.s   V_1
+  IL_033b:  initobj    [System.Runtime]System.DateTime
+  IL_0341:  ldloc.1
+  IL_0342:  callvirt   instance void WorkIL.Data::set_DateTimeValue(valuetype [System.Runtime]System.DateTime)
+
+  IL_0348:  ldc.i4     0x7d0
+  IL_034d:  ldc.i4.1
+  IL_034e:  ldc.i4.1
+  IL_034f:  newobj     instance void [System.Runtime]System.DateTime::.ctor(int32,
+                                                                            int32,
+                                                                            int32)
+  IL_0354:  callvirt   instance void WorkIL.Data::set_DateTimeValue(valuetype [System.Runtime]System.DateTime)

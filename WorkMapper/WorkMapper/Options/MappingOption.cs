@@ -44,6 +44,7 @@
             SourceType = sourceType;
             DestinationType = destinationType;
             MemberOptions = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.CanWrite)
                 .Select(x => new MemberOption(x))
                 .ToArray();
         }

@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleExpression", "Exampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkEmit", "Example\WorkEmit\WorkEmit.csproj", "{0B15ACC7-1B83-4C42-B8CC-7288DBA15E1D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkIL", "Example\WorkIL\WorkIL.csproj", "{2AB8B475-0DA6-47C1-89F4-C40447A97262}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{0B15ACC7-1B83-4C42-B8CC-7288DBA15E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B15ACC7-1B83-4C42-B8CC-7288DBA15E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B15ACC7-1B83-4C42-B8CC-7288DBA15E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AB8B475-0DA6-47C1-89F4-C40447A97262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB8B475-0DA6-47C1-89F4-C40447A97262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB8B475-0DA6-47C1-89F4-C40447A97262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB8B475-0DA6-47C1-89F4-C40447A97262}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{BA152BBC-7F98-40FD-BA84-21881D1C2344} = {B6E74D52-0330-4B42-BC06-2E2265E4BE7B}
 		{D46A0F61-82EE-44D7-8046-38550B81FFA9} = {7D1B55D0-3902-47A1-B66D-80C3FF591297}
 		{0B15ACC7-1B83-4C42-B8CC-7288DBA15E1D} = {7D1B55D0-3902-47A1-B66D-80C3FF591297}
+		{2AB8B475-0DA6-47C1-89F4-C40447A97262} = {7D1B55D0-3902-47A1-B66D-80C3FF591297}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {614D2603-E1FA-4ABD-8C19-E164AD4EF857}
