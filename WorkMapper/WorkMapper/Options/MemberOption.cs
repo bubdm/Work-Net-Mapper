@@ -4,7 +4,6 @@
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
 
     public class MemberOption
@@ -87,7 +86,7 @@
         // Const
         //--------------------------------------------------------------------------------
 
-        public void SetConst<TMember>(TMember value)
+        public void SetConstValue<TMember>(TMember value)
         {
             useConst = true;
             constValue = value;
@@ -97,7 +96,7 @@
         // NullIf
         //--------------------------------------------------------------------------------
 
-        public void SetNullIf<TMember>(TMember value)
+        public void SetNullIfValue<TMember>(TMember value)
         {
             useNullIf = true;
             nullIfValue = value;

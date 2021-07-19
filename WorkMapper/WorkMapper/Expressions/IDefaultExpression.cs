@@ -10,6 +10,8 @@
         // Factory
         //--------------------------------------------------------------------------------
 
+        IDefaultExpression FactoryUsingServiceProvider();
+
         IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory);
 
         //--------------------------------------------------------------------------------

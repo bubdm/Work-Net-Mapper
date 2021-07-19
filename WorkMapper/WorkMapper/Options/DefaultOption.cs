@@ -4,11 +4,12 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
 
     public sealed class DefaultOption
     {
+        private bool factoryUseServiceProvider;
+
         private Dictionary<Type, object>? factories;
 
         private Dictionary<Tuple<Type, Type>, object>? converters;
@@ -23,10 +24,14 @@
         // Factory
         //--------------------------------------------------------------------------------
 
-        public void SetFactory<TDestination>(Func<TDestination> value)
+        public void SetFactoryUseServiceProvider() => factoryUseServiceProvider = true;
+
+        public void SetFactory<TDestination>(Func<TDestination> value) => SetFactory(typeof(TDestination), value);
+
+        private void SetFactory(Type type, object value)
         {
             factories ??= new Dictionary<Type, object>();
-            factories[value.GetType().GetGenericArguments()[0]] = value;
+            factories[type] = value;
         }
 
         //--------------------------------------------------------------------------------
@@ -81,6 +86,8 @@
         //--------------------------------------------------------------------------------
         // Internal
         //--------------------------------------------------------------------------------
+
+        internal bool IsFactoryUseServiceProvider() => factoryUseServiceProvider;
 
         internal object? GetFactory(Type type)
         {

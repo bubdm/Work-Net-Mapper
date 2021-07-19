@@ -130,7 +130,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> Const(TMember value)
         {
-            memberOption.SetConst(value);
+            memberOption.SetConstValue(value);
             return this;
         }
 
@@ -140,7 +140,7 @@
 
         public IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value)
         {
-            memberOption.SetNullIf(value);
+            memberOption.SetNullIfValue(value);
             return this;
         }
 

@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Reflection;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
 
     public class MappingOption
@@ -16,6 +15,8 @@
         public Type DestinationType { get; }
 
         // Mapping
+
+        private bool factoryUseServiceProvider;
 
         private object? factory;
 
@@ -53,6 +54,8 @@
         // Factory
         //--------------------------------------------------------------------------------
 
+        public void SetFactoryUseServiceProvider() => factoryUseServiceProvider = true;
+
         public void SetFactory<TDestination>(Func<TDestination> value)
         {
             factory = value;
@@ -61,17 +64,6 @@
         public void SetFactory<TSource, TDestination>(Func<TSource, TDestination> value)
         {
             factory = value;
-        }
-
-        public void SetFactory<TDestination>(IObjectFactory<TDestination> value)
-        {
-            factory = value;
-        }
-
-        public void SetFactory<TDestination, TObjectFactory>()
-            where TObjectFactory : IObjectFactory<TDestination>
-        {
-            factory = typeof(TObjectFactory);
         }
 
         //--------------------------------------------------------------------------------
@@ -174,6 +166,8 @@
         //--------------------------------------------------------------------------------
         // Internal
         //--------------------------------------------------------------------------------
+
+        internal bool IsFactoryUseServiceProvider() => factoryUseServiceProvider;
 
         internal object? GetFactory() => factory;
 

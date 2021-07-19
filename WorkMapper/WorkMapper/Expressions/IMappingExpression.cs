@@ -11,14 +11,11 @@
         // Factory
         //--------------------------------------------------------------------------------
 
+        IMappingExpression<TSource, TDestination> FactoryUsingServiceProvider();
+
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory);
 
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory);
-
-        IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TDestination> factory);
-
-        IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>()
-            where TObjectFactory : IObjectFactory<TDestination>;
 
         //--------------------------------------------------------------------------------
         // Pre/Post process

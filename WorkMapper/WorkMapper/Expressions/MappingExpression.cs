@@ -1,12 +1,11 @@
-﻿using WorkMapper.Helpers;
-
-namespace WorkMapper.Expressions
+﻿namespace WorkMapper.Expressions
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
 
     using WorkMapper.Functions;
+    using WorkMapper.Helpers;
     using WorkMapper.Options;
 
     internal sealed class MappingExpression<TSource, TDestination> : IMappingExpression<TSource, TDestination>
@@ -22,6 +21,12 @@ namespace WorkMapper.Expressions
         // Factory
         //--------------------------------------------------------------------------------
 
+        public IMappingExpression<TSource, TDestination> FactoryUsingServiceProvider()
+        {
+            mappingOption.SetFactoryUseServiceProvider();
+            return this;
+        }
+
         public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TDestination> factory)
         {
             mappingOption.SetFactory(factory);
@@ -31,19 +36,6 @@ namespace WorkMapper.Expressions
         public IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory)
         {
             mappingOption.SetFactory(factory);
-            return this;
-        }
-
-        public IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TDestination> factory)
-        {
-            mappingOption.SetFactory(factory);
-            return this;
-        }
-
-        public IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>()
-            where TObjectFactory : IObjectFactory<TDestination>
-        {
-            mappingOption.SetFactory<TDestination, TObjectFactory>();
             return this;
         }
 

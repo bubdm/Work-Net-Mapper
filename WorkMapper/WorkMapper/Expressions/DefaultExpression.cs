@@ -2,26 +2,31 @@
 {
     using System;
 
-    using WorkMapper.Components;
     using WorkMapper.Functions;
     using WorkMapper.Options;
 
     internal class DefaultExpression : IDefaultExpression
     {
-        private readonly DefaultOption option;
+        private readonly DefaultOption defaultOption;
 
-        public DefaultExpression(DefaultOption option)
+        public DefaultExpression(DefaultOption defaultOption)
         {
-            this.option = option;
+            this.defaultOption = defaultOption;
         }
 
         //--------------------------------------------------------------------------------
         // Factory
         //--------------------------------------------------------------------------------
 
+        public IDefaultExpression FactoryUsingServiceProvider()
+        {
+            defaultOption.SetFactoryUseServiceProvider();
+            return this;
+        }
+
         public IDefaultExpression FactoryUsing<TDestination>(Func<TDestination> factory)
         {
-            option.SetFactory(factory);
+            defaultOption.SetFactory(factory);
             return this;
         }
 
@@ -31,26 +36,26 @@
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember> converter)
         {
-            option.SetConverter(converter);
+            defaultOption.SetConverter(converter);
             return this;
         }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter)
         {
-            option.SetConverter(converter);
+            defaultOption.SetConverter(converter);
             return this;
         }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(IValueConverter<TSourceMember, TDestinationMember> converter)
         {
-            option.SetConverter(converter);
+            defaultOption.SetConverter(converter);
             return this;
         }
 
         public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TDestinationMember>
         {
-            option.SetConverter<TSourceMember, TDestinationMember, TValueConverter>();
+            defaultOption.SetConverter<TSourceMember, TDestinationMember, TValueConverter>();
             return this;
         }
 
@@ -60,7 +65,7 @@
 
         public IDefaultExpression Const<TMember>(TMember value)
         {
-            option.SetConstValue(value);
+            defaultOption.SetConstValue(value);
             return this;
         }
 
@@ -70,13 +75,13 @@
 
         public IDefaultExpression NullIf<TMember>(TMember value)
         {
-            option.SetNullIfValue(value);
+            defaultOption.SetNullIfValue(value);
             return this;
         }
 
         public IDefaultExpression NullIgnore(Type type)
         {
-            option.SetNullIgnore(type);
+            defaultOption.SetNullIgnore(type);
             return this;
         }
     }

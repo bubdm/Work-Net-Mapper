@@ -36,6 +36,8 @@
 
             config.Add<IDelegateFactory>(DelegateFactory.Default);
             config.Add<IObjectConverter>(ObjectConverter.Default);
+
+            config.Add<IServiceProvider, DefaultServiceProvider>();
         }
 
         public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()

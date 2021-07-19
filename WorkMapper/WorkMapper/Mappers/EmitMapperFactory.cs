@@ -11,16 +11,16 @@
 
         private readonly IConverterResolver converterResolver;
 
-        private readonly IFunctionActivator functionActivator;
+        private readonly IServiceProvider serviceProvider;
 
         public EmitMapperFactory(
             IFactoryResolver factoryResolver,
             IConverterResolver converterResolver,
-            IFunctionActivator functionActivator)
+            IServiceProvider serviceProvider)
         {
             this.factoryResolver = factoryResolver;
             this.converterResolver = converterResolver;
-            this.functionActivator = functionActivator;
+            this.serviceProvider = serviceProvider;
         }
 
         // IConverterResolver, IFactoryResolver, IFunctionActivatorはDI
