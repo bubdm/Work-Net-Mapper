@@ -44,28 +44,29 @@ namespace DispatchBenchmark
 
         private object[] objects;
 
+        private object[] objects2;
+
         private IAction[] actions;
-
-        public void Nop(object s, object d)
-        {
-        }
-
-        public void Nop(object s, object d, object c)
-        {
-        }
 
         [GlobalSetup]
         public void Setup()
         {
             var action = new NopAction();
-            Action<object, object> nop = Nop;
-            Action<object, object, object> nopWithContext = Nop;
+            Action<object, object> nop = (_, _) => { };
+            Action<object, object, object> nopWithContext = (_, _, _) => { };
 
             objects = new object[]
             {
                 actions,
                 nop,
                 nopWithContext
+            };
+
+            objects2 = new object[]
+            {
+                nop,
+                nop,
+                nop
             };
 
             actions = new IAction[]
@@ -80,6 +81,31 @@ namespace DispatchBenchmark
         public void TypeDispatch()
         {
             var array = objects;
+            for (var i = 0; i < N; i++)
+            {
+                foreach (var obj in array)
+                {
+                    if (obj is Action<object, object> action)
+                    {
+                        action(null, null);
+                    }
+                    else if (obj is Action<object, object, object> actionWithContext)
+                    {
+                        actionWithContext(null, null, null);
+                    }
+                    else if (obj is IAction actionInterface)
+                    {
+                        actionInterface.Action(null, null, null);
+                    }
+                }
+            }
+        }
+
+        // Faster if condition
+        [Benchmark(OperationsPerInvoke = N)]
+        public void TypeDispatch2()
+        {
+            var array = objects2;
             for (var i = 0; i < N; i++)
             {
                 foreach (var obj in array)
