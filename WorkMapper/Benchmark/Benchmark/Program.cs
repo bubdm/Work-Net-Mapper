@@ -40,15 +40,17 @@
     [Config(typeof(BenchmarkConfig))]
     public class MapperBenchmark
     {
-        private readonly SimpleSource simpleSource = new SimpleSource();
+        private const int N = 1000;
 
-        private readonly MixedSource mixedSource = new MixedSource();
+        private readonly SimpleSource simpleSource = new();
+
+        private readonly MixedSource mixedSource = new();
 
         private IMapper mapper;
 
-        private readonly ActionMapperFactory instantActionMapperFactory = new ActionMapperFactory();    // Boxed
+        private readonly ActionMapperFactory instantActionMapperFactory = new();    // Boxed
 
-        private readonly ActionMapperFactory rawActionMapperFactory = new ActionMapperFactory();
+        private readonly ActionMapperFactory rawActionMapperFactory = new();
 
         private IActionMapper<SimpleSource, SimpleDestination> instantSimpleMapper;
 
@@ -83,77 +85,178 @@
         // Simple
         //--------------------------------------------------------------------------------
 
-        [Benchmark]
-        public SimpleDestination SimpleAutoMapper() => mapper.Map<SimpleDestination>(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleAutoMapper()
+        {
+            var m = mapper;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<SimpleDestination>(simpleSource);
+            }
+            return ret;
+        }
 
 
-        [Benchmark]
-        public SimpleDestination SimpleAutoMapper2() => mapper.Map<SimpleSource, SimpleDestination>(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleAutoMapper2()
+        {
+            var m = mapper;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<SimpleSource, SimpleDestination>(simpleSource);
+            }
+            return ret;
+        }
 
-        [Benchmark]
-        public SimpleDestination SimpleTinyMapper() => TinyMapper.Map<SimpleDestination>(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleTinyMapper()
+        {
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = TinyMapper.Map<SimpleDestination>(simpleSource);
+            }
+            return ret;
+        }
 
-        [Benchmark]
-        public SimpleDestination SimpleInstantMapper() => instantActionMapperFactory.Map<SimpleDestination>(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleInstantMapper()
+        {
+            var m = instantActionMapperFactory;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<SimpleDestination>(simpleSource);
+            }
+            return ret;
+        }
 
         // Near Tiny
-        [Benchmark]
-        public SimpleDestination SimpleRawMapper() => rawActionMapperFactory.Map<SimpleDestination>(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleRawMapper()
+        {
+            var m = rawActionMapperFactory;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<SimpleDestination>(simpleSource);
+            }
+            return ret;
+        }
 
         //--------------------------------------------------------------------------------
         // Without lookup
         //--------------------------------------------------------------------------------
 
         // Slow (object based/boxed & delegate getter/setter)
-        [Benchmark]
-        public SimpleDestination SimpleInstantMapperWoLookup() => instantSimpleMapper.Map(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleInstantMapperWoLookup()
+        {
+            var m = instantSimpleMapper;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map(simpleSource);
+            }
+            return ret;
+        }
 
         // Fast (No loop, No boxed)
-        [Benchmark]
-        public SimpleDestination SimpleRawMapperWoLookup() => rawSimpleMapper.Map(simpleSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleRawMapperWoLookup()
+        {
+            var m = rawSimpleMapper;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map(simpleSource);
+            }
+            return ret;
+        }
 
         // Max
-        [Benchmark]
+        [Benchmark(OperationsPerInvoke = N)]
         public SimpleDestination SimpleHand()
         {
-            // Without Lookup
-            var dest = new SimpleDestination
-            {
-                Value1 = simpleSource.Value1,
-                Value2 = simpleSource.Value2,
-                Value3 = simpleSource.Value3,
-                Value4 = simpleSource.Value4,
-                Value5 = simpleSource.Value5,
-                Value6 = simpleSource.Value6,
-                Value7 = simpleSource.Value7,
-                Value8 = simpleSource.Value8
-            };
+            var ret = default(SimpleDestination);
 
-            return dest;
+            // Without Lookup
+            for (var i = 0; i < N; i++)
+            {
+                ret = new SimpleDestination
+                {
+                    Value1 = simpleSource.Value1,
+                    Value2 = simpleSource.Value2,
+                    Value3 = simpleSource.Value3,
+                    Value4 = simpleSource.Value4,
+                    Value5 = simpleSource.Value5,
+                    Value6 = simpleSource.Value6,
+                    Value7 = simpleSource.Value7,
+                    Value8 = simpleSource.Value8
+                };
+            }
+
+            return ret;
         }
 
         //--------------------------------------------------------------------------------
         // Mixed
         //--------------------------------------------------------------------------------
 
-        [Benchmark]
-        public MixedDestination MixedAutoMapper() => mapper.Map<MixedDestination>(mixedSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public MixedDestination MixedAutoMapper()
+        {
+            var m = mapper;
+            var ret = default(MixedDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<MixedDestination>(mixedSource);
+            }
+            return ret;
+        }
 
-        [Benchmark]
-        public MixedDestination MixedTinyMapper() => TinyMapper.Map<MixedDestination>(mixedSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public MixedDestination MixedTinyMapper()
+        {
+            var ret = default(MixedDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = TinyMapper.Map<MixedDestination>(mixedSource);
+            }
+            return ret;
+        }
 
-        [Benchmark]
-        public MixedDestination MixedInstantMapper() => instantActionMapperFactory.Map<MixedDestination>(mixedSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public MixedDestination MixedInstantMapper()
+        {
+            var m = instantActionMapperFactory;
+            var ret = default(MixedDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<MixedDestination>(mixedSource);
+            }
+            return ret;
+        }
 
-        [Benchmark]
-        public MixedDestination MixedRawMapper() => rawActionMapperFactory.Map<MixedDestination>(mixedSource);
+        [Benchmark(OperationsPerInvoke = N)]
+        public MixedDestination MixedRawMapper()
+        {
+            var m = rawActionMapperFactory;
+            var ret = default(MixedDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<MixedDestination>(mixedSource);
+            }
+            return ret;
+        }
 
         //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
 
         // TODO 2
+        // TODO +interface 1
     }
-
-    // TODO +interface 1
 }
