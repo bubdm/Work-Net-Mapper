@@ -57,7 +57,10 @@
             // Holder
             var holder = CreateHolder(context);
 
-            // TODO set member
+            mapper.GetType().GetField("MapAction")!.SetValue(mapper, CreateMapAction(context, holder));
+            mapper.GetType().GetField("MapFunc")!.SetValue(mapper, CreateMapFunc(context, holder));
+            mapper.GetType().GetField("ParameterMapAction")!.SetValue(mapper, CreateParameterMapAction(context, holder));
+            mapper.GetType().GetField("ParameterMapFunc")!.SetValue(mapper, CreateParameterMapFunc(context, holder));
 
             return mapper;
         }
@@ -98,16 +101,110 @@
         // Method
         //--------------------------------------------------------------------------------
 
-        // TODO コンストラクターセレクター？、Factoryと一緒にする？、デフォルトCtor前提で良い(AutoMapperはそう)
-        // TODO 4パターン、作る必要があるかの確認DynamicにDynamicを食わせて遅いかとか
-        //public readonly Action<TSource, TDestination> MapAction;
-        //public readonly Func<TSource, TDestination> MapFunc;
-        //public readonly Action<TSource, TDestination, object> ParameterMapAction;
-        //public readonly Func<TSource, object, TDestination> ParameterMapFunc;
-        // TODO 1つのクラスで済ますか
-        // TODO クラスのメンバ定義の検討
-        // TODO コンテキストの必要性チェック
+        private Delegate CreateMapAction(MapperCreateContext context, object holder)
+        {
+            // Func
+            var dynamicMethod = new DynamicMethod(
+                "MapAction",
+                typeof(void),
+                new[] { holder.GetType(), context.MappingOption.SourceType, context.MappingOption.DestinationType },
+                true);
+            var ilGenerator = dynamicMethod.GetILGenerator();
 
+            // TODO
+
+            // Return
+            ilGenerator.Emit(OpCodes.Ret);
+
+            return dynamicMethod.CreateDelegate(
+                typeof(Action<,>).MakeGenericType(
+                    context.MappingOption.SourceType,
+                    context.MappingOption.DestinationType),
+                holder);
+        }
+
+        private Delegate CreateParameterMapAction(MapperCreateContext context, object holder)
+        {
+            // Func
+            var dynamicMethod = new DynamicMethod(
+                "ParameterMapAction",
+                typeof(void),
+                new[] { holder.GetType(), context.MappingOption.SourceType, context.MappingOption.DestinationType, typeof(object) },
+                true);
+            var ilGenerator = dynamicMethod.GetILGenerator();
+
+            // TODO
+
+            // Return
+            ilGenerator.Emit(OpCodes.Ret);
+
+            return dynamicMethod.CreateDelegate(
+                typeof(Action<,,>).MakeGenericType(
+                    context.MappingOption.SourceType,
+                    context.MappingOption.DestinationType,
+                    typeof(object)),
+                holder);
+        }
+
+        private Delegate CreateMapFunc(MapperCreateContext context, object holder)
+        {
+            // Func
+            var dynamicMethod = new DynamicMethod(
+                "MapFunc",
+                context.MappingOption.DestinationType,
+                new[] { holder.GetType(), context.MappingOption.SourceType },
+                true);
+            var ilGenerator = dynamicMethod.GetILGenerator();
+
+            // Class new
+            var ctor = context.MappingOption.DestinationType.GetConstructor(Type.EmptyTypes)!;
+            ilGenerator.Emit(OpCodes.Newobj, ctor);
+
+            // TODO 1
+
+            // Return
+            ilGenerator.Emit(OpCodes.Ret);
+
+            return dynamicMethod.CreateDelegate(
+                typeof(Func<,>).MakeGenericType(
+                    context.MappingOption.SourceType,
+                    context.MappingOption.DestinationType),
+                holder);
+        }
+
+        private Delegate CreateParameterMapFunc(MapperCreateContext context, object holder)
+        {
+            // Func
+            var dynamicMethod = new DynamicMethod(
+                "MapFunc",
+                context.MappingOption.DestinationType,
+                new[] { holder.GetType(), context.MappingOption.SourceType, typeof(object) },
+                true);
+            var ilGenerator = dynamicMethod.GetILGenerator();
+
+            // TODO
+
+            // Class new
+            var ctor = context.MappingOption.DestinationType.GetConstructor(Type.EmptyTypes)!;
+            ilGenerator.Emit(OpCodes.Newobj, ctor);
+
+            // Return
+            ilGenerator.Emit(OpCodes.Ret);
+
+            return dynamicMethod.CreateDelegate(
+                typeof(Func<,,>).MakeGenericType(
+                    context.MappingOption.SourceType,
+                    typeof(object),
+                    context.MappingOption.DestinationType),
+                holder);
+        }
+
+        //--------------------------------------------------------------------------------
+        // Helper
+        //--------------------------------------------------------------------------------
+
+        // TODO コンストラクターセレクター？、Factoryと一緒にする？、デフォルトCtor前提で良い(AutoMapperはそう)
+        // TODO コンテキストの必要性チェック
         // TODO 中間構造の作成？
     }
 }

@@ -1,17 +1,19 @@
-﻿using System;
-
-namespace WorkMapper
+﻿namespace WorkMapper
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             var config = new MapperConfig();
             config.CreateMap<SourceData, DestinationData>();
 
             var mapper = config.ToMapper();
 
-            var destination = mapper.Map<SourceData, DestinationData>(new SourceData { Value = 1 });
+            var source = new SourceData { Value = 1 };
+            var destination = mapper.Map<SourceData, DestinationData>(source);
+            mapper.Map(source, destination);
+            destination = mapper.Map<SourceData, DestinationData>(source, string.Empty);
+            mapper.Map(source, destination, string.Empty);
         }
     }
 
@@ -23,4 +25,5 @@ namespace WorkMapper
     public class DestinationData
     {
         public int Value { get; set; }
-    }}
+    }
+}
