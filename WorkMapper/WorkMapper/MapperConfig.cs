@@ -31,13 +31,13 @@
                 config.Add<IMapperFactory, ReflectionMapperFactory>();
             }
 
-            config.Add<IFactoryResolver, DefaultFactoryResolver>();
-            config.Add<IConverterResolver, DefaultConverterResolver>();
+            config.Add<IFactoryResolver, StandardFactoryResolver>();
+            config.Add<IConverterResolver, StandardConverterResolver>();
 
             config.Add<IDelegateFactory>(DelegateFactory.Default);
             config.Add<IObjectConverter>(ObjectConverter.Default);
 
-            config.Add<IServiceProvider, DefaultServiceProvider>();
+            config.Add<IServiceProvider, StandardServiceProvider>();
         }
 
         public IMappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()

@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class DefaultServiceProvider : IServiceProvider
+    public sealed class StandardServiceProvider : IServiceProvider
     {
         public object? GetService(Type serviceType) => Activator.CreateInstance(serviceType);
     }

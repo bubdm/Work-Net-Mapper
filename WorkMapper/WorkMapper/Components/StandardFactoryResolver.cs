@@ -4,11 +4,11 @@
 
     using Smart.Reflection;
 
-    public sealed class DefaultFactoryResolver : IFactoryResolver
+    public sealed class StandardFactoryResolver : IFactoryResolver
     {
         private readonly IDelegateFactory delegateFactory;
 
-        public DefaultFactoryResolver(IDelegateFactory delegateFactory)
+        public StandardFactoryResolver(IDelegateFactory delegateFactory)
         {
             this.delegateFactory = delegateFactory;
         }

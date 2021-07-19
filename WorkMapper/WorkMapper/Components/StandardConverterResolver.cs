@@ -4,11 +4,11 @@
 
     using Smart.Converter;
 
-    public sealed class DefaultConverterResolver : IConverterResolver
+    public sealed class StandardConverterResolver : IConverterResolver
     {
         private readonly IObjectConverter objectConverter;
 
-        public DefaultConverterResolver(IObjectConverter objectConverter)
+        public StandardConverterResolver(IObjectConverter objectConverter)
         {
             this.objectConverter = objectConverter;
         }
