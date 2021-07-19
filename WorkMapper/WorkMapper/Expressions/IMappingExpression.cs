@@ -17,6 +17,11 @@
 
         IMappingExpression<TSource, TDestination> FactoryUsing(Func<TSource, TDestination> factory);
 
+        IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TSource, TDestination> factory);
+
+        IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>()
+            where TObjectFactory : IObjectFactory<TSource, TDestination>;
+
         //--------------------------------------------------------------------------------
         // Pre/Post process
         //--------------------------------------------------------------------------------
@@ -49,9 +54,9 @@
         // Member
         //--------------------------------------------------------------------------------
 
-        IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
+        IMappingExpression<TSource, TDestination> ForAllMember(Action<IAllMemberExpression> option);
 
-        IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option);
+        IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option);
 
         //--------------------------------------------------------------------------------
         // Default

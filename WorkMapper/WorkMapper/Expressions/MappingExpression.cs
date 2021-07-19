@@ -39,6 +39,19 @@
             return this;
         }
 
+        public IMappingExpression<TSource, TDestination> FactoryUsing(IObjectFactory<TSource, TDestination> factory)
+        {
+            mappingOption.SetFactory(factory);
+            return this;
+        }
+
+        public IMappingExpression<TSource, TDestination> FactoryUsing<TObjectFactory>()
+            where TObjectFactory : IObjectFactory<TSource, TDestination>
+        {
+            mappingOption.SetFactory<TSource, TDestination, TObjectFactory>();
+            return this;
+        }
+
         //--------------------------------------------------------------------------------
         // Pre/Post process
         //--------------------------------------------------------------------------------
@@ -106,6 +119,16 @@
         // Member
         //--------------------------------------------------------------------------------
 
+        public IMappingExpression<TSource, TDestination> ForAllMember(Action<IAllMemberExpression> option)
+        {
+            foreach (var memberOption in mappingOption.MemberOptions)
+            {
+                option(new AllMemberExpression(memberOption));
+            }
+
+            return this;
+        }
+
         public IMappingExpression<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> expression, Action<IMemberExpression<TSource, TDestination, TMember>> option)
         {
             var pi = ExpressionHelper.GetPrpPropertyInfo(expression);
@@ -121,18 +144,6 @@
             }
 
             option(new MemberExpression<TSource, TDestination, TMember>(memberOption.Property, memberOption));
-            return this;
-        }
-
-        public IMappingExpression<TSource, TDestination> ForMember(string name, Action<IMemberExpression<TSource, TDestination, object>> option)
-        {
-            var memberOption = mappingOption.MemberOptions.FirstOrDefault(x => x.Property.Name == name);
-            if (memberOption is null)
-            {
-                throw new ArgumentException($"Member not found. name=[{name}]");
-            }
-
-            option(new MemberExpression<TSource, TDestination, object>(memberOption.Property, memberOption));
             return this;
         }
 

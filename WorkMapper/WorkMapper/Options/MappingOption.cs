@@ -56,15 +56,14 @@
 
         public void SetFactoryUseServiceProvider() => factoryUseServiceProvider = true;
 
-        public void SetFactory<TDestination>(Func<TDestination> value)
-        {
-            factory = value;
-        }
+        public void SetFactory<TDestination>(Func<TDestination> value) => factory = value;
 
-        public void SetFactory<TSource, TDestination>(Func<TSource, TDestination> value)
-        {
-            factory = value;
-        }
+        public void SetFactory<TSource, TDestination>(Func<TSource, TDestination> value) => factory = value;
+
+        public void SetFactory<TSource, TDestination>(IObjectFactory<TSource, TDestination> value) => factory = value;
+
+        public void SetFactory<TSource, TDestination, TObjectFactory>()
+            where TObjectFactory : IObjectFactory<TSource, TDestination> => factory = typeof(TObjectFactory);
 
         //--------------------------------------------------------------------------------
         // Pre/Post process
