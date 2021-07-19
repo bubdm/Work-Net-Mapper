@@ -20,13 +20,15 @@
 
         private object? mapFrom;
 
+        private object? converter;
+
         private bool useConst;
         private object? constValue;
 
         private bool useNullIf;
         private object? nullIfValue;
 
-        private object? converter;
+        private bool nullIgnore;
 
         public MemberOption(PropertyInfo property)
         {
@@ -83,26 +85,6 @@
         public void SetMapFrom(string value) => mapFrom = value;
 
         //--------------------------------------------------------------------------------
-        // Const
-        //--------------------------------------------------------------------------------
-
-        public void SetConstValue<TMember>(TMember value)
-        {
-            useConst = true;
-            constValue = value;
-        }
-
-        //--------------------------------------------------------------------------------
-        // NullIf
-        //--------------------------------------------------------------------------------
-
-        public void SetNullIfValue<TMember>(TMember value)
-        {
-            useNullIf = true;
-            nullIfValue = value;
-        }
-
-        //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
 
@@ -114,6 +96,28 @@
 
         public void SetConverter<TSourceMember, TMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TMember> => converter = typeof(TValueConverter);
+
+        //--------------------------------------------------------------------------------
+        // Const
+        //--------------------------------------------------------------------------------
+
+        public void SetConstValue<TMember>(TMember value)
+        {
+            useConst = true;
+            constValue = value;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
+
+        public void SetNullIfValue<TMember>(TMember value)
+        {
+            useNullIf = true;
+            nullIfValue = value;
+        }
+
+        public void SetNullIgnore() => nullIgnore = true;
 
         //--------------------------------------------------------------------------------
         // Internal
@@ -129,6 +133,8 @@
 
         internal object? GetMapFrom() => mapFrom;
 
+        internal object? GetConverter() => converter;
+
         internal bool UseConst() => useConst;
 
         internal object? GetConstValue() => constValue;
@@ -137,6 +143,6 @@
 
         internal object? GetNullIfValue() => nullIfValue;
 
-        internal object? GetConverter() => converter;
+        internal bool IsNullIgnore() => nullIgnore;
     }
 }

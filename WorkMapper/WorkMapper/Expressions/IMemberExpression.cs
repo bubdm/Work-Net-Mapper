@@ -66,18 +66,6 @@
         IMemberExpression<TSource, TDestination, TMember> MapFrom(string sourcePath);
 
         //--------------------------------------------------------------------------------
-        // Constant
-        //--------------------------------------------------------------------------------
-
-        IMemberExpression<TSource, TDestination, TMember> Const(TMember value);
-
-        //--------------------------------------------------------------------------------
-        // Null
-        //--------------------------------------------------------------------------------
-
-        IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value);
-
-        //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
 
@@ -89,5 +77,19 @@
 
         IMemberExpression<TSource, TDestination, TMember> ConvertUsing<TSourceMember, TValueConverter>()
             where TValueConverter : IValueConverter<TSourceMember, TMember>;
+
+        //--------------------------------------------------------------------------------
+        // Constant
+        //--------------------------------------------------------------------------------
+
+        IMemberExpression<TSource, TDestination, TMember> Const(TMember value);
+
+        //--------------------------------------------------------------------------------
+        // Null
+        //--------------------------------------------------------------------------------
+
+        IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value);
+
+        IMemberExpression<TSource, TDestination, TMember> NullIgnore();
     }
 }

@@ -125,26 +125,6 @@
         }
 
         //--------------------------------------------------------------------------------
-        // Const
-        //--------------------------------------------------------------------------------
-
-        public IMemberExpression<TSource, TDestination, TMember> Const(TMember value)
-        {
-            memberOption.SetConstValue(value);
-            return this;
-        }
-
-        //--------------------------------------------------------------------------------
-        // NullIf
-        //--------------------------------------------------------------------------------
-
-        public IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value)
-        {
-            memberOption.SetNullIfValue(value);
-            return this;
-        }
-
-        //--------------------------------------------------------------------------------
         // Convert
         //--------------------------------------------------------------------------------
 
@@ -170,6 +150,32 @@
             where TValueConverter : IValueConverter<TSourceMember, TMember>
         {
             memberOption.SetConverter<TSourceMember, TMember, TValueConverter>();
+            return this;
+        }
+
+        //--------------------------------------------------------------------------------
+        // Const
+        //--------------------------------------------------------------------------------
+
+        public IMemberExpression<TSource, TDestination, TMember> Const(TMember value)
+        {
+            memberOption.SetConstValue(value);
+            return this;
+        }
+
+        //--------------------------------------------------------------------------------
+        // NullIf
+        //--------------------------------------------------------------------------------
+
+        public IMemberExpression<TSource, TDestination, TMember> NullIf(TMember value)
+        {
+            memberOption.SetNullIfValue(value);
+            return this;
+        }
+
+        public IMemberExpression<TSource, TDestination, TMember> NullIgnore()
+        {
+            memberOption.SetNullIgnore();
             return this;
         }
     }
