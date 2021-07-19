@@ -1,4 +1,7 @@
-﻿namespace WorkMapper.Mappers
+﻿using System.Reflection;
+using System.Reflection.Emit;
+
+namespace WorkMapper.Mappers
 {
     using System;
 
@@ -12,6 +15,29 @@
         private readonly IConverterResolver converterResolver;
 
         private readonly IServiceProvider serviceProvider;
+
+        private int typeNo;
+
+        private AssemblyBuilder? assemblyBuilder;
+
+        private ModuleBuilder? moduleBuilder;
+
+        private ModuleBuilder ModuleBuilder
+        {
+            get
+            {
+                if (moduleBuilder is null)
+                {
+                    assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
+                        new AssemblyName("SmartMapperAssembly"),
+                        AssemblyBuilderAccess.Run);
+                    moduleBuilder = assemblyBuilder.DefineDynamicModule(
+                        "SmartMapperModule");
+                }
+
+                return moduleBuilder;
+            }
+        }
 
         public EmitMapperFactory(
             IFactoryResolver factoryResolver,

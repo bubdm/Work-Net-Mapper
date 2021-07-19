@@ -1,27 +1,24 @@
 ﻿namespace WorkMapper.Mappers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
+#pragma warning disable 0649
+#pragma warning disable 8618
     internal sealed class MapperInfo<TSource, TDestination>
     {
-        public readonly Action<TSource, TDestination> MapAction;
+        [AllowNull]
+        public Action<TSource, TDestination> MapAction;
 
-        public readonly Func<TSource, TDestination> MapFunc;
+        [AllowNull]
+        public Func<TSource, TDestination> MapFunc;
 
-        public readonly Action<TSource, TDestination, object> ParameterMapAction;
+        [AllowNull]
+        public Action<TSource, TDestination, object> ParameterMapAction;
 
-        public readonly Func<TSource, object, TDestination> ParameterMapFunc;
-
-        public MapperInfo(
-            Action<TSource, TDestination> mapAction,
-            Func<TSource, TDestination> mapFunc,
-            Action<TSource, TDestination, object> parameterMapAction,
-            Func<TSource, object, TDestination> parameterMapFunc)
-        {
-            MapAction = mapAction;
-            MapFunc = mapFunc;
-            ParameterMapAction = parameterMapAction;
-            ParameterMapFunc = parameterMapFunc;
-        }
+        [AllowNull]
+        public Func<TSource, object, TDestination> ParameterMapFunc;
     }
+#pragma warning restore 8618
+#pragma warning restore 0649
 }

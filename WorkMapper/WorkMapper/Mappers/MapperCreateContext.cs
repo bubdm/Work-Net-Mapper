@@ -2,7 +2,7 @@
 {
     using WorkMapper.Options;
 
-    public class MapperCreateContext
+    public sealed class MapperCreateContext
     {
         public DefaultOption DefaultOption { get; }
 
@@ -18,7 +18,5 @@
 
         // TODO Funcで？
         //object GetNestedMapper(Type sourceType, Type destinationType);
-
-        // TODO Helperも用意するか？
     }
 }
