@@ -1,4 +1,7 @@
-﻿namespace WorkMapper.Mappers
+﻿using System.Linq;
+using System.Linq.Expressions;
+
+namespace WorkMapper.Mappers
 {
     using System;
     using System.Reflection;
@@ -112,6 +115,21 @@
             var ilGenerator = dynamicMethod.GetILGenerator();
 
             // TODO
+            // Property
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            {
+                var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
+                if (sourceProperty is not null)
+                {
+                    if (sourceProperty.PropertyType.IsAssignableTo(memberOption.Property.PropertyType))
+                    {
+                        ilGenerator.Emit(OpCodes.Ldarg_2);
+                        ilGenerator.Emit(OpCodes.Ldarg_1);
+                        ilGenerator.Emit(OpCodes.Callvirt, sourceProperty.GetMethod!);
+                        ilGenerator.Emit(OpCodes.Callvirt, memberOption.Property.SetMethod!);
+                    }
+                }
+            }
 
             // Return
             ilGenerator.Emit(OpCodes.Ret);
@@ -134,6 +152,20 @@
             var ilGenerator = dynamicMethod.GetILGenerator();
 
             // TODO
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            {
+                var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
+                if (sourceProperty is not null)
+                {
+                    if (sourceProperty.PropertyType.IsAssignableTo(memberOption.Property.PropertyType))
+                    {
+                        ilGenerator.Emit(OpCodes.Ldarg_2);
+                        ilGenerator.Emit(OpCodes.Ldarg_1);
+                        ilGenerator.Emit(OpCodes.Callvirt, sourceProperty.GetMethod!);
+                        ilGenerator.Emit(OpCodes.Callvirt, memberOption.Property.SetMethod!);
+                    }
+                }
+            }
 
             // Return
             ilGenerator.Emit(OpCodes.Ret);
@@ -160,7 +192,22 @@
             var ctor = context.MappingOption.DestinationType.GetConstructor(Type.EmptyTypes)!;
             ilGenerator.Emit(OpCodes.Newobj, ctor);
 
-            // TODO 1
+            // TODO
+            // Property
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            {
+                var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
+                if (sourceProperty is not null)
+                {
+                    if (sourceProperty.PropertyType.IsAssignableTo(memberOption.Property.PropertyType))
+                    {
+                        ilGenerator.Emit(OpCodes.Dup);
+                        ilGenerator.Emit(OpCodes.Ldarg_1);
+                        ilGenerator.Emit(OpCodes.Callvirt, sourceProperty.GetMethod!);
+                        ilGenerator.Emit(OpCodes.Callvirt, memberOption.Property.SetMethod!);
+                    }
+                }
+            }
 
             // Return
             ilGenerator.Emit(OpCodes.Ret);
@@ -182,11 +229,26 @@
                 true);
             var ilGenerator = dynamicMethod.GetILGenerator();
 
-            // TODO
-
             // Class new
             var ctor = context.MappingOption.DestinationType.GetConstructor(Type.EmptyTypes)!;
             ilGenerator.Emit(OpCodes.Newobj, ctor);
+
+            // TODO
+            // Property
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            {
+                var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
+                if (sourceProperty is not null)
+                {
+                    if (sourceProperty.PropertyType.IsAssignableTo(memberOption.Property.PropertyType))
+                    {
+                        ilGenerator.Emit(OpCodes.Dup);
+                        ilGenerator.Emit(OpCodes.Ldarg_1);
+                        ilGenerator.Emit(OpCodes.Callvirt, sourceProperty.GetMethod!);
+                        ilGenerator.Emit(OpCodes.Callvirt, memberOption.Property.SetMethod!);
+                    }
+                }
+            }
 
             // Return
             ilGenerator.Emit(OpCodes.Ret);

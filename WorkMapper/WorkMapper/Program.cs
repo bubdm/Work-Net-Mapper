@@ -9,11 +9,10 @@
 
             var mapper = config.ToMapper();
 
-            var source = new SourceData { Value = 1 };
-            var destination = mapper.Map<SourceData, DestinationData>(source);
-            mapper.Map(source, destination);
-            destination = mapper.Map<SourceData, DestinationData>(source, string.Empty);
-            mapper.Map(source, destination, string.Empty);
+            var destination = mapper.Map<SourceData, DestinationData>(new SourceData { Value = 1 });
+            mapper.Map(new SourceData { Value = 2 }, destination);
+            var destination2 = mapper.Map<SourceData, DestinationData>(new SourceData { Value = 3 }, string.Empty);
+            mapper.Map(new SourceData { Value = 4 }, destination2, string.Empty);
         }
     }
 
