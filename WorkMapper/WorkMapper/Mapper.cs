@@ -59,11 +59,10 @@
         {
             lock (sync)
             {
-                if (!mapperOptions.TryGetValue((profile, sourceType, destinationType), out var mapperOption) &&
-                    !String.IsNullOrEmpty(profile))
+                if (!mapperOptions.TryGetValue((profile, sourceType, destinationType), out var mapperOption))
                 {
                     mapperOption = handlers
-                        .Select(x => x.Handle(sourceType, destinationType, null))
+                        .Select(x => x.Handle(sourceType, destinationType))
                         .FirstOrDefault(x => x is not null);
                     if (mapperOption is not null)
                     {
@@ -111,22 +110,38 @@
         //--------------------------------------------------------------------------------
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Action<TSource, TDestination> GetMapper<TSource, TDestination>() =>
+        public Action<TSource, TDestination> GetMapperAction<TSource, TDestination>() =>
             FindTypeInfo<TSource, TDestination>().MapAction;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Action<TSource, TDestination, object> GetParameterMapper<TSource, TDestination>() =>
+        public Action<TSource, TDestination, object> GetParameterMapperAction<TSource, TDestination>() =>
             FindTypeInfo<TSource, TDestination>().ParameterMapAction;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Func<TSource, TDestination> GetMapperFunc<TSource, TDestination>() =>
+            FindTypeInfo<TSource, TDestination>().MapFunc;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Func<TSource, object, TDestination> GetParameterMapperFunc<TSource, TDestination>() =>
+            FindTypeInfo<TSource, TDestination>().ParameterMapFunc;
 
         // With profile
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Action<TSource, TDestination> GetMapper<TSource, TDestination>(string profile) =>
+        public Action<TSource, TDestination> GetMapperAction<TSource, TDestination>(string profile) =>
             FindTypeInfo<TSource, TDestination>(profile).MapAction;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Action<TSource, TDestination, object> GetParameterMapper<TSource, TDestination>(string profile) =>
+        public Action<TSource, TDestination, object> GetParameterMapperAction<TSource, TDestination>(string profile) =>
             FindTypeInfo<TSource, TDestination>(profile).ParameterMapAction;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Func<TSource, TDestination> GetMapperFunc<TSource, TDestination>(string profile) =>
+            FindTypeInfo<TSource, TDestination>(profile).MapFunc;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Func<TSource, object, TDestination> GetParameterMapperFunc<TSource, TDestination>(string profile) =>
+            FindTypeInfo<TSource, TDestination>(profile).ParameterMapFunc;
 
         //--------------------------------------------------------------------------------
         // Map

@@ -116,7 +116,7 @@ namespace WorkMapper.Mappers
 
             // TODO
             // Property
-            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.GetOrder()))
             {
                 var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (sourceProperty is not null)
@@ -152,7 +152,7 @@ namespace WorkMapper.Mappers
             var ilGenerator = dynamicMethod.GetILGenerator();
 
             // TODO
-            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.GetOrder()))
             {
                 var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (sourceProperty is not null)
@@ -194,7 +194,7 @@ namespace WorkMapper.Mappers
 
             // TODO
             // Property
-            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.GetOrder()))
             {
                 var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (sourceProperty is not null)
@@ -235,7 +235,7 @@ namespace WorkMapper.Mappers
 
             // TODO
             // Property
-            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.Property))
+            foreach (var memberOption in context.MappingOption.MemberOptions.Where(x => !x.IsIgnore()).OrderBy(x => x.GetOrder()))
             {
                 var sourceProperty = context.MappingOption.SourceType.GetProperty(memberOption.Property.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (sourceProperty is not null)

@@ -4,8 +4,9 @@
     {
         public static void Main()
         {
-            var config = new MapperConfig();
-            config.CreateMap<SourceData, DestinationData>();
+            var config = new MapperConfig()
+                .AddDefaultMapper();
+            //config.CreateMap<SourceData, DestinationData>();
 
             var mapper = config.ToMapper();
 

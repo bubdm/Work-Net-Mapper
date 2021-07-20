@@ -14,7 +14,7 @@
         {
             config.Configure(c =>
             {
-                c.Add<DefaultMapperHandler>();
+                c.Add<IMissingHandler, DefaultMapperHandler>();
             });
 
             return config;

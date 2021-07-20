@@ -1,4 +1,8 @@
-﻿namespace Benchmark
+﻿using System;
+
+using WorkMapper;
+
+namespace Benchmark
 {
     using AutoMapper;
 
@@ -46,7 +50,7 @@
 
         private readonly MixedSource mixedSource = new();
 
-        private IMapper mapper;
+        private IMapper autoMapper;
 
         private readonly ActionMapperFactory instantActionMapperFactory = new();    // Boxed
 
@@ -56,16 +60,20 @@
 
         private IActionMapper<SimpleSource, SimpleDestination> rawSimpleMapper;
 
+        private WorkMapper.Mapper smartMapper;
+
+        private Func<SimpleSource, SimpleDestination> smartSimpleMapper;
+
         [GlobalSetup]
         public void Setup()
         {
             // AutoMapper
-            var config = new MapperConfiguration(c =>
+            var autoMapperConfig = new MapperConfiguration(c =>
             {
                 c.CreateMap<SimpleSource, SimpleDestination>();
                 c.CreateMap<MixedSource, MixedDestination>();
             });
-            mapper = config.CreateMapper();
+            autoMapper = autoMapperConfig.CreateMapper();
 
             // TinyMapper
             TinyMapper.Bind<SimpleSource, SimpleDestination>();
@@ -79,6 +87,15 @@
             rawSimpleMapper = RawMapperFactory.CreateSimpleMapper();
             rawActionMapperFactory.AddMapper(typeof(SimpleSource), typeof(SimpleDestination), rawSimpleMapper);
             rawActionMapperFactory.AddMapper(typeof(MixedSource), typeof(MixedDestination), RawMapperFactory.CreateMixedMapper());
+
+            // Smart
+            var smartConfig = new MapperConfig()
+                .AddDefaultMapper();
+            smartConfig.CreateMap<SimpleSource, SimpleDestination>();
+            smartConfig.CreateMap<MixedSource, MixedDestination>();
+            smartMapper = smartConfig.ToMapper();
+
+            smartSimpleMapper = smartMapper.GetMapperFunc<SimpleSource, SimpleDestination>();
         }
 
         //--------------------------------------------------------------------------------
@@ -88,7 +105,7 @@
         [Benchmark(OperationsPerInvoke = N)]
         public SimpleDestination SimpleAutoMapper()
         {
-            var m = mapper;
+            var m = autoMapper;
             var ret = default(SimpleDestination);
             for (var i = 0; i < N; i++)
             {
@@ -101,7 +118,7 @@
         [Benchmark(OperationsPerInvoke = N)]
         public SimpleDestination SimpleAutoMapper2()
         {
-            var m = mapper;
+            var m = autoMapper;
             var ret = default(SimpleDestination);
             for (var i = 0; i < N; i++)
             {
@@ -146,6 +163,18 @@
             return ret;
         }
 
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleSmartMapper()
+        {
+            var m = smartMapper;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<SimpleSource, SimpleDestination>(simpleSource);
+            }
+            return ret;
+        }
+
         //--------------------------------------------------------------------------------
         // Without lookup
         //--------------------------------------------------------------------------------
@@ -172,6 +201,18 @@
             for (var i = 0; i < N; i++)
             {
                 ret = m.Map(simpleSource);
+            }
+            return ret;
+        }
+
+        [Benchmark(OperationsPerInvoke = N)]
+        public SimpleDestination SimpleSmartMapperWoLookup()
+        {
+            var m = smartSimpleMapper;
+            var ret = default(SimpleDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m(simpleSource);
             }
             return ret;
         }
@@ -208,7 +249,7 @@
         [Benchmark(OperationsPerInvoke = N)]
         public MixedDestination MixedAutoMapper()
         {
-            var m = mapper;
+            var m = autoMapper;
             var ret = default(MixedDestination);
             for (var i = 0; i < N; i++)
             {
@@ -248,6 +289,18 @@
             for (var i = 0; i < N; i++)
             {
                 ret = m.Map<MixedDestination>(mixedSource);
+            }
+            return ret;
+        }
+
+        [Benchmark(OperationsPerInvoke = N)]
+        public MixedDestination MixedSmartMapper()
+        {
+            var m = smartMapper;
+            var ret = default(MixedDestination);
+            for (var i = 0; i < N; i++)
+            {
+                ret = m.Map<MixedSource, MixedDestination>(mixedSource);
             }
             return ret;
         }

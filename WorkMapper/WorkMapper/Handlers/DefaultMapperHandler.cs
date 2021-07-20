@@ -8,14 +8,9 @@
     {
         public int Priority { get; set; } = Int32.MinValue;
 
-        public MappingOption? Handle(Type sourceType, Type destinationType, Type? contextType)
+        public MappingOption Handle(Type sourceType, Type destinationType)
         {
-            if (contextType is not null)
-            {
-                return null;
-            }
-
-            return new MappingOption(sourceType, destinationType);
+            return new(sourceType, destinationType);
         }
     }
 }

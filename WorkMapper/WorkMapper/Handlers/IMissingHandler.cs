@@ -8,6 +8,6 @@ namespace WorkMapper.Handlers
     {
         int Priority { get; }
 
-        MappingOption? Handle(Type sourceType, Type destinationType, Type? contextType);
+        MappingOption? Handle(Type sourceType, Type destinationType);
     }
 }
