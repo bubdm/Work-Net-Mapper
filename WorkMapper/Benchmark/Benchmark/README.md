@@ -10,17 +10,20 @@ Job=MediumRun  IterationCount=15  LaunchCount=2
 WarmupCount=10  
 
 ```
-|                      Method |      Mean |     Error |    StdDev |       Min |       Max |       P90 |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|---------------------------- |----------:|----------:|----------:|----------:|----------:|----------:|-------:|------:|------:|----------:|
-|            SimpleAutoMapper | 67.672 ns | 0.2757 ns | 0.3585 ns | 66.834 ns | 68.217 ns | 68.096 ns | 0.0038 |     - |     - |      64 B |
-|           SimpleAutoMapper2 | 68.873 ns | 0.5297 ns | 0.7425 ns | 67.513 ns | 70.033 ns | 69.819 ns | 0.0038 |     - |     - |      64 B |
-|            SimpleTinyMapper | 27.627 ns | 0.1534 ns | 0.2295 ns | 27.378 ns | 28.305 ns | 28.032 ns | 0.0038 |     - |     - |      64 B |
-|         SimpleInstantMapper | 89.444 ns | 0.2104 ns | 0.3150 ns | 88.931 ns | 90.276 ns | 89.780 ns | 0.0095 |     - |     - |     160 B |
-|             SimpleRawMapper | 33.457 ns | 0.3794 ns | 0.5561 ns | 32.414 ns | 34.922 ns | 34.061 ns | 0.0038 |     - |     - |      64 B |
-| SimpleInstantMapperWoLookup | 79.510 ns | 0.1124 ns | 0.1576 ns | 79.237 ns | 79.868 ns | 79.711 ns | 0.0095 |     - |     - |     160 B |
-|     SimpleRawMapperWoLookup | 24.875 ns | 0.0434 ns | 0.0594 ns | 24.777 ns | 25.053 ns | 24.944 ns | 0.0038 |     - |     - |      64 B |
-|                  SimpleHand |  7.180 ns | 0.0125 ns | 0.0179 ns |  7.155 ns |  7.215 ns |  7.207 ns | 0.0038 |     - |     - |      64 B |
-|             MixedAutoMapper | 65.156 ns | 1.1535 ns | 1.7265 ns | 63.038 ns | 68.195 ns | 67.349 ns | 0.0038 |     - |     - |      64 B |
-|             MixedTinyMapper | 42.053 ns | 0.0991 ns | 0.1453 ns | 41.844 ns | 42.362 ns | 42.224 ns | 0.0067 |     - |     - |     112 B |
-|          MixedInstantMapper | 76.375 ns | 0.2534 ns | 0.3552 ns | 75.912 ns | 77.239 ns | 76.792 ns | 0.0123 |     - |     - |     208 B |
-|              MixedRawMapper | 29.507 ns | 0.2589 ns | 0.3713 ns | 29.046 ns | 30.339 ns | 29.907 ns | 0.0038 |     - |     - |      64 B |
+|                      Method |      Mean |     Error |    StdDev |    Median |       Min |       Max |       P90 |  Gen 0 | Gen 1 | Gen 2 | Allocated |
+|---------------------------- |----------:|----------:|----------:|----------:|----------:|----------:|----------:|-------:|------:|------:|----------:|
+|            SimpleAutoMapper | 67.068 ns | 0.2326 ns | 0.3410 ns | 67.011 ns | 66.505 ns | 67.765 ns | 67.576 ns | 0.0038 |     - |     - |      64 B |
+|           SimpleAutoMapper2 | 66.846 ns | 0.8999 ns | 1.2615 ns | 67.746 ns | 65.295 ns | 68.335 ns | 68.161 ns | 0.0038 |     - |     - |      64 B |
+|            SimpleTinyMapper | 28.128 ns | 0.0486 ns | 0.0681 ns | 28.101 ns | 28.058 ns | 28.308 ns | 28.208 ns | 0.0038 |     - |     - |      64 B |
+|         SimpleInstantMapper | 89.730 ns | 0.2362 ns | 0.3388 ns | 89.673 ns | 89.156 ns | 90.366 ns | 90.159 ns | 0.0095 |     - |     - |     160 B |
+|             SimpleRawMapper | 34.489 ns | 0.1235 ns | 0.1811 ns | 34.511 ns | 34.209 ns | 34.855 ns | 34.692 ns | 0.0038 |     - |     - |      64 B |
+|           SimpleSmartMapper | 11.521 ns | 0.1184 ns | 0.1698 ns | 11.407 ns | 11.336 ns | 11.766 ns | 11.730 ns | 0.0038 |     - |     - |      64 B |
+| SimpleInstantMapperWoLookup | 80.903 ns | 0.1969 ns | 0.2886 ns | 80.875 ns | 80.393 ns | 81.463 ns | 81.317 ns | 0.0095 |     - |     - |     160 B |
+|     SimpleRawMapperWoLookup | 24.086 ns | 0.7118 ns | 1.0434 ns | 23.268 ns | 22.984 ns | 25.343 ns | 25.204 ns | 0.0038 |     - |     - |      64 B |
+|   SimpleSmartMapperWoLookup |  8.356 ns | 0.0135 ns | 0.0203 ns |  8.351 ns |  8.323 ns |  8.400 ns |  8.382 ns | 0.0038 |     - |     - |      64 B |
+|                  SimpleHand |  7.230 ns | 0.0082 ns | 0.0115 ns |  7.231 ns |  7.204 ns |  7.252 ns |  7.244 ns | 0.0038 |     - |     - |      64 B |
+|             MixedAutoMapper | 63.723 ns | 0.1456 ns | 0.2088 ns | 63.780 ns | 63.314 ns | 64.083 ns | 63.962 ns | 0.0038 |     - |     - |      64 B |
+|             MixedTinyMapper | 41.895 ns | 0.1385 ns | 0.2031 ns | 41.876 ns | 41.598 ns | 42.359 ns | 42.185 ns | 0.0067 |     - |     - |     112 B |
+|          MixedInstantMapper | 78.865 ns | 0.1857 ns | 0.2542 ns | 78.882 ns | 78.142 ns | 79.322 ns | 79.112 ns | 0.0123 |     - |     - |     208 B |
+|              MixedRawMapper | 30.731 ns | 0.0486 ns | 0.0697 ns | 30.717 ns | 30.597 ns | 30.864 ns | 30.855 ns | 0.0038 |     - |     - |      64 B |
+|            MixedSmartMapper |  8.153 ns | 0.0289 ns | 0.0414 ns |  8.156 ns |  8.082 ns |  8.238 ns |  8.201 ns | 0.0038 |     - |     - |      64 B |
