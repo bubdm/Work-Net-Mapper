@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DispatchBenchmark", "Benchm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkCreateExpression", "Example\WorkCreateExpression\WorkCreateExpression.csproj", "{4FE1B674-7DDF-459A-B20A-B9F437110556}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DupBenchmark", "Benchmark\DupBenchmark\DupBenchmark.csproj", "{0505C8C3-42F9-4E55-8FD4-F631E6390989}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{4FE1B674-7DDF-459A-B20A-B9F437110556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE1B674-7DDF-459A-B20A-B9F437110556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE1B674-7DDF-459A-B20A-B9F437110556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0505C8C3-42F9-4E55-8FD4-F631E6390989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0505C8C3-42F9-4E55-8FD4-F631E6390989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0505C8C3-42F9-4E55-8FD4-F631E6390989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0505C8C3-42F9-4E55-8FD4-F631E6390989}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{2AB8B475-0DA6-47C1-89F4-C40447A97262} = {7D1B55D0-3902-47A1-B66D-80C3FF591297}
 		{1F976FFB-17E4-420F-BB21-470C6FB39F7F} = {B6E74D52-0330-4B42-BC06-2E2265E4BE7B}
 		{4FE1B674-7DDF-459A-B20A-B9F437110556} = {7D1B55D0-3902-47A1-B66D-80C3FF591297}
+		{0505C8C3-42F9-4E55-8FD4-F631E6390989} = {B6E74D52-0330-4B42-BC06-2E2265E4BE7B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {614D2603-E1FA-4ABD-8C19-E164AD4EF857}
