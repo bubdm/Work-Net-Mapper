@@ -60,6 +60,8 @@
 
         public void SetFactory<TSource, TDestination>(Func<TSource, TDestination> value) => factory = value;
 
+        public void SetFactory<TSource, TDestination>(Func<TSource, ResolutionContext, TDestination> value) => factory = value;
+
         public void SetFactory<TSource, TDestination>(IObjectFactory<TSource, TDestination> value) => factory = value;
 
         public void SetFactory<TSource, TDestination, TObjectFactory>()

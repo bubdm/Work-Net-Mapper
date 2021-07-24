@@ -30,6 +30,12 @@
             return this;
         }
 
+        public IDefaultExpression FactoryUsing<TDestination>(Func<ResolutionContext, TDestination> factory)
+        {
+            defaultOption.SetFactory(factory);
+            return this;
+        }
+
         //--------------------------------------------------------------------------------
         // Converter
         //--------------------------------------------------------------------------------
@@ -40,7 +46,7 @@
             return this;
         }
 
-        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, TDestinationMember, ResolutionContext> converter)
+        public IDefaultExpression ConvertUsing<TSourceMember, TDestinationMember>(Func<TSourceMember, ResolutionContext, TDestinationMember> converter)
         {
             defaultOption.SetConverter(converter);
             return this;
