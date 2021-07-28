@@ -33,38 +33,38 @@ namespace WorkIL
                 destination.Value = source.Value;
             }
         }
+    }
 
-        public sealed class ConditionMapper3
+    public sealed class ConditionMapper3
+    {
+        public Func<Source, Destination, ResolutionContext, bool> condition;
+
+        public INestedMapper mapper;
+
+        public void Map(Source source, Destination destination)
         {
-            public Func<Source, Destination, ResolutionContext, bool> condition;
+            var context = new ResolutionContext(null, mapper);
 
-            public INestedMapper mapper;
-
-            public void Map(Source source, Destination destination)
+            if (condition(source, destination, context))
             {
-                var context = new ResolutionContext(null, mapper);
-
-                if (condition(source, destination, context))
-                {
-                    destination.Value = source.Value;
-                }
+                destination.Value = source.Value;
             }
         }
+    }
 
-        public sealed class ConditionMapper4
+    public sealed class ConditionMapper4
+    {
+        public IMemberCondition<Source, Destination> condition;
+
+        public INestedMapper mapper;
+
+        public void Map(Source source, Destination destination)
         {
-            public IMemberCondition<Source, Destination> condition;
+            var context = new ResolutionContext(null, mapper);
 
-            public INestedMapper mapper;
-
-            public void Map(Source source, Destination destination)
+            if (condition.Eval(source, destination, context))
             {
-                var context = new ResolutionContext(null, mapper);
-
-                if (condition.Eval(source, destination, context))
-                {
-                    destination.Value = source.Value;
-                }
+                destination.Value = source.Value;
             }
         }
     }
