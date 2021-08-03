@@ -10,9 +10,42 @@ namespace WorkAutoMapper
     {
         static void Main()
         {
-            TinyMapperTest.Run();
+            TestNestedSame.Test();
         }
     }
+
+    public class TestNestedSame
+    {
+        public static void Test()
+        {
+            var config = new MapperConfiguration(c =>
+            {
+                c.CreateMap<Source, Destination>();
+            });
+            var mapper = config.CreateMapper();
+
+            var source = new Source { Inner = new Inner { Value = 1 } };
+            var destination =  mapper.Map<Destination>(source);
+            var same = destination.Inner == source.Inner;
+        }
+
+        public class Inner
+        {
+            public int Value { get; set; }
+        }
+
+
+        public class Source
+        {
+            public Inner? Inner { get; set; }
+        }
+
+        public class Destination
+        {
+            public Inner? Inner { get; set; }
+        }
+    }
+
 
     public class TestNestedEnumerable
     {
@@ -279,7 +312,6 @@ namespace WorkAutoMapper
             public InnerDestination Inner { get; set; }
         }
     }
-
 
     public class TestNested
     {

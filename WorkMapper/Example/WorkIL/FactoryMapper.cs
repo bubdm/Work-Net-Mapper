@@ -5,6 +5,25 @@
     using WorkMapper;
     using WorkMapper.Functions;
 
+    public sealed class FactoryMapper
+    {
+        public Destination MapFunc(Source source)
+        {
+            var destination = new Destination();
+            destination.Value = source.Value;
+            destination.ClassValue = source.ClassValue;
+            destination.StructValue = source.StructValue;
+            return destination;
+        }
+
+        public void MapAction(Source source, Destination destination)
+        {
+            destination.Value = source.Value;
+            destination.ClassValue = source.ClassValue;
+            destination.StructValue = source.StructValue;
+        }
+    }
+
     public sealed class FactoryMapper1
     {
         public INestedMapper mapper;
