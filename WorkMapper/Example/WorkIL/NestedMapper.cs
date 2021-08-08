@@ -13,9 +13,10 @@ namespace WorkIL
 
         public void MapClass(Source s, Destination d)
         {
-            if (s.Inner is not null)
+            var temp = s.Inner;
+            if (temp is not null)
             {
-                d.Inner = nestedClasMapper(s.Inner);
+                d.Inner = nestedClasMapper(temp);
             }
             else
             {
@@ -25,14 +26,21 @@ namespace WorkIL
 
         public void MapClass2(Source s, Destination d)
         {
-            d.Inner = s.Inner is not null ? nestedClasMapper(s.Inner) : null;
+            var temp = s.Inner;
+            d.Inner = temp is not null ? nestedClasMapper(temp) : null;
+        }
+
+        public void MapClass0(Source s, Destination d)
+        {
+            d.Inner = nestedClasMapper(s.Inner!);
         }
 
         public void MapNullable(Source s, Destination d)
         {
+            var temp = s.NullableInner;
             if (s.NullableInner is not null)
             {
-                d.NullableInner = nestedNullableMapper(s.NullableInner);
+                d.NullableInner = nestedNullableMapper(temp);
             }
             else
             {
@@ -42,7 +50,8 @@ namespace WorkIL
 
         public void MapNullable2(Source s, Destination d)
         {
-            d.NullableInner = s.NullableInner is not null ? nestedNullableMapper(s.NullableInner) : null;
+            var temp = s.NullableInner;
+            d.NullableInner = temp is not null ? nestedNullableMapper(temp) : null;
         }
 
         public void MapStruct(Source s, Destination d)
