@@ -14,15 +14,19 @@ namespace WorkIL
                 return null;
             }
 
-            return new Destination();
+            var destination = new Destination();
+            destination.Value = 1;
+            return destination;
         }
 
-        public void ClassFunc(Source? source, Destination? destination)
+        public void ClassAction(Source? source, Destination? destination)
         {
             if (source is null)
             {
                 return;
             }
+
+            destination.Value = 1;
         }
 
         public StructDestination? NullableFuncToNullable(StructSource? source)
@@ -32,7 +36,9 @@ namespace WorkIL
                 return null;
             }
 
-            return new StructDestination();
+            var destination = new StructDestination();
+            destination.Value = 1;
+            return destination;
         }
 
         public StructDestination NullableFuncToStruct(StructSource? source)
@@ -42,7 +48,9 @@ namespace WorkIL
                 return default;
             }
 
-            return new StructDestination();
+            var destination = new StructDestination();
+            destination.Value = 1;
+            return destination;
         }
 
         public void NullableAction(StructSource? source, StructDestination destination)
@@ -51,6 +59,8 @@ namespace WorkIL
             {
                 return;
             }
+
+            destination.Value = 1;
         }
     }
 }
