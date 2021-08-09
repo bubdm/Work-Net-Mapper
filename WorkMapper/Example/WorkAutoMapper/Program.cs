@@ -27,6 +27,11 @@ namespace WorkAutoMapper
             var source = new Source { Inner = new Inner { Value = 1 } };
             var destination =  mapper.Map<Destination>(source);
             var same = destination.Inner == source.Inner;
+
+            var d2 = mapper.Map<Destination>((Source)null);
+            var d3 = new Destination();
+            mapper.Map<Source, Destination>(null, d3);
+            mapper.Map<Source, Destination>(null, null);
         }
 
         public class Inner
