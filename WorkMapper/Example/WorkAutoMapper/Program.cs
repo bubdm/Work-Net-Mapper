@@ -10,7 +10,8 @@ namespace WorkAutoMapper
     {
         static void Main()
         {
-            TestNestedSame.Test();
+            NullableTest.Run();
+            //TestNestedSame.Test();
         }
     }
 
