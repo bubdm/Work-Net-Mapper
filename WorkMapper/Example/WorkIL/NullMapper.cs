@@ -29,9 +29,13 @@ namespace WorkIL
 
         public string? nullValue2;
 
-        public void Map(NullableSource source, NullableDestination destination)
+        public void Map1(NullableSource source, NullableDestination destination)
         {
             destination.Value = source.Value ?? nullValue1;
+        }
+
+        public void Map2(NullableSource source, NullableDestination destination)
+        {
             destination.ClassValue = source.ClassValue ?? nullValue2;
         }
     }

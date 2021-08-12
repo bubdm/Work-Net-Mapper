@@ -10,6 +10,8 @@ namespace WorkAutoMapper
     {
         static void Main()
         {
+            var a = Nullable.GetUnderlyingType(typeof(int));
+
             NullableTest.Run();
             //TestNestedSame.Test();
         }
