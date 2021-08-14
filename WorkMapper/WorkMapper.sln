@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkMapper", "WorkMapper\WorkMapper.csproj", "{51DB94DF-451F-48D6-AA9A-F982D461ACA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmark", "Benchmark", "{B6E74D52-0330-4B42-BC06-2E2265E4BE7B}"
+	ProjectSection(SolutionItems) = preProject
+		Benchmark\EmitDefaultBenchmark\EmitDefaultBenchmark.csproj = Benchmark\EmitDefaultBenchmark\EmitDefaultBenchmark.csproj
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{7D1B55D0-3902-47A1-B66D-80C3FF591297}"
 EndProject
