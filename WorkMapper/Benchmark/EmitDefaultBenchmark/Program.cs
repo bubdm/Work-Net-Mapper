@@ -225,16 +225,17 @@
             var dynamicMethod = new DynamicMethod(string.Empty, type, new[] { typeof(object) }, true);
             var ilGenerator = dynamicMethod.GetILGenerator();
 
-            var method = typeof(Factory).GetMethod("GetDefaultValue")!.MakeGenericMethod(type);
-            ilGenerator.Emit(OpCodes.Call, method);
+            //var method = typeof(Factory).GetMethod("GetDefaultValue")!.MakeGenericMethod(type);
+            //ilGenerator.Emit(OpCodes.Call, method);
+            ilGenerator.EmitStackDefaultValue(type);
 
             ilGenerator.Emit(OpCodes.Ret);
 
             return dynamicMethod.CreateDelegate<Func<T>>(null);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetDefaultValue<T>() => default;
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static T GetDefaultValue<T>() => default;
     }
 
     public struct Data
